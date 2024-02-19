@@ -10,5 +10,16 @@ class Role extends Model
         'name',
         // Add any other attributes you want to be mass assignable
     ];
+
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
 }
 

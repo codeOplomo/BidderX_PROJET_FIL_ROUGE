@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Permission;
 use App\Models\Role;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,9 +21,10 @@ class RoleFactory extends Factory
 
     public function definition()
     {
+        $permissions = Permission::pluck('id')->toArray();
         return [
             'name' => $this->faker->unique()->word,
-            // Add any other attributes you want to generate
+            'permissions' => $this->faker->randomElements($permissions, rand(1, 5)),
         ];
     }
 }

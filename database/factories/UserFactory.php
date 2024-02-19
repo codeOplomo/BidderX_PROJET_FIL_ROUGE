@@ -36,7 +36,8 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'), // Use your desired password
             'phone' => $this->faker->phoneNumber,
-            'role_id' => $this->faker->randomElement($roles),
+            // 'role_id' => $this->faker->randomElement($roles),
+            // 'roles' => $this->faker->randomElements($roles, rand(1, 3)), 
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];
@@ -50,5 +51,13 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $roles = Role::pluck('id')->toArray();
+            $user->roles()->attach($this->faker->randomElements($roles, rand(1, 3)));
+        });
     }
 }

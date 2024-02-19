@@ -71,8 +71,8 @@ class User extends Authenticatable
         return $this->hasMany(Bid::class, 'user_id');
     }
 
-    public function role()
+    public function roles()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 }
