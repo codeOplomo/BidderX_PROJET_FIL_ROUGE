@@ -1,7 +1,5 @@
 <?php
 
-// app/Models/Comment.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +12,7 @@ class Comment extends Model
         'user_id',
         'product_id',
         'comment',
-        // Add any other attributes you want to be mass assignable
+        'parent_id', // Make 'parent_id' mass assignable
     ];
 
     public function user()
@@ -26,5 +24,20 @@ class Comment extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    // Parent comment relationship: defines a comment's parent
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
+    // Child comments relationship: defines the child comments of a comment
+    public function children()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
+
+    // You can also add scopes here for querying parent comments or child comments if needed
 }
+
 

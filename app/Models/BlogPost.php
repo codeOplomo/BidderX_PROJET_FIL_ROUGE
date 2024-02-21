@@ -13,6 +13,8 @@ class BlogPost extends Model
     protected $fillable = [
         'title',
         'content',
+        'user_id', 
+        'category_id',
         // Add any other attributes you want to be mass assignable
     ];
 
@@ -20,5 +22,23 @@ class BlogPost extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    
+    // Scope for retrieving recent blog posts
+    public function scopeRecent($query, $days = 30)
+    {
+        return $query->where('created_at', '>=', now()->subDays($days));
+    }
+
+    // Scope for searching blog posts by title
+    public function scopeTitleContains($query, $title)
+    {
+        return $query->where('title', 'like', '%' . $title . '%');
+    }
+
 }
 

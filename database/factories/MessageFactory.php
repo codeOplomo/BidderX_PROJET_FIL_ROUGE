@@ -21,12 +21,15 @@ class MessageFactory extends Factory
     public function definition()
     {
         $users = User::pluck('id')->toArray();
+        $senderId = $this->faker->randomElement($users);
+        // Ensure the receiver is not the same as the sender
+        $receiverId = $this->faker->randomElement(array_diff($users, [$senderId]));
 
         return [
             'content' => $this->faker->sentence,
             'is_read' => $this->faker->boolean,
-            'sender_name' => $this->faker->name,
-            'user_id' => $this->faker->randomElement($users),
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
         ];
     }
 }

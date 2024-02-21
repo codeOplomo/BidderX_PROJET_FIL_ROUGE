@@ -25,5 +25,13 @@ class Payment extends Model
     {
         return $this->hasOne(ShippingInfo::class);
     }
+
+
+    // Scope for successful payments
+public function scopeSuccessful($query)
+{
+    return $query->where('status', 'successful');
+}
+
 }
 

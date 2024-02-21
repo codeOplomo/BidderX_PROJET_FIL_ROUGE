@@ -24,11 +24,13 @@ class CommentFactory extends Factory
     {
         $users = User::pluck('id')->toArray();
         $products = Product::pluck('id')->toArray();
+        $commentIds = Comment::pluck('id')->toArray(); // Fetch existing comment IDs to use as potential parents
 
         return [
             'comment' => $this->faker->paragraph,
             'user_id' => $this->faker->randomElement($users),
             'product_id' => $this->faker->randomElement($products),
+            'parent_id' => $this->faker->boolean(50) ? $this->faker->randomElement($commentIds) : null, // 50% chance to assign a parent comment
         ];
     }
 }

@@ -31,5 +31,11 @@ class Bid extends Model
     {
         return $this->hasOne(Payment::class);
     }
+
+    public function scopeHighest($query)
+    {
+        return $query->orderByDesc('amount');
+    }
+
 }
 

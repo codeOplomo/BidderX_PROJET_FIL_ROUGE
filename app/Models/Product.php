@@ -38,5 +38,18 @@ class Product extends Model
     {
         return $this->hasOne(Auction::class);
     }
+
+    // Scope for filtering products by condition
+public function scopeCondition($query, $condition)
+{
+    return $query->where('condition', $condition);
+}
+
+// Scope for filtering products by year of production
+public function scopeProducedInYear($query, $year)
+{
+    return $query->where('production_year', $year);
+}
+
 }
 

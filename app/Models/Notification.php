@@ -20,4 +20,11 @@ class Notification extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Scope for unread notifications
+public function scopeUnread($query)
+{
+    return $query->where('is_read', false);
+}
+
 }

@@ -28,5 +28,18 @@ class Address extends Model
     {
         return $query->where('postal_code', $postalCode);
     }
+
+    // Scope for filtering addresses by country
+    public function scopeInCountry($query, $country)
+    {
+        return $query->where('country', $country);
+    }
+
+    // Scope for searching addresses within a city
+    public function scopeInCity($query, $city)
+    {
+        return $query->where('city', $city);
+    }
+
 }
 

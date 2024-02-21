@@ -31,5 +31,12 @@ class ProductRating extends Model
     {
         return $this->hasMany(ProductRating::class);
     }
+
+    // Scope for high ratings
+public function scopeHighRatings($query, $rating = 4)
+{
+    return $query->where('rating', '>=', $rating);
+}
+
 }
 

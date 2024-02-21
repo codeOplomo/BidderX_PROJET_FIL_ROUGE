@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -19,11 +18,14 @@ return new class extends Migration
             $table->string('manufacturer');
             $table->integer('production_year')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('category_id'); // Add this line
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade'); // Add this line
         });
     }
+
 
     public function down()
     {

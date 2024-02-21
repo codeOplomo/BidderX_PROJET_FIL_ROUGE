@@ -18,4 +18,11 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    // Scope for searching categories by name
+public function scopeWithName($query, $name)
+{
+    return $query->where('name', 'like', '%' . $name . '%');
+}
+
 }

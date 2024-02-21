@@ -19,7 +19,6 @@ class Auction extends Model
         'starting_bid_price',
         'current_bid_price',
         'user_id',
-        // Add any other attributes you want to be mass assignable
     ];
 
     public function product()
@@ -36,6 +35,22 @@ class Auction extends Model
     {
         return $this->hasMany(Bid::class);
     }
+
+    public function scopeUpcoming($query)
+    {
+        return $query->where('start_time', '>', now());
+    }
+
+    public function scopeOngoing($query)
+    {
+        return $query->where('start_time', '<=', now())->where('end_time', '>=', now());
+    }
+
+    public function scopeEnded($query)
+    {
+        return $query->where('end_time', '<', now());
+    }
+
 
 }
 
