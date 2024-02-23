@@ -20,9 +20,9 @@ class Category extends Model
     }
 
     // Scope for searching categories by name
-public function scopeWithName($query, $name)
-{
-    return $query->where('name', 'like', '%' . $name . '%');
-}
+    public function scopeWithName($query, $name)
+    {
+        return $query->where('name', 'like', '%' . $name . '%');
+    }
 
 }

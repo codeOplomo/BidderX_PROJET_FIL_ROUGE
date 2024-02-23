@@ -1,12 +1,49 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\GeoLocation;
 
+use App\Http\Controllers\Controller;
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class AddressController extends Controller
 {
+
+    /**
+     * Fetch and return cities for a given country from an external API.
+     * 
+     * @param  string  $countryCode The country code or name to fetch cities for.
+     * @return \Illuminate\Http\Response
+     */
+    public function getCities($countryCode)
+    {
+        // Replace the URL with the actual endpoint of the external API you're using
+        $response = Http::get("http://example.com/api/cities/{$countryCode}");
+
+        if ($response->successful()) {
+            $cities = $response->json();
+
+            // Optional: Transform the response here if needed to match your frontend requirements
+            // For example, if you just need names of the cities, you might do:
+            // $cities = collect($response->json())->pluck('name')->all();
+
+            return response()->json($cities);
+        } else {
+            // Handle errors, perhaps log them and return a user-friendly message
+            return response()->json(['error' => 'Failed to fetch cities for the selected country'], 500);
+        }
+    }
+    public function getCountries()
+    {
+        $response = Http::get('https://countriesnow.space/api/v0.1/countries/');
+
+        if ($response->successful()) {
+            return response()->json($response->json());
+        } else {
+            return response()->json(['error' => 'Unable to fetch countries'], 500);
+        }
+    }
     /**
      * Display a listing of addresses.
      */

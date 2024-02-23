@@ -14,7 +14,6 @@ class User extends Authenticatable
     protected $fillable = [
         'firstname',
         'lastname',
-        'username',
         'email',
         'password',
         'phone', // Include the 'phone' attribute
@@ -89,16 +88,16 @@ class User extends Authenticatable
     }
 
     // Scope for users with a specific email domain
-public function scopeWithEmailDomain($query, $domain)
-{
-    return $query->where('email', 'like', '%' . $domain);
-}
+    public function scopeWithEmailDomain($query, $domain)
+    {
+        return $query->where('email', 'like', '%' . $domain);
+    }
 
-// Scope for active users (you can define "active" based on your application logic, e.g., users who have logged in recently)
-public function scopeActive($query, $days = 30)
-{
-    return $query->where('last_login_at', '>=', now()->subDays($days));
-}
+    // Scope for active users (you can define "active" based on your application logic, e.g., users who have logged in recently)
+    public function scopeActive($query, $days = 30)
+    {
+        return $query->where('last_login_at', '>=', now()->subDays($days));
+    }
 
 
 }
