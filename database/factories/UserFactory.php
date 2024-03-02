@@ -32,12 +32,11 @@ class UserFactory extends Factory
         return [
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
-            'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'), // Use your desired password
             'phone' => $this->faker->phoneNumber,
             // 'role_id' => $this->faker->randomElement($roles),
-            // 'roles' => $this->faker->randomElements($roles, rand(1, 3)), 
+            // 'roles' => $this->faker->randomElements($roles, rand(1, 3)),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];
@@ -61,3 +60,4 @@ class UserFactory extends Factory
         });
     }
 }
+

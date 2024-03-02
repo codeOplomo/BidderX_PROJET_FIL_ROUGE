@@ -40,6 +40,8 @@ Route::post('/register', [AuthController::class, 'register']);
     Route::get('/geo/cities/{countryCode}', [AddressController::class, 'getCities']);
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/logout', [AuthController::class, 'logout']);
     // User profile
     Route::get('/user/profile', [UserController::class, 'profile']);
 

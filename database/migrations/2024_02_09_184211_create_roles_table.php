@@ -17,19 +17,10 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('role_id')->default(2); // Default role_id for 'bidder'
-            $table->foreign('role_id')->references('id')->on('roles');
-        });
     }
 
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
-        });
-
         Schema::dropIfExists('roles');
     }
 };
