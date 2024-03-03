@@ -10,6 +10,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Products\CommentController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\ProductRatingController;
+use App\Http\Controllers\User\Admin\AdminController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/admin/profile', [AdminController::class, 'profile']);
     // User profile
     Route::get('/user/profile', [UserController::class, 'profile']);
 
