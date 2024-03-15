@@ -5,9 +5,71 @@ namespace App\Http\Controllers\Products;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends Controller
 {
+
+    public function createCategory(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|unique:categories,name', 
+        ]);
+
+        $newCategoryNameLower = strtolower($request->name);
+
+        $existingCategory = Category::whereRaw('LOWER(name) = ?', [$newCategoryNameLower])->first();
+
+        if ($existingCategory) {
+            return redirect()->back()->with('error', 'Category already exists.');
+        }
+    
+        // Create the new category
+        $category = new Category();
+        $category->name = $request->name;
+        $category->save();
+    
+        return redirect()->back()->with('success', 'Category created successfully.');
+    }
+
+    /**
+     * Show the form for editing the specified category.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function editCategory(Request $request, $id): RedirectResponse
+{
+    $category = Category::findOrFail($id);
+
+    if ($request->name !== $category->name) {
+        $newCategoryNameLower = strtolower($request->name);
+
+        $existingCategory = Category::whereRaw('LOWER(name) = ? AND id != ?', [$newCategoryNameLower, $id])->first();
+
+        if ($existingCategory) {
+            return redirect()->back()->with('error', 'Category with the same name already exists.');
+        }
+    }
+
+    $category->update([
+        'name' => $request->name,
+    ]);
+
+    return redirect()->back()->with('success', 'Category updated successfully.');
+}
+
+    
+    public function destroyCategory($id): RedirectResponse
+    {
+        $category = Category::findOrFail($id);
+
+        $category->delete();
+
+        return redirect()->back()->with('success', 'Category deleted successfully.');
+    }
+
     /**
      * Display a listing of the categories.
      */

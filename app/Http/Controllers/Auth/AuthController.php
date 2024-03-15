@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\RedirectResponse;
+
 
 class AuthController extends Controller
 {
@@ -19,80 +22,83 @@ class AuthController extends Controller
      * Register a new user.
      */
 
-    public function register(RegisterRequest $request)
+    public function showRegister()
     {
-        DB::beginTransaction(); // Start a transaction
+        return view('auth.RegisterForm');
+    }
 
+    public function register(RegisterRequest $request): RedirectResponse
+    {
+        DB::beginTransaction();
         try {
-            // Create the user
             $user = User::create([
-                'firstname' => $request['firstname'],
-                'lastname' => $request['lastname'],
-                'email' => $request['email'],
-                'password' => Hash::make($request['password']),
+                'firstname' => $request->input('firstname'),
+                'lastname' => $request->input('lastname'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
             ]);
 
-            // Create the address
-            $address = new Address([
-                'user_id' => $user->id,
-                'country' => $request['country'],
-                'city' => $request['city'],
-                // Add more fields here as needed
-            ]);
-            $address->save();
+            $bidderRole = Role::where('id', 2)->firstOrFail();
 
-            // Find the role by name (adjust the role name as needed)
-            $role = Role::where('name', 'admin')->firstOrFail();
-            // Attach the role to the user
-            $user->roles()->attach($role);
+            $user->roles()->attach($bidderRole);
 
-            // If everything's fine, commit the transaction
             DB::commit();
 
-            // Optionally create a token for the user
-            //$token = $user->createToken('authToken')->plainTextToken;
+            return redirect()->route('login')->with('success', 'Account successfully created. Please log in.');
 
-            // Return the user and token information
-            return response()->json(['user' => $user->load('roles')]);
-        } catch (\Exception $e) {
-            // If there's an error, rollback the transaction
+        } catch (\Exception $exception) {
             DB::rollback();
-            return response()->json(['error' => 'Registration failed: ' . $e->getMessage()], 500);
+
+            return redirect()->back()->withInput()->withErrors(['error' => 'Registration failed. Please try again.']);
         }
     }
 
     /**
      * Log in a user.
      */
+
+    public function showLogin()
+    {
+        return view('auth.LoginForm');
+    }
+
     public function login(LoginRequest $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid login details'], 401);
+        $credentials = $request->validated();
+    
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+    
+            $user = Auth::user();
+            if ($user->roles->contains('id', 1)) {
+                return redirect()->route('admin.dashboard');
+            }
+    
+            return redirect()->route('home');
         }
-
-        $user = Auth::user();
-        // Load the roles for the user
-        $user->load('roles'); // Assuming your User model has a 'roles' relationship defined
-
-        $token = $user->createToken('authToken')->plainTextToken;
-
-        // Return user info along with roles and token
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-            // If you want to simplify the roles structure, adjust as needed
+    
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
         ]);
     }
+    
+
 
 
 
     public function logout(Request $request)
-{
-    // Revoke the token that was used to authenticate the current request...
-    $request->user()->currentAccessToken()->delete();
+    {
+        Auth::logout();
 
-    return response()->json(['message' => 'Successfully logged out']);
-}
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
+
+
+
 
     /**
      * Get the authenticated User.
