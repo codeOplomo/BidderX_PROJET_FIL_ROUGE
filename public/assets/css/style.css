@@ -64,14 +64,14 @@
 @import url("../../../../ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 :root {
   --color-primary: #E25444;
-  --color-primary-alta: #212e48;
+  --color-primary-alta: rgba(35, 26, 0);
   --color-gray: #f6f6f6;
   --color-gray-2: #f5f8fa;
   --color-subtitle: #f9004d;
-  --background-color-1: #24243557;
-  --background-color-2: #13131d;
+  --background-color-1: rgba(35, 26, 0, 0.34);
+  --background-color-2: #002d2d;
   --background-color-3: #151521;
-  --background-color-4: #242435;
+  --background-color-4: rgba(35, 26, 0);
   --gradient-one: linear-gradient(to right bottom, #2899d8, #00a3ff);
   --color-heading: #ffffff;
   --color-body: #acacac;
@@ -13095,7 +13095,7 @@ span.rn-badge-card::before {
   backdrop-filter: blur(10px);
 }
 .rn-header.sticky {
-  background-color: #1515218c;
+  background-color: #002d2d;
   position: sticky !important;
   top: 0;
   display: block;

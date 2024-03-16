@@ -1,7 +1,7 @@
 
 
 <!-- Start Footer Area -->
-<div class="rn-footer-one rn-section-gap bg-color--1 mt--100 mt_md--80 mt_sm--80" style="background-color: #122b22;>
+<div class="rn-footer-one rn-section-gap bg-color--1 mt--100 mt_md--80 mt_sm--80" style="background-color: #122b22;">
     <div class="container">
         <div class="row gx-5">
             <div class="col-lg-3 col-md-6 col-sm-6 col-12">
@@ -131,4 +131,14 @@
         </div>
     </div>
 </div>
+
+ <!-- End Footer Area -->
+ <div class="mouse-cursor cursor-outer"></div>
+ <div class="mouse-cursor cursor-inner"></div>
+ <!-- Start Top To Bottom Area  -->
+ <div class="rn-progress-parent">
+     <svg class="rn-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
+         <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+     </svg>
+ </div>
 <!-- End Footer Area -->

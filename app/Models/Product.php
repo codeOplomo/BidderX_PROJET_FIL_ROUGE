@@ -6,17 +6,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
     protected $fillable = [
         'title',
         'description',
         'condition',
         'manufacturer',
         'production_year',
-        // Add any other attributes you want to be mass assignable
+        'user_id',
+        'category_id',
     ];
 
     public function user()

@@ -3,8 +3,10 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\User\Admin\AdminController;
+use App\Http\Controllers\User\Owner\OwnerController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auctions\AuctionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,5 +59,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/users/{user}/unban', [UserController::class, 'unban'])->name('admin.users.unban');
 
     Route::get('/admin/profile/edit', [AdminController::class, 'profileEdit'])->name('admin.profile.edit');
+
+
+    Route::get('/owner-profile', [OwnerController::class, 'index'])->name('ownerProfile');
+    Route::get('/owner/auction/create', [AuctionController::class, 'create'])->name('owner.auction.auctionCreate');
+    Route::post('/owner/auction/submit', [OwnerController::class, 'storeAuction'])->name('owner.auction.submit');
+
 
 });

@@ -36,11 +36,6 @@
 
 
     <style>
-        body {
-            background-color: #002d2d;
-            margin: 0;
-        }
-
         .navbar {
             background-color: transparent;
             transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
@@ -567,42 +562,46 @@
 
 
         /* auction card detail */
-.nav-pills {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #122b22;
-  border: 2px solid #E25444;
-  border-radius: 8px;
-  padding: 5px;
-}
-.nav-pills ul {
-  display: flex;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-.nav-pills .nav-item {
-  border: 2px dashed #E25444;
-  border-radius: 8px;
-  margin-right: 10px;
-}
-.nav-pills .nav-item a {
-  color: #E9E0CE;
-  text-decoration: none;
-  padding: 8px 12px;
-  transition: background-color 0.3s ease;
-}
-.nav-pills .nav-item a.active,
-.nav-pills .nav-item a:hover {
-  background-color: #231A00;
-  color: #E25444;
-}
+        .nav-pills {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #122b22;
+            border: 2px solid #E25444;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        .nav-pills ul {
+            display: flex;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-pills .nav-item {
+            border: 2px dashed #E25444;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+
+        .nav-pills .nav-item a {
+            color: #E9E0CE;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-pills .nav-item a.active,
+        .nav-pills .nav-item a:hover {
+            background-color: #231A00;
+            color: #E25444;
+        }
     </style>
 
 </head>
 
-<body>
+<body class="template-color-1 nft-body-connect">
 
     <div class="main-layout">
         @include('layouts.usersLayout.partials.NavbarSection')
@@ -612,39 +611,68 @@
         </main>
 
         @include('layouts.usersLayout.partials.FooterSection')
+
+        <!-- SweetAlert Success Message -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: true,
+                    background: 'red',
+                    timer: 2000
+                });
+            </script>
+        @endif
+
+        <!-- SweetAlert Error Message -->
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+        @endif
     </div>
 
     <!-- Scripts -->
     <script src="assets/js/vendor/jquery.js"></script>
-<script src="assets/js/vendor/jquery.nice-select.min.js"></script>
-<script src="assets/js/vendor/jquery-ui.js"></script>
-<script src="assets/js/vendor/modernizer.min.js"></script>
-<script src="assets/js/vendor/feather.min.js"></script>
-<script src="assets/js/vendor/slick.min.js"></script>
-<script src="assets/js/vendor/bootstrap.min.js"></script>
-<script src="assets/js/vendor/sal.min.js"></script>
-<script src="assets/js/vendor/particles.js"></script>
-<script src="assets/js/vendor/jquery.style.swicher.js"></script>
-<script src="assets/js/vendor/js.cookie.js"></script>
-<script src="assets/js/vendor/count-down.js"></script>
-<script src="assets/js/vendor/isotop.js"></script>
-<script src="assets/js/vendor/imageloaded.js"></script>
-<script src="assets/js/vendor/backtoTop.js"></script>
-<script src="assets/js/vendor/odometer.js"></script>
-<script src="assets/js/vendor/jquery-appear.js"></script>
-<script src="assets/js/vendor/scrolltrigger.js"></script>
-<script src="assets/js/vendor/jquery.custom-file-input.js"></script>
-<script src="assets/js/vendor/savePopup.js"></script>
-<script src="assets/js/vendor/vanilla.tilt.js"></script>
+    <script src="assets/js/vendor/jquery.nice-select.min.js"></script>
+    <script src="assets/js/vendor/jquery-ui.js"></script>
+    <script src="assets/js/vendor/modernizer.min.js"></script>
+    <script src="assets/js/vendor/feather.min.js"></script>
+    <script src="assets/js/vendor/slick.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/vendor/sal.min.js"></script>
+    <script src="assets/js/vendor/particles.js"></script>
+    <script src="assets/js/vendor/jquery.style.swicher.js"></script>
+    <script src="assets/js/vendor/js.cookie.js"></script>
+    <script src="assets/js/vendor/count-down.js"></script>
+    <script src="assets/js/vendor/isotop.js"></script>
+    <script src="assets/js/vendor/imageloaded.js"></script>
+    <script src="assets/js/vendor/backtoTop.js"></script>
+    <script src="assets/js/vendor/odometer.js"></script>
+    <script src="assets/js/vendor/jquery-appear.js"></script>
+    <script src="assets/js/vendor/scrolltrigger.js"></script>
+    <script src="assets/js/vendor/jquery.custom-file-input.js"></script>
+    <script src="assets/js/vendor/savePopup.js"></script>
+    <script src="assets/js/vendor/vanilla.tilt.js"></script>
 
-<!-- main JS -->
-<script src="assets/js/main.js"></script>
-<!-- Meta Mask  -->
-<script src="assets/js/vendor/web3.min.js"></script>
-<script src="assets/js/vendor/maralis.js"></script>
+    <!-- main JS -->
+    <script src="assets/js/main.js"></script>
+    <!-- Meta Mask  -->
+    <script src="assets/js/vendor/web3.min.js"></script>
+    <script src="assets/js/vendor/maralis.js"></script>
 
-{{-- Blade JavaScript file --}}
-<script src="assets/js/vendor/nft.js.blade.php"></script>
+    {{-- Blade JavaScript file --}}
+    <script src="assets/js/vendor/nft.js.blade.php"></script>
 
 
     <script type="module" src="/src/main.js"></script>

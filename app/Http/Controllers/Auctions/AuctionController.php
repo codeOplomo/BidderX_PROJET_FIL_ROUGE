@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auctions;
 
 use App\Models\Auction;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class AuctionController extends Controller
 {
@@ -16,6 +18,12 @@ class AuctionController extends Controller
         $auctions = Auction::with('product')->get(); // Assuming each auction is related to a product
 
         return response()->json($auctions);
+    }
+
+    public function create()
+    {
+        $categories = Category::all();
+        return view('owner.auction.auctionCreate', compact('categories'));
     }
 
     /**

@@ -75,6 +75,17 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    // Define a method to retrieve owner data
+    public function owner()
+    {
+        return $this->roles()->where('name', 'owner');
+    }
+
     public function scopeWithRole($query, $roleName)
     {
         return $query->whereHas('roles', function ($q) use ($roleName) {

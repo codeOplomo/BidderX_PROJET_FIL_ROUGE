@@ -25,8 +25,6 @@ class AuctionFactory extends Factory
         $products = Product::pluck('id')->toArray();
 
         return [
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
             'start_time' => now(),
             'end_time' => now()->addDays(7),
             'starting_bid_price' => $this->faker->randomFloat(2, 10, 1000),

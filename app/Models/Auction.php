@@ -12,12 +12,12 @@ class Auction extends Model
     use HasFactory;
     protected $fillable = [
         'product_id',
-        'title',
-        'description',
         'start_time',
         'end_time',
         'starting_bid_price',
         'current_bid_price',
+        'is_approved',
+        'motif',
         'user_id',
     ];
 

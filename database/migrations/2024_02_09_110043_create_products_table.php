@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('manufacturer');
             $table->integer('production_year')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id'); // Add this line
+            $table->unsignedBigInteger('category_id'); 
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
