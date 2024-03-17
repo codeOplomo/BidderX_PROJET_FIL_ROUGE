@@ -1,60 +1,66 @@
-{{-- Extend the main layout --}}
+
 @extends('layouts.usersLayout.MainLayout')
 
-{{-- Define the content section --}}
+
 @section('content')
-<div class="registration-form">
-    <div class="form-container">
-        {{-- Form action points to Laravel's login route --}}
-        <form method="POST" action="{{ route('login.submit') }}">
-            @csrf {{-- Include CSRF token for security --}}
-
-            {{-- Email --}}
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                @error('email')
-                    <span class="error-message" role="alert">{{ $message }}</span>
-                @enderror
-            </div>
-
-            {{-- Password --}}
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" required autocomplete="current-password">
-                @error('password')
-                    <span class="error-message" role="alert">{{ $message }}</span>
-                @enderror
-            </div>
-
-            {{-- Remember Me Checkbox --}}
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="remember" id="remember_me" {{ old('remember') ? 'checked' : '' }}> Remember me
-                    </label>
+<div class="login-area rn-section-gapTop">
+    <div class="container">
+        <div class="row g-5">
+            <div class=" offset-2 col-lg-4 col-md-6 ml_md--0 ml_sm--0 col-sm-12">
+                <div class="form-wrapper-one">
+                    <h4>Login</h4>
+                    <form method="POST" action="{{ route('login.submit') }}">
+                        @csrf {{-- Include CSRF token for security --}}
+                        <div class="mb-5">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input type="email" id="exampleInputEmail1" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            @error('email')
+                                <span class="error-message" role="alert">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-5">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" id="exampleInputPassword1" name="password" class="form-control @error('password') is-invalid @enderror" required autocomplete="current-password">
+                            @error('password')
+                                <span class="error-message" role="alert">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-5 rn-check-box">
+                            <input type="checkbox" class="rn-check-box-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <label class="rn-check-box-label" for="remember">Remember me later</label>
+                        </div>
+                        <div class="mb-5">
+                            <a class="btn start-button" href="{{ route('password.request') }}">
+                                Forgot Your Password?
+                            </a>
+                        </div>
+                        <button type="submit" class="btn btn-primary mr--15">Log In</button>
+                        <a href="{{ route('register') }}" class="btn btn-primary-alta">Sign Up</a>
+                    </form>
                 </div>
             </div>
-
-            {{-- Submit Button --}}
-            <div class="d-flex justify-content-between mt-4">
-                <button type="submit" class="submit-button">Login</button>
-                @if (Route::has('password.request'))
-                <a class="btn start-button" href="{{ route('password.request') }}">
-                    Forgot Your Password?
-                </a>
-                @endif
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="social-share-media form-wrapper-one">
+                    <h6>Another way to log in</h6>
+                    <p> Lorem ipsum dolor sit, amet sectetur adipisicing elit.cumque.</p>
+                    <button class="another-login login-facebook"> <img class="small-image" src="assets/images/icons/google.png" alt=""> <span>Log in with Google</span></button>
+                    <button class="another-login login-facebook"> <img class="small-image" src="assets/images/icons/facebook.png" alt=""> <span>Log in with Facebook</span></button>
+                    <button class="another-login login-twitter"> <img class="small-image" src="assets/images/icons/tweeter.png" alt=""> <span>Log in with Twitter</span></button>
+                    <button class="another-login login-linkedin"> <img class="small-image" src="assets/images/icons/linkedin.png" alt=""> <span>Log in with LinkedIn</span></button>
+                </div>
             </div>
-
-            {{-- Registration Link --}}
-            <div class="create-account">
-                <a href="{{ route('register') }}" class="btn start-button">Don't have an account?</a>
-            </div>
-        </form>
-    </div>
-    <div class="image-container">
-        <h3 class="text-center" style="color: #E9E0CE">Login</h3>
-        <img src="https://picsum.photos/200" alt="Random Image from Lorem Picsum">
+        </div>
     </div>
 </div>
+
 @endsection
+
+{{-- Submit Button --}}
+{{-- <div class="d-flex justify-content-between mt-4">
+    <button type="submit" class="submit-button">Login</button>
+    @if (Route::has('password.request'))
+    <a class="btn start-button" href="{{ route('password.request') }}">
+        Forgot Your Password?
+    </a>
+    @endif
+</div> --}}

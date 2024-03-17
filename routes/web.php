@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Products\CategoryController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\User\Admin\AdminController;
 use App\Http\Controllers\User\Owner\OwnerController;
+use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auctions\AuctionController;
@@ -30,6 +33,14 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -64,6 +75,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/owner-profile', [OwnerController::class, 'index'])->name('ownerProfile');
     Route::get('/owner/auction/create', [AuctionController::class, 'create'])->name('owner.auction.auctionCreate');
     Route::post('/owner/auction/submit', [OwnerController::class, 'storeAuction'])->name('owner.auction.submit');
+    Route::get('/owner/profile/edit', [OwnerController::class, 'profileEdit'])->name('owner.profile.edit');
+    Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
 
 
 });

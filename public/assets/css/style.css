@@ -17954,6 +17954,7 @@ button .small-image {
   position: relative;
   z-index: 5;
 }
+
 .product-style-one::before {
   content: "";
   position: absolute;
@@ -18004,15 +18005,23 @@ button .small-image {
 .product-style-one.with-placeBid:hover .card-thumbnail span.btn {
   transform: scale(1);
 }
-.product-style-one .card-thumbnail {
+/* .product-style-one .card-thumbnail {
   overflow: hidden;
   border-radius: 5px;
   position: relative;
   margin: -15px;
+} */
+.product-style-one .card-thumbnail {
+  overflow: hidden;
+  border-radius: 5px;
+  position: relative;
+  margin: 0; /* Remove negative margin */
+  height: 200px; /* Set a fixed height for the card-thumbnail */
 }
+
 .product-style-one .card-thumbnail a img {
   border-radius: 5px;
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
   height: auto;
   transition: 0.5s;

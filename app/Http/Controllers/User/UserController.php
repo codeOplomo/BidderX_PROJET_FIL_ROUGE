@@ -90,4 +90,5 @@ public function destroy(User $user)
     return redirect()->back()->with('success', 'User deleted successfully.');
 }
 
+
 }

@@ -66,7 +66,11 @@ class AuthController extends Controller
 {
     $credentials = $request->validated();
 
-    if (Auth::attempt($credentials)) {
+    // Check if "Remember Me" checkbox is checked
+    $remember = $request->has('remember');
+
+    // Attempt to authenticate the user
+    if (Auth::attempt($credentials, $remember)) {
         $request->session()->regenerate();
 
         $user = Auth::user();

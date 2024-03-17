@@ -29,6 +29,13 @@ class OwnerController extends Controller
 }
 
 
+public function profileEdit()
+    {
+        $user = auth()->user();
+
+        return view('owner.profile.editProfile', compact('user'));
+    }
+
     public function storeAuction(Request $request)
 {
     // Validate the incoming request data
@@ -57,8 +64,7 @@ class OwnerController extends Controller
         ]);
 
         if ($product) {
-            $product->addMediaFromRequest('product_picture')
-                ->toMediaCollection(); // Use the default collection name
+            $product->addMediaFromRequest('product_picture')->toMediaCollection('product_picture');  
     
             if ($request->auctionType === 'instantSale') {
                 Auction::create([
