@@ -106,20 +106,15 @@
                                 </div>
                             </div>
 
-
-                            <div class="col-md-6">
+                            <div class="col-md-8" id="auctionDurationInput" style="display: none;">
                                 <div class="input-box pb--20">
-                                    <label for="startDate" class="form-label">Start Date</label>
-                                    <input type="datetime-local" id="startDate" name="startDate" class="form-control">
+                                    <label for="auctionDuration" class="form-label">Auction Duration (hours)</label>
+                                    <input id="auctionDuration" name="auctionDuration" type="number" min="1"
+                                        placeholder="Enter duration in hours">
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="input-box pb--20">
-                                    <label for="endDate" class="form-label">End Date</label>
-                                    <input type="datetime-local" id="endDate" name="endDate" class="form-control">
-                                </div>
-                            </div>
+
 
                             <div class="col-md-12 col-xl-6">
                                 <div class="input-box pb--20 rn-check-box">
@@ -188,44 +183,19 @@
         const putOnAuction = document.getElementById('putonauction');
         const instantSale = document.getElementById('instantsale');
 
-        // Get the datetime inputs
-        const startDateInput = document.getElementById('startDate');
-        const endDateInput = document.getElementById('endDate');
-
-        // Function to disable datetime inputs
-        function disableDateTimeInputs() {
-            startDateInput.disabled = true;
-            endDateInput.disabled = true;
-        }
-
-        // Function to enable datetime inputs
-        function enableDateTimeInputs() {
-            startDateInput.disabled = false;
-            endDateInput.disabled = false;
-        }
-
-        // Initially disable datetime inputs
-        disableDateTimeInputs();
-
-        // Set minimum value for end date based on start date
-        startDateInput.addEventListener('change', function() {
-            endDateInput.min = this.value;
-        });
-
-        // Set minimum value for start date to current time
-        const currentDateTime = new Date().toISOString().slice(0, 16);
-        startDateInput.min = currentDateTime;
+        // Get the auction duration input div
+        const auctionDurationInput = document.getElementById('auctionDurationInput');
 
         // Add event listeners to radio buttons
         putOnAuction.addEventListener('change', function() {
             if (this.checked) {
-                enableDateTimeInputs();
+                auctionDurationInput.style.display = 'block'; // Show the auction duration input
             }
         });
 
         instantSale.addEventListener('change', function() {
             if (this.checked) {
-                disableDateTimeInputs();
+                auctionDurationInput.style.display = 'none'; // Hide the auction duration input
             }
         });
     </script>

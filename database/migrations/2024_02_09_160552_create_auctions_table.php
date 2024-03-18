@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('auctions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->dateTime('start_time');
+            $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();
+            $table->integer('duration')->nullable();
             $table->decimal('starting_bid_price', 10, 2);
             $table->decimal('current_bid_price', 10, 2)->nullable();
-            $table->boolean('is_approved')->default(false);
+            $table->boolean('is_instant')->default(false);
             $table->string('motif')->nullable();
             $table->unsignedBigInteger('user_id'); // Owner ID
             $table->timestamps();

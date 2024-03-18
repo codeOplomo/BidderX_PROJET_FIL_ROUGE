@@ -5,6 +5,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\User\Admin\AdminController;
+use App\Http\Controllers\User\Bidder\BidderController;
 use App\Http\Controllers\User\Owner\OwnerController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UserController;
@@ -44,12 +45,18 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 
 
 Route::middleware(['auth'])->group(function () {
+    Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
+
+
+
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/search', [AdminController::class, 'search'])->name('search');
     Route::get('/admin/profile', [AdminController::class, 'profile'])->name('profile');
 
     Route::get('/admin/categories', [AdminController::class, 'categories'])->name('admin.categories');
     Route::get('/admin/auctions', [AdminController::class, 'auctions'])->name('admin.auctions');
+    Route::post('/admin/auctions/{auction}/accept', [AuctionController::class, 'accept'])->name('admin.auctions.accept');
+    Route::post('/admin/auctions/{auction}/reject', [AuctionController::class, 'reject'])->name('admin.auctions.reject');
     Route::get('/admin/bids', [AdminController::class, 'bids'])->name('admin.bids');
     Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
     Route::get('/admin/products/create', 'ProductController@create')->name('admin.products.create');
@@ -76,7 +83,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/owner/auction/create', [AuctionController::class, 'create'])->name('owner.auction.auctionCreate');
     Route::post('/owner/auction/submit', [OwnerController::class, 'storeAuction'])->name('owner.auction.submit');
     Route::get('/owner/profile/edit', [OwnerController::class, 'profileEdit'])->name('owner.profile.edit');
-    Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
 
+
+
+    Route::get('/bidder-profile', [BidderController::class, 'index'])->name('bidderProfile');
+    Route::get('/bidder/profile/edit', [BidderController::class, 'profileEdit'])->name('bidder.profile.edit');
 
 });

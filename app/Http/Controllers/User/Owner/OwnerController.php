@@ -48,8 +48,7 @@ public function profileEdit()
         'productionYear' => 'nullable|integer',
         'manufacturer' => 'nullable|string',
         'auctionType' => 'required|string|in:instantSale,auction',
-        'startDate' => 'required_if:auctionType,auction|date',
-        'endDate' => 'required_if:auctionType,auction|date|after:startDate', 
+        'auctionDuration' => 'required_if:auctionType,auction|integer|min:1',
         'product_picture' => 'required|image|max:2048', 
     ]);
         // Associate the image with the product
@@ -69,8 +68,8 @@ public function profileEdit()
             if ($request->auctionType === 'instantSale') {
                 Auction::create([
                     'product_id' => $product->id,
-                    'start_time' => now(), // Current time
                     'starting_bid_price' => $validatedData['price'],
+                    'is_instant' => true,
                     'user_id' => auth()->id(),
                     // Set other auction attributes as needed
                 ]);
@@ -78,8 +77,7 @@ public function profileEdit()
                 // Create an auction with start time and end time from the form inputs
                 Auction::create([
                     'product_id' => $product->id,
-                    'start_time' => $validatedData['startDate'],
-                    'end_time' => $validatedData['endDate'],
+                    'duration' => $validatedData['auctionDuration'],
                     'starting_bid_price' => $validatedData['price'],
                     'user_id' => auth()->id(), 
                     // Set other auction attributes as needed

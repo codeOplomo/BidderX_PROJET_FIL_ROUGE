@@ -63,10 +63,11 @@ public function search(Request $request)
     /**
      * Display a listing of auctions.
      */
-    public function auctions(Request $request)
+    public function auctions()
     {
-        $auctions = Auction::all();
-        return view('admin.DashAuction', compact('auctions'));
+        $pendingAuctions = Auction::pending()->paginate(10);
+
+        return view('admin.auctions.DashAuction', compact('pendingAuctions'));
     }
 
     /**
@@ -103,7 +104,7 @@ public function search(Request $request)
     public function users(Request $request)
     {
         $users = User::paginate(12);
-        return view('admin.DashUsers', compact('users'));
+        return view('admin.users.DashUsers', compact('users'));
     }
     /**
      * Show the form for creating a new resource.

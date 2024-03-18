@@ -20,6 +20,48 @@ class AuctionController extends Controller
         return response()->json($auctions);
     }
 
+    public function accept(Request $request, Auction $auction)
+{
+    try {
+        if (!$auction->is_instant) {
+            $duration = $auction->duration; 
+            $endTime = now()->addHours($duration); 
+
+            // Update start time and end time
+            $auction->update([
+                'start_time' => now(),
+                'end_time' => $endTime,
+                'is_approved' => true,
+            ]);
+        } else {
+            // For instant auctions, only update start time
+            $auction->update(['start_time' => now(), 'is_approved' => true]);
+        }
+
+        return redirect()->back()->with('success', 'Auction accepted successfully!');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Failed to accept auction.');
+    }
+}
+
+
+
+    public function reject(Request $request, Auction $auction)
+    {
+        $request->validate([
+            'motif' => 'required|string|max:255',
+        ]);
+
+        try {
+            $auction->update([
+                'motif' => $request->motif,
+            ]);
+            return redirect()->back()->with('success', 'Auction rejected successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to reject auction.');
+        }
+    }
+
     public function create()
     {
         $categories = Category::all();

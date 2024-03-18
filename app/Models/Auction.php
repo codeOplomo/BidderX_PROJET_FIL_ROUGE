@@ -14,9 +14,10 @@ class Auction extends Model
         'product_id',
         'start_time',
         'end_time',
+        'duration',
         'starting_bid_price',
         'current_bid_price',
-        'is_approved',
+        'is_instant',
         'motif',
         'user_id',
     ];
@@ -26,7 +27,7 @@ class Auction extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function seller()
+    public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -35,6 +36,12 @@ class Auction extends Model
     {
         return $this->hasMany(Bid::class);
     }
+
+    public function scopePending($query)
+    {
+        return $query->whereNull('start_time')->whereNull('end_time')->whereNull('motif');
+    }
+
 
     public function scopeUpcoming($query)
     {
