@@ -41,7 +41,7 @@
                                     </ul>
                                 </li>
                                 <li class="has-droupdown has-menu-child-item">
-                                    <a href="#">Explore</a>
+                                    <a href="{{ route('auctionsExplore') }}">Explore</a>
                                     <ul class="submenu">
                                         <li><a href="#">Service 1</a></li>
                                         <li><a href="#">Service 2</a></li>

@@ -42,6 +42,10 @@ class Auction extends Model
         return $query->whereNull('start_time')->whereNull('end_time')->whereNull('motif');
     }
 
+    public function scopeApproved($query)
+    {
+        return $query->whereNotNull('start_time');
+    }
 
     public function scopeUpcoming($query)
     {

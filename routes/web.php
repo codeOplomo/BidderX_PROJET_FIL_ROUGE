@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auctions\BidController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Products\CategoryController;
-use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\User\Admin\AdminController;
 use App\Http\Controllers\User\Bidder\BidderController;
 use App\Http\Controllers\User\Owner\OwnerController;
@@ -12,6 +12,9 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auctions\AuctionController;
 
+
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,6 +49,9 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
+    Route::get('/auctions-explore', [AuctionController::class, 'showAuctionsExplore'])->name('auctionsExplore');
+    Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('product.details');
+    Route::post('/place-bid', [BidController::class, 'store'])->name('bid.place');
 
 
 

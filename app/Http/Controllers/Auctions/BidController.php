@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auctions;
 
+use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Bid;
 use Illuminate\Http\Request;
@@ -26,38 +27,39 @@ class BidController extends Controller
     /**
      * Place a new bid on an auction.
      */
-    public function store(Request $request, $auctionId)
+
+    public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric',
+            'amount' => 'required|numeric|min:1', 
+            'auction_id' => 'required|exists:auctions,id', 
         ]);
 
-        $auction = Auction::find($auctionId);
-        if (!$auction) {
-            return response()->json(['message' => 'Auction not found'], 404);
+        $auction = Auction::find($request->auction_id);
+
+        $isAuctionOngoing = $auction->start_time <= now() && ($auction->end_time > now() || is_null($auction->end_time));
+
+        if (!$auction || !$isAuctionOngoing)  {
+            return redirect()->back()->with('error', 'This auction is not available for bidding.');
         }
 
-        // Optionally, check if the auction is still open
-        if ($auction->ending_at < now()) {
-            return response()->json(['message' => 'This auction has ended'], 403);
-        }
-
-        // Ensure the bid is higher than the current highest bid
-        $highestBid = Bid::where('auction_id', $auctionId)->max('amount');
+        $highestBid = $auction->current_bid_price;
         if ($request->amount <= $highestBid) {
-            return response()->json(['message' => 'Your bid must be higher than the current highest bid'], 422);
+            return redirect()->back()->with('error', 'Your bid must be higher than the current highest bid.');
         }
 
+        // Create a new bid
         $bid = Bid::create([
             'user_id' => Auth::id(),
-            'auction_id' => $auctionId,
+            'auction_id' => $request->auction_id,
             'amount' => $request->amount,
         ]);
 
-        return response()->json([
-            'message' => 'Bid placed successfully!',
-            'bid' => $bid
-        ], 201);
+        if ($bid) {
+            $auction->update(['current_bid_price' => $request->amount]);
+        }
+
+        return redirect()->back()->with('success', 'Bid placed successfully!');
     }
 
     /**

@@ -1,18 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
+namespace App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Password;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
+
     public function showResetForm(Request $request, $token = null)
-    {
-        return view('auth.passwords.ResetPassword')->with(
-            ['token' => $token, 'email' => $request->email]
-        );
+{
+    // dd($token);
+    // If $token is null, retrieve it from the request
+    if (is_null($token)) {
+        $token = $request->input('token');
     }
+
+    // If $token is still null, redirect with an error message
+    if (is_null($token)) {
+        return redirect()->route('password.request')->with('error', 'Invalid password reset link.');
+    }
+
+    // dd($email);
+    // Retrieve the email from the request
+    $email = $request->email;
+
+    // Return the view with the token and email
+    return view('auth.passwords.ResetPassword')->with(compact('token', 'email'));
+}
+
 
     public function reset(Request $request)
     {
