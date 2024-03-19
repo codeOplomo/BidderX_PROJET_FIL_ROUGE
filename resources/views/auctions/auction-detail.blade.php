@@ -152,16 +152,21 @@
                                     </div>
                                 </nav>
                                 <div class="tab-content rn-bid-content" id="nav-tabContent">
-                                    <div class="tab-pane fade" id="nav-bids" role="tabpanel" aria-labelledby="nav-bids-tab">
-                                        @if($allBids && !$allBids->isEmpty())
-                                            @foreach($allBids as $bid)
+                                    <div class="tab-pane fade" id="nav-bids" role="tabpanel"
+                                        aria-labelledby="nav-bids-tab">
+                                        @if ($allBids && !$allBids->isEmpty())
+                                            @foreach ($allBids as $bid)
                                                 <div class="top-seller-inner-one">
                                                     <div class="top-seller-wrapper">
                                                         <div class="thumbnail">
-                                                            <a href="#"><img src="{{ asset('assets/images/client/client-3.png') }}" alt="Profile"></a>
+                                                            <a href="#"><img
+                                                                    src="{{ asset('assets/images/client/client-3.png') }}"
+                                                                    alt="Profile"></a>
                                                         </div>
                                                         <div class="top-seller-content">
-                                                            <span>{{ $bid->amount }}$ by <a href="#">{{ $bid->user->firstname }} {{ $bid->user->lastname }}</a></span>
+                                                            <span>{{ $bid->amount }}$ by <a
+                                                                    href="#">{{ $bid->user->firstname }}
+                                                                    {{ $bid->user->lastname }}</a></span>
                                                             <span class="count-number">
                                                                 {{ $bid->created_at->diffForHumans() }}
                                                             </span>
@@ -173,22 +178,27 @@
                                             <p>No bids have been placed for this auction.</p>
                                         @endif
                                     </div>
-                                    
+
                                     <div class="tab-pane fade show active" id="nav-details" role="tabpanel"
                                         aria-labelledby="nav-details-tab">
                                         <!-- Content for the Details tab -->
                                         <!-- You've already included the details content in your provided HTML -->
                                     </div>
-                                    <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab">
-                                        @if($userBidHistory && !$userBidHistory->isEmpty())
-                                            @foreach($userBidHistory as $bid)
+                                    <div class="tab-pane fade" id="nav-history" role="tabpanel"
+                                        aria-labelledby="nav-history-tab">
+                                        @if ($userBidHistory && !$userBidHistory->isEmpty())
+                                            @foreach ($userBidHistory as $bid)
                                                 <div class="top-seller-inner-one">
                                                     <div class="top-seller-wrapper">
                                                         <div class="thumbnail">
-                                                            <a href="#"><img src="{{ asset('assets/images/client/client-3.png') }}" alt="Profile"></a>
+                                                            <a href="#"><img
+                                                                    src="{{ asset('assets/images/client/client-3.png') }}"
+                                                                    alt="Profile"></a>
                                                         </div>
                                                         <div class="top-seller-content">
-                                                            <span>{{ $bid->amount }}$ by <a href="#">{{ $bid->user->firstname }} {{ $bid->user->lastname }}</a></span>
+                                                            <span>{{ $bid->amount }}$ by <a
+                                                                    href="#">{{ $bid->user->firstname }}
+                                                                    {{ $bid->user->lastname }}</a></span>
                                                             <span class="count-number">
                                                                 {{ $bid->created_at->diffForHumans() }}
                                                             </span>
@@ -200,7 +210,7 @@
                                             <p>No bid history.</p>
                                         @endif
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div class="place-bet-area">
@@ -230,27 +240,40 @@
                                     @endif
 
 
+                                    @php
+                                        use Carbon\Carbon;
+                                    @endphp
+
+                                    @if (!$auction->is_instant)
                                     <div class="bid-list left-bid">
-                                        <h6 class="title">Auction has ended</h6>
-                                        <div class="countdown mt--15" data-date="2025-12-09">
+                                        <h6 class="title">Auction ends in:</h6>
+                                        <!-- Add data-start-time and data-duration attributes -->
+                                        <div class="countdown mt--15" data-start-time="{{ $auction->start_time }}" data-duration="{{ $auction->duration }}">
+                                            <!-- Countdown Timer Placeholder -->
                                             <div class="countdown-container days">
-                                                <span class="countdown-value">87</span>
-                                                <span class="countdown-heading">D's</span>
+                                                <span class="countdown-value days-value">0</span>
+                                                <span class="countdown-heading">Days</span>
                                             </div>
                                             <div class="countdown-container hours">
-                                                <span class="countdown-value">23</span>
-                                                <span class="countdown-heading">H's</span>
+                                                <span class="countdown-value hours-value">0</span>
+                                                <span class="countdown-heading">Hours</span>
                                             </div>
                                             <div class="countdown-container minutes">
-                                                <span class="countdown-value">38</span>
-                                                <span class="countdown-heading">Min's</span>
+                                                <span class="countdown-value minutes-value">0</span>
+                                                <span class="countdown-heading">Minutes</span>
                                             </div>
                                             <div class="countdown-container seconds">
-                                                <span class="countdown-value">27</span>
-                                                <span class="countdown-heading">Sec</span>
+                                                <span class="countdown-value seconds-value">0</span>
+                                                <span class="countdown-heading">Seconds</span>
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    @elseif($auction->is_instant)
+                                        <p>This is an instant sale item.</p>
+                                    @else
+                                        <p>Auction end time is not set.</p>
+                                    @endif
                                 </div>
                                 <button type="button" class="btn btn-primary-alta mt--30" data-bs-toggle="modal"
                                     data-bs-target="#placebidModal" data-auction-id="{{ $auction->id }}"
@@ -322,7 +345,7 @@
             button.addEventListener('click', function() {
                 var auctionId = button.getAttribute('data-auction-id');
                 var currentBidPrice = button.getAttribute(
-                'data-current-bid-price'); // Get the current bid price
+                    'data-current-bid-price'); // Get the current bid price
                 var inputAuctionId = document.getElementById('auctionId');
                 var inputValue = document.getElementById('value'); // Get the input for the bid amount
 
@@ -335,5 +358,30 @@
                 }
             });
         });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const countdownElement = document.querySelector('.countdown');
+    if (!countdownElement) return;
+
+    const startTime = new Date(countdownElement.getAttribute('data-start-time')).getTime();
+    const durationHours = parseInt(countdownElement.getAttribute('data-duration'), 10);
+    const endTime = new Date(startTime + durationHours * 3600000).getTime(); // Convert hours to milliseconds
+
+    const countdownFunction = setInterval(function() {
+        const now = new Date().getTime();
+        const timeleft = endTime - now;
+
+        document.querySelector('.days-value').innerText = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+        document.querySelector('.hours-value').innerText = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.querySelector('.minutes-value').innerText = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+        document.querySelector('.seconds-value').innerText = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+        if (timeleft < 0) {
+            clearInterval(countdownFunction);
+            countdownElement.innerHTML = "Auction has ended";
+        }
+    }, 1000);
+});
     </script>
 @endsection

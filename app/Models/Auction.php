@@ -22,6 +22,12 @@ class Auction extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'end_time' => 'datetime',
+        'start_time' => 'datetime',
+    ];
+    
+
     public function product()
     {
         return $this->belongsTo(Product::class);

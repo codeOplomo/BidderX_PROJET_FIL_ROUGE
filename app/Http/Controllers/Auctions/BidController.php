@@ -37,7 +37,7 @@ class BidController extends Controller
 
         $auction = Auction::find($request->auction_id);
 
-        $isAuctionOngoing = $auction->start_time <= now() && ($auction->end_time > now() || is_null($auction->end_time));
+        $isAuctionOngoing = $auction->start_time <= now();
 
         if (!$auction || !$isAuctionOngoing)  {
             return redirect()->back()->with('error', 'This auction is not available for bidding.');
