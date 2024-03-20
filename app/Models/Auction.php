@@ -48,6 +48,10 @@ class Auction extends Model
         return $this->hasMany(AuctionReaction::class);
     }
 
+    public function getUniqueBidderCountAttribute()
+    {
+        return $this->bids()->with('user')->get()->unique('user_id')->count();
+    }
     public function getTotalReactionsAttribute() {
         return $this->reactions()->count();
     }
