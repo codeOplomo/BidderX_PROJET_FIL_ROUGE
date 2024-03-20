@@ -13,14 +13,27 @@
                     <div class="slide bg_image bg_image--19">
                         <div class="banner-read-thumb-lg">
                             <h4>The way to find any <br> Digital content</h4>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores expedita beatae
-                                exercitationem quasi ullam esse?</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores expedita beatae exercitationem quasi ullam esse?</p>
                             <div class="button-group">
-                                <a href="{{ route('register') }}" class="btn btn-large btn-primary mr--15">Get Started</a>
-                                {{-- <a href="create.html" class="btn btn-large btn-primary-alta">Create</a> --}}
+                                {{-- Check if the user is not authenticated --}}
+                                @guest
+                                    <a href="{{ route('register') }}" class="btn btn-large btn-primary mr--15">Get Started</a>
+                                @endguest
+
+                                {{-- Check if the user is authenticated --}}
+                                @auth
+                                    {{-- Check if the user is an owner --}}
+                                    @if(Auth::user()->hasRole('owner'))
+                                        <a href="{{ route('owner.auction.auctionCreate') }}" class="btn btn-large btn-primary-alta">Create</a>
+                                        {{-- Otherwise, if the user is authenticated (implicitly a bidder in this case) --}}
+                                    @else
+                                        <a href="{{ route('auctionsExplore') }}" class="btn btn-large btn-primary">Explore</a>
+                                    @endif
+                                @endauth
                             </div>
                         </div>
                     </div>
+
                     <!-- Start Single Portfolio  -->
 
                     <!-- Start Single Portfolio  -->
@@ -30,8 +43,21 @@
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores expedita beatae
                                 exercitationem quasi ullam esse?</p>
                             <div class="button-group">
-                                <a href="create.html" class="btn btn-large btn-primary mr--15">Get Started</a>
-                                <a href="create.html" class="btn btn-large btn-primary-alta">Create</a>
+                                {{-- Check if the user is not authenticated --}}
+                                @guest
+                                    <a href="{{ route('register') }}" class="btn btn-large btn-primary mr--15">Get Started</a>
+                                @endguest
+
+                                {{-- Check if the user is authenticated --}}
+                                @auth
+                                    {{-- Check if the user is an owner --}}
+                                    @if(Auth::user()->hasRole('owner'))
+                                        <a href="{{ route('owner.auction.auctionCreate') }}" class="btn btn-large btn-primary-alta">Create</a>
+                                        {{-- Otherwise, if the user is authenticated (implicitly a bidder in this case) --}}
+                                    @else
+                                        <a href="{{ route('auctionsExplore') }}" class="btn btn-large btn-primary">Explore</a>
+                                    @endif
+                                @endauth
                             </div>
                         </div>
                     </div>
@@ -46,8 +72,21 @@
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores expedita beatae
                                 exercitationem quasi ullam esse?</p>
                             <div class="button-group">
-                                <a href="create.html" class="btn btn-large btn-primary mr--15">Get Started</a>
-                                <a href="create.html" class="btn btn-large btn-primary-alta">Create</a>
+                                {{-- Check if the user is not authenticated --}}
+                                @guest
+                                    <a href="{{ route('register') }}" class="btn btn-large btn-primary mr--15">Get Started</a>
+                                @endguest
+
+                                {{-- Check if the user is authenticated --}}
+                                @auth
+                                    {{-- Check if the user is an owner --}}
+                                    @if(Auth::user()->hasRole('owner'))
+                                        <a href="{{ route('owner.auction.auctionCreate') }}" class="btn btn-large btn-primary-alta">Create</a>
+                                        {{-- Otherwise, if the user is authenticated (implicitly a bidder in this case) --}}
+                                    @else
+                                        <a href="{{ route('auctionsExplore') }}" class="btn btn-large btn-primary">Explore</a>
+                                    @endif
+                                @endauth
                             </div>
                         </div>
                     </div>

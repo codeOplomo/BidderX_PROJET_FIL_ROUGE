@@ -64,9 +64,11 @@
                         <div class="pd-title-area">
                             <h4 class="title">{{ $auction->product->title }}</h4>
                             <div class="pd-react-area">
-                                <div class="heart-count">
-                                    <i data-feather="heart"></i>
-                                    <span>33</span>
+                                <div class="heart-count" onclick="toggleReaction({{ $auction->id }}, this)">
+                                    <svg viewBox="0 0 17 16" fill="none" width="16" height="16" class="sc-bdnxRM sc-hKFxyN kBvkOu">
+                                        <path d="M8.2112 14L12.1056 9.69231L14.1853 7.39185C15.2497 6.21455 15.3683 4.46116 14.4723 3.15121V3.15121C13.3207 1.46757 10.9637 1.15351 9.41139 2.47685L8.2112 3.5L6.95566 2.42966C5.40738 1.10976 3.06841 1.3603 1.83482 2.97819V2.97819C0.777858 4.36443 0.885104 6.31329 2.08779 7.57518L8.2112 14Z" stroke="currentColor" stroke-width="2"></path>
+                                    </svg>
+                                    <span class="number" id="reactCount-{{ $auction->id }}">{{ $auction->total_reactions }}</span>
                                 </div>
                                 <div class="count">
                                     <div class="share-btn share-btn-activation dropdown">
@@ -245,31 +247,31 @@
                                     @endphp
 
                                     @if (!$auction->is_instant)
-                                    <div class="bid-list left-bid">
-                                        <h6 class="title">Auction ends in:</h6>
-                                        <!-- Add data-start-time and data-duration attributes -->
-                                        <div class="countdown mt--15" data-start-time="{{ $auction->start_time }}" data-duration="{{ $auction->duration }}">
-                                            <!-- Countdown Timer Placeholder -->
-                                            <div class="countdown-container days">
-                                                <span class="countdown-value days-value">0</span>
-                                                <span class="countdown-heading">Days</span>
+                                            <div class="bid-list left-bid" id="auctionCountdown" data-end-time="{{ $auction->end_time }}">
+                                                <h6 class="title">Auction ends in:</h6>
+                                                <div class="countdown mt--15">
+                                                    <!-- Countdown Timer Placeholder -->
+                                                    <div class="countdown-container days">
+                                                        <span class="countdown-value days-value">0</span>
+                                                        <span class="countdown-heading">Days</span>
+                                                    </div>
+                                                    <div class="countdown-container hours">
+                                                        <span class="countdown-value hours-value">0</span>
+                                                        <span class="countdown-heading">Hours</span>
+                                                    </div>
+                                                    <div class="countdown-container minutes">
+                                                        <span class="countdown-value minutes-value">0</span>
+                                                        <span class="countdown-heading">Minutes</span>
+                                                    </div>
+                                                    <div class="countdown-container seconds">
+                                                        <span class="countdown-value seconds-value">0</span>
+                                                        <span class="countdown-heading">Seconds</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="countdown-container hours">
-                                                <span class="countdown-value hours-value">0</span>
-                                                <span class="countdown-heading">Hours</span>
-                                            </div>
-                                            <div class="countdown-container minutes">
-                                                <span class="countdown-value minutes-value">0</span>
-                                                <span class="countdown-heading">Minutes</span>
-                                            </div>
-                                            <div class="countdown-container seconds">
-                                                <span class="countdown-value seconds-value">0</span>
-                                                <span class="countdown-heading">Seconds</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    @elseif($auction->is_instant)
+
+
+                                        @elseif($auction->is_instant)
                                         <p>This is an instant sale item.</p>
                                     @else
                                         <p>Auction end time is not set.</p>
@@ -361,27 +363,36 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
-    const countdownElement = document.querySelector('.countdown');
-    if (!countdownElement) return;
+            const countdownElement = document.getElementById('auctionCountdown');
+            if (!countdownElement) return;
 
-    const startTime = new Date(countdownElement.getAttribute('data-start-time')).getTime();
-    const durationHours = parseInt(countdownElement.getAttribute('data-duration'), 10);
-    const endTime = new Date(startTime + durationHours * 3600000).getTime(); // Convert hours to milliseconds
+            const endTime = new Date(countdownElement.getAttribute('data-end-time')).getTime();
 
-    const countdownFunction = setInterval(function() {
-        const now = new Date().getTime();
-        const timeleft = endTime - now;
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const timeLeft = endTime - now;
 
-        document.querySelector('.days-value').innerText = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-        document.querySelector('.hours-value').innerText = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        document.querySelector('.minutes-value').innerText = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
-        document.querySelector('.seconds-value').innerText = Math.floor((timeleft % (1000 * 60)) / 1000);
+                if (timeLeft >= 0) {
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        if (timeleft < 0) {
-            clearInterval(countdownFunction);
-            countdownElement.innerHTML = "Auction has ended";
-        }
-    }, 1000);
-});
+                    document.querySelector('.days-value').innerText = days;
+                    document.querySelector('.hours-value').innerText = hours;
+                    document.querySelector('.minutes-value').innerText = minutes;
+                    document.querySelector('.seconds-value').innerText = seconds;
+                } else {
+                    clearInterval(countdownTimer);
+                    countdownElement.innerHTML = "<p>Auction has ended.</p>";
+                }
+            }
+
+            // Update the countdown every 1 second
+            const countdownTimer = setInterval(updateCountdown, 1000);
+
+            // Initialize immediately
+            updateCountdown();
+        });
     </script>
 @endsection

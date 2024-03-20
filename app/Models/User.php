@@ -16,7 +16,7 @@ class User extends Authenticatable
         'lastname',
         'email',
         'password',
-        'phone', 
+        'phone',
     ];
 
     protected $hidden = [
@@ -73,6 +73,11 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function auctionReactions()
+    {
+        return $this->hasMany(AuctionReaction::class);
     }
 
     public function hasRole($role)

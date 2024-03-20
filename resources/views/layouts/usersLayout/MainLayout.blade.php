@@ -33,6 +33,9 @@
     <!-- Style css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
 
 
     <style>
@@ -641,6 +644,31 @@
             </script>
         @endif
     </div>
+
+
+    <script>
+        function toggleReaction(auctionId, element) {
+            fetch(`/auctions/${auctionId}/react`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ liked: true }) // or use a dynamic value
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Update the UI based on the response
+                    if (data.success) {
+                        const reactCountElement = document.getElementById(`reactCount-${auctionId}`);
+                        reactCountElement.textContent = data.newCount; // assuming your server returns the new react count
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 
     <!-- Scripts -->
     <script src="assets/js/vendor/jquery.js"></script>

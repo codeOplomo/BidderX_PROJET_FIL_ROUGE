@@ -70,7 +70,7 @@
                 <!-- Login/Register Links -->
                 @guest
                     <div class="ms-3">
-                        <a href="{{ route('register') }}" class="btn start-button">Start</a>
+                        <a href="{{ route('register') }}" class="btn start-button">Get Started</a>
                     </div>
                 @endguest
                 @auth

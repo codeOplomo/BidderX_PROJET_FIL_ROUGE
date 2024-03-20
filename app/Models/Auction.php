@@ -26,7 +26,7 @@ class Auction extends Model
         'end_time' => 'datetime',
         'start_time' => 'datetime',
     ];
-    
+
 
     public function product()
     {
@@ -41,6 +41,15 @@ class Auction extends Model
     public function bids()
     {
         return $this->hasMany(Bid::class);
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(AuctionReaction::class);
+    }
+
+    public function getTotalReactionsAttribute() {
+        return $this->reactions()->count();
     }
 
     public function scopePending($query)
