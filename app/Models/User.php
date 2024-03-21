@@ -91,6 +91,23 @@ class User extends Authenticatable
         return $this->roles()->where('name', 'owner');
     }
 
+
+    public function scopeTopSellers($query, $timeframe = 7)
+    {
+        return $query->withCount(['auctions as total_earned' => function ($query) use ($timeframe) {
+            $query->where('end_time', '<=', now())
+                ->where('end_time', '>=', now()->subDays($timeframe))
+                ->sum('current_bid_price');
+        }])
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'owner');
+            })
+            ->whereHas('auctions', function ($query) use ($timeframe) {
+                $query->where('end_time', '<=', now())
+                    ->where('end_time', '>=', now()->subDays($timeframe));
+            })
+            ->orderByDesc('total_earned');
+    }
     public function scopeWithRole($query, $roleName)
     {
         return $query->whereHas('roles', function ($q) use ($roleName) {

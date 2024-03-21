@@ -14,7 +14,6 @@ class Bid extends Model
         'auction_id',
         'user_id',
         'amount',
-        // Add any other attributes you want to be mass assignable
     ];
 
     public function auction()

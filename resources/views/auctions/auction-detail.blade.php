@@ -1,6 +1,13 @@
 @extends('layouts.usersLayout.MainLayout')
 
 @section('content')
+    <style>
+        .btn.disabled, .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+
     <div class="product-details-area rn-section-gapTop">
         <div class="container">
             <div class="row g-5">
@@ -275,7 +282,7 @@
                                         <p>Auction end time is not set.</p>
                                     @endif
                                 </div>
-                                <button type="button" class="btn btn-primary-alta mt--30" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-primary-alta mt--30" id="placeBidButton" data-bs-toggle="modal"
                                     data-bs-target="#placebidModal" data-auction-id="{{ $auction->id }}"
                                     data-current-bid-price="{{ $auction->current_bid_price + 0.1 }}">Place a Bid</button>
                             </div>
@@ -362,6 +369,16 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const countdownElement = document.getElementById('auctionCountdown');
+            const placeBidButton = document.getElementById('placeBidButton');
+            const isInstant = {{ $auction->is_instant ? 'true' : 'false' }};
+            const hasCurrentBidPrice = {{ is_null($auction->current_bid_price) ? 'false' : 'true' }};
+
+            // Disable the button for instant auctions where a bid has already been placed
+            if (isInstant && hasCurrentBidPrice) {
+                placeBidButton.disabled = true;
+                placeBidButton.classList.add('disabled');
+            }
+
             if (!countdownElement) return;
 
             const endTime = new Date(countdownElement.getAttribute('data-end-time')).getTime();
@@ -383,6 +400,8 @@
                 } else {
                     clearInterval(countdownTimer);
                     countdownElement.innerHTML = "<p>Auction has ended.</p>";
+                    placeBidButton.disabled = true;
+                    placeBidButton.classList.add('disabled');
                 }
             }
 

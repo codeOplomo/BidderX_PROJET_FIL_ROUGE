@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auctions;
 use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -19,6 +20,13 @@ class AuctionController extends Controller
 
     }
 
+    public function topOwners(Request $request)
+    {
+        $timeframe = $request->input('timeframe', 7); // Default to 7 days if not specified
+        $topSellers = User::topSellersBasedOnEndedAuctions($timeframe)->get();
+
+        return view('top-sellers', compact('topSellers'));
+    }
     public function showAuctionsExplore()
     {
         $auctions = Auction::approved()->get();

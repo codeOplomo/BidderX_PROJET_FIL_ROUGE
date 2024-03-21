@@ -47,6 +47,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('product.details');
     Route::post('/auctions/{auction}/react', [AuctionReactionController::class, 'toggle'])->name('auctions.react');
     Route::post('/place-bid', [BidController::class, 'store'])->name('bid.place');
+    Route::get('/top-owners', [AuctionController::class, 'topOwners'])->name('topOwners');
+
 
     // Admin routes
     Route::middleware(['admin'])->group(function () {

@@ -225,64 +225,7 @@
         </div>
         <div class="row g-5">
             @foreach($newestAuctions as $auction)
-                <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="product-style-one no-overlay with-placeBid">
-                        <div class="card-thumbnail">
-                            <a href="{{ route('product.details', $auction->id) }}"><img src="{{ asset($auction->product->image ?? 'default/path/to/image.jpg') }}" alt="NFT_portfolio"></a>
-                            @auth
-                                <!-- Place Bid button for authenticated users -->
-                                <a href="{{ route('product.details', $auction->id) }}" class="btn btn-primary">Place Bid</a>
-                            @endauth
-                        </div>
-                        <div class="product-share-wrapper">
-                            <div class="profile-share">
-                                <a href="author.html" class="avatar" data-tooltip="Jone lee"><img src="assets/images/client/client-1.png" alt="Nft_Profile"></a>
-                                <a href="author.html" class="avatar" data-tooltip="Jone Due"><img src="assets/images/client/client-2.png" alt="Nft_Profile"></a>
-                                <a href="author.html" class="avatar" data-tooltip="Nisat Tara"><img src="assets/images/client/client-3.png" alt="Nft_Profile"></a>
-                                <a class="more-author-text" href="#">
-                                    {{ $auction->uniqueBidderCount - 1 }}+ Place Bit.
-                                </a>
-                            </div>
-                            <div class="share-btn share-btn-activation dropdown">
-                                <button class="icon" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg viewBox="0 0 14 4" fill="none" width="16" height="16" class="sc-bdnxRM sc-hKFxyN hOiKLt">
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM8.5 2C8.5 2.82843 7.82843 3.5 7 3.5C6.17157 3.5 5.5 2.82843 5.5 2C5.5 1.17157 6.17157 0.5 7 0.5C7.82843 0.5 8.5 1.17157 8.5 2ZM11.999 3.5C12.8274 3.5 13.499 2.82843 13.499 2C13.499 1.17157 12.8274 0.5 11.999 0.5C11.1706 0.5 10.499 1.17157 10.499 2C10.499 2.82843 11.1706 3.5 11.999 3.5Z" fill="currentColor"></path>
-                                    </svg>
-                                </button>
-
-                                <div class="share-btn-setting dropdown-menu dropdown-menu-end">
-                                    <button type="button" class="btn-setting-text share-text" data-bs-toggle="modal" data-bs-target="#shareModal">
-                                        Share
-                                    </button>
-                                    <button type="button" class="btn-setting-text report-text" data-bs-toggle="modal" data-bs-target="#reportModal">
-                                        Report
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                        <a href="{{ route('product.details', $auction->id) }}"><span class="product-name">{{ $auction->product->title }}</span></a>
-                        <span class="latest-bid">Highest bid {{ $auction->current_bid_price }}/{{ $auction->total_bids }}</span>
-                        <div class="bid-react-area">
-                            <div class="last-bid">{{ $auction->current_bid_price }} $</div>
-                            @auth
-                                <!-- React area for authenticated users -->
-                                <div class="react-area" onclick="toggleReaction({{ $auction->id }}, this)">
-                                    @include('component.react-icon')
-                                    <span class="number" id="reactCount-{{ $auction->id }}">{{ $auction->total_reactions }}</span>
-                                </div>
-                            @endauth
-                            @guest
-                                <!-- Static react count display for guests -->
-                                <div class="react-count-display">
-                                    @include('component.react-icon')
-                                    <span class="number">{{ $auction->total_reactions }}</span>
-                                </div>
-                            @endguest
-                        </div>
-
-                    </div>
-                </div>
+                @include('component.auction-card')
             @endforeach
             <!-- end single product -->
         </div>
@@ -297,214 +240,26 @@
         <div class="row  mb--30">
             <div class="col-12 justify-sm-center d-flex">
                 <h3 class="title" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800">Top Seller in</h3>
-                <select>
-                    <option data-display="1 day"> 1 day</option>
-                    <option value="1">7 Day's</option>
-                    <option value="2">15 Day's</option>
-                    <option value="4">30 Day's</option>
-                </select>
+                <form id="timeframeForm">
+                    <select id="timeframeSelect">
+                        <option value="1">1 day</option>
+                        <option value="7">7 days</option>
+                        <option value="15">15 days</option>
+                        <option value="30">30 days</option>
+                    </select>
+                    <button type="submit">Filter</button>
+                </form>
+
             </div>
         </div>
-        <div class="row justify-sm-center g-5 top-seller-list-wrapper">
+        <div class="row justify-sm-center g-5 top-seller-list-wrapper" id="topSellersContainer">
             <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail varified">
-                            <a href="author.html"><img src="assets/images/client/client-12.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Brodband</h6>
-                            </a>
-                            <span class="count-number">
-                            $2500,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
+            @foreach($topSellers as $owner)
 
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail">
-                            <a href="author.html"><img src="assets/images/client/client-2.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Ms. Parkline</h6>
-                            </a>
-                            <span class="count-number">
-                            $2300,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                @include('component.top-owner')
             <!-- End single top-seller -->
+            @endforeach
 
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail">
-                            <a href="author.html"><img src="assets/images/client/client-3.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Methods</h6>
-                            </a>
-                            <span class="count-number">
-                            $2100,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
-
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail varified">
-                            <a href="author.html"><img src="assets/images/client/client-4.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Jone sone</h6>
-                            </a>
-                            <span class="count-number">
-                            $2000,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
-
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail">
-                            <a href="author.html"><img src="assets/images/client/client-5.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Siddhart</h6>
-                            </a>
-                            <span class="count-number">
-                            $200,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
-
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail varified">
-                            <a href="author.html"><img src="assets/images/client/client-6.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Sobuj Mk</h6>
-                            </a>
-                            <span class="count-number">
-                            $2000,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
-
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail varified">
-                            <a href="author.html"><img src="assets/images/client/client-7.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Trodband</h6>
-                            </a>
-                            <span class="count-number">
-                            $2500,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
-
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail">
-                            <a href="author.html"><img src="assets/images/client/client-8.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Yash</h6>
-                            </a>
-                            <span class="count-number">
-                            $2500,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
-
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail">
-                            <a href="author.html"><img src="assets/images/client/client-9.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">YASHKIB</h6>
-                            </a>
-                            <span class="count-number">
-                            $2500,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
-
-            <!-- start single top-seller -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list">
-                <div class="top-seller-inner-one">
-                    <div class="top-seller-wrapper">
-                        <div class="thumbnail varified">
-                            <a href="author.html"><img src="assets/images/client/client-10.png" alt="Nft_Profile"></a>
-                        </div>
-                        <div class="top-seller-content">
-                            <a href="author.html">
-                                <h6 class="name">Brodband</h6>
-                            </a>
-                            <span class="count-number">
-                            $2500,000
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End single top-seller -->
         </div>
     </div>
 </div>
@@ -552,6 +307,32 @@
         </div>
     </div>
 </div>
+
+    <script>
+        document.getElementById('timeframeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const selectedTimeframe = document.getElementById('timeframeSelect').value;
+            updateTopOwners(selectedTimeframe);
+        });
+
+        function updateTopOwners(timeframe) {
+            // Use AJAX to fetch top sellers based on the selected timeframe
+            // Replace the #topSellersContainer with the fetched data
+            // For simplicity, I'm assuming you're using jQuery for AJAX
+            $.ajax({
+                url: '/top-owners', // Endpoint to fetch top sellers
+                method: 'GET',
+                data: { timeframe: timeframe },
+                success: function(response) {
+                    $('#topSellersContainer').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+    </script>
 @endsection
 
 {{-- Optional: Custom Styles for the Welcome Page --}}
