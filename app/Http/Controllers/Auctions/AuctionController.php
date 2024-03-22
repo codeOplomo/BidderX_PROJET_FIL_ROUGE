@@ -22,10 +22,11 @@ class AuctionController extends Controller
 
     public function topOwners(Request $request)
     {
-        $timeframe = $request->input('timeframe', 7); // Default to 7 days if not specified
-        $topSellers = User::topSellersBasedOnEndedAuctions($timeframe)->get();
+        $timeframe = $request->input('timeframe', 7);
+        $topSellers = User::topSellers($timeframe)->get();
 
-        return view('top-sellers', compact('topSellers'));
+        return response()->json($topSellers);
+        //return view('welcome', compact('topSellers'));
     }
     public function showAuctionsExplore()
     {

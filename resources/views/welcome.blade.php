@@ -240,15 +240,12 @@
         <div class="row  mb--30">
             <div class="col-12 justify-sm-center d-flex">
                 <h3 class="title" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800">Top Seller in</h3>
-                <form id="timeframeForm">
-                    <select id="timeframeSelect">
+                    <select id="timeframeSelect" name="timeframe" onchange="fetchTopOwners(this.value)">
                         <option value="1">1 day</option>
                         <option value="7">7 days</option>
                         <option value="15">15 days</option>
                         <option value="30">30 days</option>
                     </select>
-                    <button type="submit">Filter</button>
-                </form>
 
             </div>
         </div>
@@ -308,31 +305,65 @@
     </div>
 </div>
 
-    <script>
-        document.getElementById('timeframeForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const selectedTimeframe = document.getElementById('timeframeSelect').value;
-            updateTopOwners(selectedTimeframe);
-        });
 
-        function updateTopOwners(timeframe) {
-            // Use AJAX to fetch top sellers based on the selected timeframe
-            // Replace the #topSellersContainer with the fetched data
-            // For simplicity, I'm assuming you're using jQuery for AJAX
-            $.ajax({
-                url: '/top-owners', // Endpoint to fetch top sellers
-                method: 'GET',
-                data: { timeframe: timeframe },
-                success: function(response) {
-                    $('#topSellersContainer').html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
+
+<script>
+    // Function to fetch top owners based on selected timeframe
+    function fetchTopOwners(timeframe) {
+        // Get the URL to send the AJAX request
+        const url = "{{ route('topOwners') }}?timeframe=" + encodeURIComponent(timeframe);
+
+        // Send AJAX request using fetch API
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token if using Laravel CSRF protection
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
+                return response.json(); // Parse response JSON
+            })
+            .then(data => {
+                console.log('Received response:', data); // Handle response data
+                // Update the content of topSellersContainer with the new data
+                const topSellersContainer = document.getElementById('topSellersContainer');
+                topSellersContainer.innerHTML = ''; // Clear existing content
+                data.forEach(owner => {
+                    // Create HTML markup for each owner
+                    const ownerHTML = `
+                <div class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
+                    <div class="top-seller-inner-one">
+                        <div class="top-seller-wrapper">
+                            <div class="thumbnail varified">
+                                <a href="author.html"><img src="assets/images/client/client-12.png" alt="Nft_Profile"></a>
+                            </div>
+                            <div class="top-seller-content">
+                                <a href="author.html">
+                                    <h6 class="name">${owner.firstname} ${owner.lastname}</h6>
+                                </a>
+                                <span class="count-number">
+                                    $${owner.total_bid_price}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                    // Append ownerHTML to topSellersContainer
+                    topSellersContainer.insertAdjacentHTML('beforeend', ownerHTML);
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
             });
-        }
+    }
 
-    </script>
+</script>
+
 @endsection
 
 {{-- Optional: Custom Styles for the Welcome Page --}}

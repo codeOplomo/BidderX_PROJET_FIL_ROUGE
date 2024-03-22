@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -94,20 +95,25 @@ class User extends Authenticatable
 
     public function scopeTopSellers($query, $timeframe = 7)
     {
-        return $query->withCount(['auctions as total_earned' => function ($query) use ($timeframe) {
-            $query->where('end_time', '<=', now())
-                ->where('end_time', '>=', now()->subDays($timeframe))
-                ->sum('current_bid_price');
-        }])
+        return $query->leftJoin('auctions', 'users.id', '=', 'auctions.user_id')
+            ->select('users.*', \DB::raw('COALESCE(SUM(auctions.current_bid_price), 0) AS total_bid_price'))
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'owner');
             })
-            ->whereHas('auctions', function ($query) use ($timeframe) {
-                $query->where('end_time', '<=', now())
-                    ->where('end_time', '>=', now()->subDays($timeframe));
+            ->where('auctions.end_time', '<=', now())
+            ->where('auctions.end_time', '>=', now()->subDays($timeframe))
+            ->whereNotNull('auctions.current_bid_price')
+            ->where(function ($query) {
+                $query->where('auctions.is_instant', false)
+                    ->orWhere('auctions.is_instant', true);
             })
-            ->orderByDesc('total_earned');
+            ->groupBy('users.id')
+            ->orderByDesc('total_bid_price');
     }
+
+
+
+
     public function scopeWithRole($query, $roleName)
     {
         return $query->whereHas('roles', function ($q) use ($roleName) {
