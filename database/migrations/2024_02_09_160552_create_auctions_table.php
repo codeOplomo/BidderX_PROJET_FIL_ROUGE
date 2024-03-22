@@ -21,11 +21,14 @@ return new class extends Migration
             $table->decimal('current_bid_price', 10, 2)->nullable();
             $table->boolean('is_instant')->default(false);
             $table->string('motif')->nullable();
-            $table->unsignedBigInteger('user_id'); // Owner ID
+            $table->unsignedBigInteger('winner_id')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('winner_id')->references('id')->on('users')->onDelete('set null');
+
         });
     }
 

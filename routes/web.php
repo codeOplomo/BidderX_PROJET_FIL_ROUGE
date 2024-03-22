@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auctions\AuctionReactionController;
 use App\Http\Controllers\Auctions\BidController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Collection\CollectionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\ProductController;
@@ -107,6 +108,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/owner/auction/create', [AuctionController::class, 'create'])->name('owner.auction.auctionCreate');
         Route::post('/owner/auction/submit', [OwnerController::class, 'storeAuction'])->name('owner.auction.submit');
         Route::get('/owner/profile/edit', [OwnerController::class, 'profileEdit'])->name('owner.profile.edit');
+        Route::get('/collections/create', [CollectionController::class, 'create'])->name('owner.collections.create');
+        Route::post('/collections', [CollectionController::class, 'store'])->name('owner.collections.store');
     });
 
 });

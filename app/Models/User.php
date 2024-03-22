@@ -63,7 +63,17 @@ class User extends Authenticatable
 
     public function auctionedProducts()
     {
+        return $this->auctions()->with('product');
+    }
+
+    public function auctionedProduct()
+    {
         return $this->hasManyThrough(Product::class, Auction::class, 'user_id', 'id', 'id', 'product_id');
+    }
+
+    public function wonProducts()
+    {
+        return $this->hasMany(Auction::class, 'winner_id');
     }
 
     public function bids()

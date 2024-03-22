@@ -19,6 +19,11 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function collections()
+    {
+        return $this->hasMany(Collection::class);
+    }
+
     // Scope for searching categories by name
     public function scopeWithName($query, $name)
     {

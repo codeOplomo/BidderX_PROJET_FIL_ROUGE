@@ -1,7 +1,6 @@
-{{-- Extend the main layout --}}
+
 @extends('layouts.usersLayout.MainLayout')
 
-{{-- Define the content section --}}
 @section('content')
 <div class="rn-banner-area rn-section-gapTop">
     <div class="container">
@@ -335,7 +334,7 @@
                 data.forEach(owner => {
                     // Create HTML markup for each owner
                     const ownerHTML = `
-                <div class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
+                <div class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" style="opacity: unset;">
                     <div class="top-seller-inner-one">
                         <div class="top-seller-wrapper">
                             <div class="thumbnail varified">
@@ -353,6 +352,7 @@
                     </div>
                 </div>
             `;
+                    console.log('Owner HTML:', ownerHTML);
                     // Append ownerHTML to topSellersContainer
                     topSellersContainer.insertAdjacentHTML('beforeend', ownerHTML);
                 });

@@ -4,6 +4,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,6 +57,15 @@ class Auction extends Model
         return $this->reactions()->count();
     }
 
+    public function scopeLikedByUser($query, $userId)
+    {
+        return $query->whereHas('reactions', function ($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->where('liked', true);
+        });
+    }
+
+
     public function scopePending($query)
     {
         return $query->whereNull('start_time')->whereNull('end_time')->whereNull('motif');
@@ -76,9 +86,31 @@ class Auction extends Model
         return $query->where('start_time', '<=', now())->where('end_time', '>=', now());
     }
 
+    public function scopeInstant($query)
+    {
+        return $query->where('is_instant', true)->whereNull('current_bid_price')->whereNull('winner_id');
+    }
+
+    public function scopeNormal($query)
+    {
+        return $query->where('is_instant', false)->whereNull('end_time')->whereNull('winner_id');
+    }
+
     public function scopeEnded($query)
     {
         return $query->where('end_time', '<', now());
+    }
+
+    public function scopeUnclosed($query)
+    {
+        return $query->where(function (Builder $query) {
+            $query->whereNull('end_time')
+                ->whereNull('winner_id')
+                ->orWhere(function (Builder $query) {
+                    $query->where('end_time', '>', now())
+                        ->whereNull('winner_id');
+                });
+        });
     }
 
 

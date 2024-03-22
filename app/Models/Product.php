@@ -42,6 +42,18 @@ class Product extends Model implements HasMedia
         return $this->hasOne(Auction::class);
     }
 
+    public function collections()
+    {
+        return $this->belongsToMany(Collection::class);
+    }
+
+    public function scopeOwnedByUser($query, $userId)
+    {
+        return $query->whereHas('auctions', function ($query) use ($userId) {
+            $query->where('winner_id', $userId);
+        });
+    }
+
     // Scope for filtering products by condition
 public function scopeCondition($query, $condition)
 {
