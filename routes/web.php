@@ -40,6 +40,7 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 
+
 Route::middleware(['auth'])->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
@@ -49,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/auctions/{auction}/react', [AuctionReactionController::class, 'toggle'])->name('auctions.react');
     Route::post('/place-bid', [BidController::class, 'store'])->name('bid.place');
     Route::get('/top-owners', [AuctionController::class, 'topOwners'])->name('topOwners');
+
 
 
     // Admin routes
@@ -112,4 +114,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/collections', [CollectionController::class, 'store'])->name('owner.collections.store');
     });
 
+
+
 });
+Route::get('/collections/{collection}', [CollectionController::class, 'show'])->name('collection.show');

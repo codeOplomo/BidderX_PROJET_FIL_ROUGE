@@ -63,10 +63,18 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="input-box pb--20">
                                     <label for="condition" class="form-label">Condition</label>
                                     <input id="condition" name="condition" type="text" placeholder="e.g. Condition">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-box pb--20">
+                                    <label for="manufacturer" class="form-label">Manufacturer</label>
+                                    <input id="manufacturer" name="manufacturer" type="text"
+                                           placeholder="e.g. Manufacturer">
                                 </div>
                             </div>
 
@@ -86,21 +94,27 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="input-box pb--20">
-                                    <label for="manufacturer" class="form-label">Manufacturer</label>
-                                    <input id="manufacturer" name="manufacturer" type="text"
-                                        placeholder="e.g. Manufacturer">
-                                </div>
-                            </div>
 
-                            <div class="col-md-6">
-                                <div class="input-box pb--20">
-                                    <label for="category" class="form-label">Category</label>
-                                    <select id="category" name="category" class="form-control">
-                                        <option value="">Choose a Category</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <div class="collection-single-wized col-md-6">
+                                    <label for="category" class="title">Category</label>
+                                    <div class="create-collection-input">
+                                        <select id="category" name="category" class="nice-select mb--30" tabindex="0">
+                                            <option value="">Choose a Category</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                 </div>
+
+
+                            <div class="collection-single-wized col-md-6">
+                                <label for="collection" class="title">Collection</label>
+                                <div class="create-collection-input">
+                                    <select id="collection" name="collection" class="nice-select mb--30" tabindex="0">
+                                        <option value="" selected disabled>Select a Collection</option>
+                                        @foreach($collections as $collection)
+                                            <option value="{{ $collection->id }}">{{ $collection->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

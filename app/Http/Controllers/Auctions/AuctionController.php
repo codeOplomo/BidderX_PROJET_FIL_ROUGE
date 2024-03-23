@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auctions;
 
 use App\Models\Auction;
 use App\Models\Category;
+use App\Models\Collection;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -80,7 +81,8 @@ class AuctionController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('owner.auction.auctionCreate', compact('categories'));
+        $collections = Auth::user()->collections;
+        return view('owner.auction.auctionCreate', compact('categories', 'collections'));
     }
 
     /**

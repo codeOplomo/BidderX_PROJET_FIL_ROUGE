@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +12,7 @@ class Collection extends Model
         'name',
         'description',
         'category_id',
+        'owner_id', // Add the owner_id field to the fillable array
     ];
 
     public function products()
@@ -24,4 +24,10 @@ class Collection extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 }
+

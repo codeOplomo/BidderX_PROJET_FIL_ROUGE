@@ -132,7 +132,9 @@
                 </div>
 
                 <div class="tab-pane row g-5 d-flex fade" id="nav-collection" role="tabpanel" aria-labelledby="nav-collection-tab">
-                    <h1>hello from on collection</h1>
+                    @foreach ($collections as $collection)
+                        @include('component.collection-card')
+                    @endforeach
                 </div>
             </div>
 

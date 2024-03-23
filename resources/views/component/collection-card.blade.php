@@ -1,5 +1,5 @@
 <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-    <a href="{{ route('product.details', $auction->product->id) }}" class="rn-collection-inner-one">
+    <a href="{{ route('collection.show', $collection->id) }}" class="rn-collection-inner-one">
         <div class="collection-wrapper">
             <div class="collection-big-thumbnail">
                 <img src="{{ asset('assets/images/collection/collection-lg-01.jpg') }}" alt="Nft_Profile">
@@ -13,8 +13,8 @@
                 <img src="{{ asset('assets/images/client/client-15.png') }}" alt="Nft_Profile">
             </div>
             <div class="collection-deg">
-                <h6 class="title">{{ $auction->product->title }}</h6>
-                <span class="items">{{ count($auction->product->items) }} Items</span>
+                <h6 class="title">{{ $collection->name }}</h6>
+                <span class="items"> Items</span>
             </div>
         </div>
     </a>

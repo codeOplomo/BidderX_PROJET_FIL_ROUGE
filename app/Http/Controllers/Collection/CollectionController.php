@@ -9,9 +9,15 @@ use Illuminate\Http\Request;
 
 class CollectionController extends Controller
 {
+
+    public function show(Collection $collection)
+    {
+        return view('collections.show', compact('collection'));
+    }
     public function create()
     {
         $categories = Category::all();
+
         return view('collections.create', compact('categories'));
     }
 
@@ -25,12 +31,13 @@ class CollectionController extends Controller
             // Add more validation rules as needed
         ]);
 
+        $owner = auth()->user();
         // Create a new collection using the validated data
         $collection = Collection::create([
             'name' => $validatedData['name'],
             'category_id' => $validatedData['category'],
             'description' => $validatedData['description'],
-            // Assign other attributes as needed
+            'owner_id' => $owner->id,
         ]);
 
         // Optionally, you can redirect the user to a relevant page after storing the collection

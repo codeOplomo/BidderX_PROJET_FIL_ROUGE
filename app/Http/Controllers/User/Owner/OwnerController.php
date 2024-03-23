@@ -23,10 +23,11 @@ class OwnerController extends Controller
             $createdAuctions = $user->auctionedProducts;
             //$ownedProducts = Product::ownedByUser($user->id)->get();
             $ownedAuctions = $user->wonProducts;
+            $collections = $user->collections;
 
             $unclosedAuctions = Auction::unclosed()->get();
 
-            return view('owner.profile.ownerProfile', compact('ownerData', 'tabTitles', 'likedAuctions', 'createdAuctions', 'ownedAuctions', 'unclosedAuctions'));
+            return view('owner.profile.ownerProfile', compact('ownerData', 'tabTitles', 'likedAuctions', 'createdAuctions', 'ownedAuctions', 'unclosedAuctions', 'collections'));
         } else {
             return abort(403, 'Unauthorized access');
         }
@@ -44,6 +45,8 @@ class OwnerController extends Controller
 
     public function storeAuction(Request $request)
 {
+    //dd($request->all());
+
     // Validate the incoming request data
     $validatedData = $request->validate([
         'name' => 'required|string',
@@ -54,9 +57,11 @@ class OwnerController extends Controller
         'productionYear' => 'nullable|integer',
         'manufacturer' => 'nullable|string',
         'auctionType' => 'required|string|in:instantSale,auction',
-        'auctionDuration' => 'required_if:auctionType,auction|integer|min:1',
-        'product_picture' => 'required|image|max:2048',
+        'auctionDuration' => 'nullable|integer|min:1|required_if:auctionType,auction',
+        'product_picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        'collection' => 'nullable|exists:collections,id',
     ]);
+
         // Associate the image with the product
         $product = Product::create([
             'title' => $validatedData['name'],
@@ -67,6 +72,8 @@ class OwnerController extends Controller
             'category_id' => $validatedData['category'],
             'condition' => $validatedData['condition'],
         ]);
+
+
 
         if ($product) {
             $product->addMediaFromRequest('product_picture')->toMediaCollection('product_picture');
@@ -90,6 +97,9 @@ class OwnerController extends Controller
                 ]);
             }
 
+            if ($request->filled('collection')) {
+                $product->collections()->sync($validatedData['collection']);
+            }
             // Redirect the user to the owner's profile page with success message
             return redirect()->route('ownerProfile')->with('success', 'Auction created successfully!');
         } else {
