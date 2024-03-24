@@ -5,22 +5,22 @@
     <div class="container">
         <div class="row g-5 ">
             <div class="col-lg-3 offset-1 ml_md--0 ml_sm--0">
+
+
                 <div class="collection-single-wized banner">
                     <label class="title required">Logo image</label>
-
                     <div class="create-collection-input logo-image">
                         <div class="logo-c-image logo">
                             <img id="rbtinput1" src="assets/images/profile/profile-01.jpg" alt="Profile-NFT">
-                            <label for="fatima" title="No File Choosen">
+                            <label for="logo_image" title="No File Choosen">
                                 <span class="text-center color-white"><i class="feather-edit"></i></span>
                             </label>
                         </div>
                         <div class="button-area">
                             <div class="brows-file-wrapper">
                                 <!-- actual upload which is hidden -->
-                                <input name="fatima" id="fatima" type="file">
+                                <input name="logo_image" class="inputfile" id="logo_image" type="file" accept="image/*">
                                 <!-- our custom upload button -->
-
                             </div>
                         </div>
                     </div>
@@ -31,14 +31,14 @@
                     <div class="create-collection-input feature-image">
                         <div class="logo-c-image feature">
                             <img id="rbtinput2" src="assets/images/profile/cover-04.png" alt="Profile-NFT">
-                            <label for="nipa" title="No File Choosen">
+                            <label for="cover_image" title="No File Choosen">
                                 <span class="text-center color-white"><i class="feather-edit"></i></span>
                             </label>
                         </div>
                         <div class="button-area">
                             <div class="brows-file-wrapper">
                                 <!-- actual upload which is hidden -->
-                                <input name="nipa" id="nipa" type="file">
+                                <input name="cover_image" class="inputfile" id="cover_image" type="file" accept="image/*">
                                 <!-- our custom upload button -->
                             </div>
                         </div>
@@ -50,26 +50,23 @@
                     <div class="create-collection-input feature-image">
                         <div class="logo-c-image feature">
                             <img id="createfileImage" src="assets/images/profile/cover-03.jpg" alt="Profile-NFT">
-                            <label for="createinputfile" title="No File Choosen">
+                            <label for="featured_image" title="No File Choosen">
                                 <span class="text-center color-white"><i class="feather-edit"></i></span>
                             </label>
                         </div>
                         <div class="button-area">
                             <div class="brows-file-wrapper">
                                 <!-- actual upload which is hidden -->
-                                <input name="createinputfile" id="createinputfile" type="file">
+                                <input name="featured_image" class="inputfile" id="featured_image" type="file" accept="image/*">
                                 <!-- our custom upload button -->
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
 
             <div class="col-lg-7">
-                <form action="{{ route('owner.collections.store') }}" method="POST">
+                <form action="{{ route('owner.collections.store') }}" id="collectionForm" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="create-collection-form-wrapper">
                         <div class="row">
@@ -133,6 +130,26 @@
     </div>
 </div>
 
+<script>
+    // Function to append file input dynamically
+    function appendFileInput(inputName) {
+        // Clone the file input from the hidden input
+        var fileInput = document.getElementById(inputName).cloneNode(true);
+        // Set the attributes of the cloned file input
+        fileInput.setAttribute('name', inputName); // Ensure it has the same name as in the form
+        fileInput.setAttribute('style', 'display: none'); // Hide the cloned file input
+        // Append the cloned file input to the form
+        document.getElementById('collectionForm').appendChild(fileInput);
+    }
+
+    // Add event listener to form submission
+    document.getElementById('collectionForm').addEventListener('submit', function(event) {
+        // Call the function to append file input to form for each image input
+        appendFileInput('logo_image');
+        appendFileInput('cover_image');
+        appendFileInput('featured_image');
+    });
+</script>
 
 @endsection
 

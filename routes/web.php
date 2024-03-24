@@ -5,6 +5,7 @@ use App\Http\Controllers\Auctions\BidController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Collection\CollectionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\User\Admin\AdminController;
@@ -30,6 +31,9 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 */
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/blogs', [HomeController::class, 'blog'])->name('blogs');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -38,6 +42,8 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkReques
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+Route::post('/subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');
+Route::get('/top-owners', [AuctionController::class, 'topOwners'])->name('topOwners');
 
 
 
@@ -49,7 +55,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('product.details');
     Route::post('/auctions/{auction}/react', [AuctionReactionController::class, 'toggle'])->name('auctions.react');
     Route::post('/place-bid', [BidController::class, 'store'])->name('bid.place');
-    Route::get('/top-owners', [AuctionController::class, 'topOwners'])->name('topOwners');
+    Route::get('/timed-auctions', [AuctionController::class, 'timedAuctions'])->name('timedAuctions');
+    Route::get('/instant-auctions', [AuctionController::class, 'instantAuctions'])->name('instantAuctions');
 
 
 

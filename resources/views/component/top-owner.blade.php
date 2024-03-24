@@ -9,7 +9,7 @@
                     <h6 class="name">{{ $owner->firstname }} {{ $owner->lastname }}</h6>
                 </a>
                 <span class="count-number">
-                            ${{ $owner->total_bid_price }}
+                            ${{ $owner->total_revenue }}
                         </span>
             </div>
         </div>

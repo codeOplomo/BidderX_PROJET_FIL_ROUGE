@@ -17,13 +17,12 @@ class BidderController extends Controller
 
     if ($user->hasRole('bidder')) {
         $bidderData = $user;
-        $tabTitles = ['On Sale', 'Owned', 'Liked'];
-        
-        // Fetch the auctions and products associated with the bidder
-        $auctions = $user->auctions;
-        $auctionedProducts = $user->auctionedProducts;
+        $tabTitles = ['liked', 'owned'];
 
-        return view('bidder.profile.bidderProfile', compact('bidderData', 'tabTitles', 'auctions', 'auctionedProducts'));
+        $likedAuctions = Auction::likedByUser($user->id)->with('product')->get();
+        $ownedAuctions = $user->wonProducts;
+
+        return view('bidder.profile.bidderProfile', compact('bidderData', 'tabTitles', 'likedAuctions', 'ownedAuctions'));
     } else {
         return abort(403, 'Unauthorized access');
     }

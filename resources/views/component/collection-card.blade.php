@@ -14,7 +14,7 @@
             </div>
             <div class="collection-deg">
                 <h6 class="title">{{ $collection->name }}</h6>
-                <span class="items"> Items</span>
+                <span class="items">{{ $collection->products_count }} Items</span>
             </div>
         </div>
     </a>

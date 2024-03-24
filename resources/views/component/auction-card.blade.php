@@ -36,7 +36,16 @@
             </div>
         </div>
         <a href="{{ route('product.details', $auction->id) }}"><span class="product-name">{{ $auction->product->title }}</span></a>
-        <span class="latest-bid">Highest bid {{ $auction->current_bid_price }}/{{ $auction->total_bids }}</span>
+        <span class="auction-type"></span>
+        <span class="auction-type">
+            @if ($auction->winner_id)
+                Owned by {{ $auction->winner->firstname }} {{ $auction->winner->lastname }}
+            @elseif ($auction->is_instant)
+                Instant Auction
+            @else
+                Normal Auction
+            @endif
+        </span>
         <div class="bid-react-area">
             <div class="last-bid">{{ $auction->current_bid_price }} $</div>
             @auth

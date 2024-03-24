@@ -107,8 +107,7 @@
                                 class="price">{{ $auction->current_bid_price }}</span></span>
                         <div class="catagory-collection">
                             <div class="catagory">
-                                <span>Category <span
-                                        class="color-body">{{ $auction->product->category->name }}</span></span>
+                                <span>Owner </span>
                                 <div class="top-seller-inner-one">
                                     <div class="top-seller-wrapper">
                                         <div class="thumbnail">
@@ -117,7 +116,7 @@
                                         </div>
                                         <div class="top-seller-content">
                                             <a href="#">
-                                                <h6 class="name">Brodband</h6>
+                                                <h6 class="ownerName">{{ $auction->owner->firstname }} {{ $auction->owner->lastname }}</h6>
                                             </a>
                                         </div>
                                     </div>
@@ -125,22 +124,24 @@
                             </div>
 
 
-                            <div class="collection">
-                                <span>Collections</span>
-                                <div class="top-seller-inner-one">
-                                    <div class="top-seller-wrapper">
-                                        <div class="thumbnail">
-                                            <a href="#"><img src="assets/images/client/client-2.png"
-                                                    alt="Nft_Profile"></a>
-                                        </div>
-                                        <div class="top-seller-content">
-                                            <a href="#">
-                                                <h6 class="name">Brodband</h6>
-                                            </a>
+                            @foreach($auction->product->collections as $collection)
+                                <div class="collection">
+                                    <span>Collection</span>
+                                    <div class="top-seller-inner-one">
+                                        <div class="top-seller-wrapper">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="assets/images/client/client-2.png" alt="Nft_Profile"></a>
+                                            </div>
+                                            <div class="top-seller-content">
+                                                <a href="#">
+                                                    <h6 class="name">{{ $collection->name }}</h6>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
+
                         </div>
                         <a class="btn btn-primary-alta" href="#">Unlockable content included</a>
                         <div class="rn-bid-details">

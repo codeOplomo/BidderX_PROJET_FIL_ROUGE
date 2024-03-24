@@ -112,98 +112,9 @@
         </div>
 
         <div class="row g-5">
-            <!-- start single collention -->
-            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                <a href="product-details.html" class="rn-collection-inner-one">
-                    <div class="collection-wrapper">
-                        <div class="collection-big-thumbnail">
-                            <img src="assets/images/collection/collection-lg-01.jpg" alt="Nft_Profile">
-                        </div>
-                        <div class="collenction-small-thumbnail">
-                            <img src="assets/images/collection/collection-sm-01.jpg" alt="Nft_Profile">
-                            <img src="assets/images/collection/collection-sm-02.jpg" alt="Nft_Profile">
-                            <img src="assets/images/collection/collection-sm-03.jpg" alt="Nft_Profile">
-                        </div>
-                        <div class="collection-profile">
-                            <img src="assets/images/client/client-15.png" alt="Nft_Profile">
-                        </div>
-                        <div class="collection-deg">
-                            <h6 class="title">Cubic Trad</h6>
-                            <span class="items">27 Items</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!-- End single collention -->
-            <!-- start single collention -->
-            <div data-sal="slide-up" data-sal-delay="200" data-sal-duration="800" class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                <a href="product-details.html" class="rn-collection-inner-one">
-                    <div class="collection-wrapper">
-                        <div class="collection-big-thumbnail">
-                            <img src="assets/images/collection/collection-lg-03.jpg" alt="Nft_Profile">
-                        </div>
-                        <div class="collenction-small-thumbnail">
-                            <img src="assets/images/collection/collection-sm-04.jpg" alt="Nft_Profile">
-                            <img src="assets/images/collection/collection-sm-05.jpg" alt="Nft_Profile">
-                            <img src="assets/images/collection/collection-sm-06.jpg" alt="Nft_Profile">
-                        </div>
-                        <div class="collection-profile">
-                            <img src="assets/images/client/client-12.png" alt="Nft_Profile">
-                        </div>
-                        <div class="collection-deg">
-                            <h6 class="title">Diamond Dog</h6>
-                            <span class="items">20 Items</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!-- End single collention -->
-            <!-- start single collention -->
-            <div data-sal="slide-up" data-sal-delay="250" data-sal-duration="800" class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                <a href="product-details.html" class="rn-collection-inner-one">
-                    <div class="collection-wrapper">
-                        <div class="collection-big-thumbnail">
-                            <img src="assets/images/collection/collection-lg-02.jpg" alt="Nft_Profile">
-                        </div>
-                        <div class="collenction-small-thumbnail">
-                            <img src="assets/images/collection/collection-sm-07.jpg" alt="Nft_Profile">
-                            <img src="assets/images/collection/collection-sm-08.jpg" alt="Nft_Profile">
-                            <img src="assets/images/collection/collection-sm-09.jpg" alt="Nft_Profile">
-                        </div>
-                        <div class="collection-profile">
-                            <img src="assets/images/client/client-13.png" alt="Nft_Profile">
-                        </div>
-                        <div class="collection-deg">
-                            <h6 class="title">Morgan11</h6>
-                            <span class="items">15 Items</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!-- End single collention -->
-            <!-- start single collention -->
-            <div data-sal="slide-up" data-sal-delay="350" data-sal-duration="800" class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                <a href="product-details.html" class="rn-collection-inner-one">
-                    <div class="collection-wrapper">
-                        <div class="collection-big-thumbnail">
-                            <img src="assets/images/collection/collection-lg-04.jpg" alt="Nft_Profile">
-                        </div>
-                        <div class="collenction-small-thumbnail">
-                            <img src="assets/images/collection/collection-sm-10.jpg" alt="Nft_Profile">
-                            <img src="assets/images/collection/collection-sm-11.jpg" alt="Nft_Profile">
-                            <img src="assets/images/collection/collection-sm-12.jpg" alt="Nft_Profile">
-                        </div>
-                        <div class="collection-profile">
-                            <img src="assets/images/client/client-14.png" alt="Nft_Profile">
-                        </div>
-                        <div class="collection-deg">
-                            <h6 class="title">Orthogon#720</h6>
-                            <span class="items">10 Items</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <!-- End single collention -->
+            @foreach($topCollections as $collection)
+                @include('component.collection-card')
+            @endforeach
         </div>
     </div>
 </div>
@@ -271,12 +182,15 @@
                     <h3 class="title mb--10">Join our newsletter</h3>
                     <p class="subtitle">Weekly FREE UI resource stroight to your inbox</p>
                     <div class="subscribe-input-wrapper">
-                        <div class="input-group">
-                            <input type="email" class="form-control bg-color--2" placeholder="Your email" aria-label="Recipient's email">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary-alta btn-outline-secondary" type="button">Subscribe</button>
+                        <form action="{{ route('subscribe') }}" method="POST">
+                            @csrf
+                            <div class="input-group">
+                                <input type="email" name="email" class="form-control bg-color--2" placeholder="Your email" aria-label="Recipient's email">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary-alta btn-outline-secondary" type="submit">Subscribe</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -345,7 +259,7 @@
                                     <h6 class="name">${owner.firstname} ${owner.lastname}</h6>
                                 </a>
                                 <span class="count-number">
-                                    $${owner.total_bid_price}
+                                    $${owner.total_revenue}
                                 </span>
                             </div>
                         </div>

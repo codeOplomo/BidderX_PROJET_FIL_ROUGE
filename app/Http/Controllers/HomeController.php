@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use App\Models\Collection;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -11,14 +13,41 @@ class HomeController extends Controller
     public function welcome(Request $request)
     {
 
-        $timeframe = $request->input('timeframe', 7);
-        $topSellers = User::topSellers($timeframe)->get();
+        $topSellers = User::topSellers()->take(4)->get();
+//dd($topSellers);
 
         $newestAuctions = Auction::with('product')
+            ->approved()
             ->latest()
-            ->take(5) // or however many you want to display
+            ->take(5)
             ->get();
 
-        return view('welcome', compact('newestAuctions', 'topSellers', 'timeframe'));
+        $topCollections = Collection::withCount('products')
+            ->orderByDesc('products_count')
+            ->take(4)
+            ->get();
+
+        return view('welcome', compact('newestAuctions', 'topSellers', 'topCollections'));
+    }
+
+    public function about()
+    {
+        $allProducts = Product::count();
+        $creators = User::whereHas('roles', function ($query) {
+            $query->where('name', 'owner');
+        })->count();
+        $ownersEarning = Auction::whereNotNull('winner_id')->sum('current_bid_price');
+        $xBidderEarnings = $ownersEarning * 0.025;
+        return view('about', compact('allProducts', 'creators', 'ownersEarning', 'xBidderEarnings'));
+    }
+
+    public function contact()
+    {
+        return view('contact');
+    }
+
+    public function blog()
+    {
+        return view('blogs.index');
     }
 }

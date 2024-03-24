@@ -112,23 +112,18 @@ class User extends Authenticatable
     }
 
 
-    public function scopeTopSellers($query, $timeframe = 7)
+    public function scopeTopSellers($query, $timeframe = 1)
     {
-        return $query->leftJoin('auctions', 'users.id', '=', 'auctions.user_id')
-            ->select('users.*', \DB::raw('COALESCE(SUM(auctions.current_bid_price), 0) AS total_bid_price'))
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'owner');
-            })
-            ->where('auctions.end_time', '<=', now())
-            ->where('auctions.end_time', '>=', now()->subDays($timeframe))
-            ->whereNotNull('auctions.current_bid_price')
-            ->where(function ($query) {
-                $query->where('auctions.is_instant', false)
-                    ->orWhere('auctions.is_instant', true);
-            })
+        return $query->select('users.*', \DB::raw('COALESCE(SUM(auctions.current_bid_price), 0) AS total_revenue'))
+            ->join('auctions', 'users.id', '=', 'auctions.user_id')
+            ->whereNotNull('auctions.winner_id')
+            ->where('auctions.start_time', '<=', now())
+            ->where('auctions.start_time', '>=', now()->subDays($timeframe))
             ->groupBy('users.id')
-            ->orderByDesc('total_bid_price');
+            ->orderByDesc('total_revenue');
     }
+
+
 
 
 

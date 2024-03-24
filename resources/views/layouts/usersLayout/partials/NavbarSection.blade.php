@@ -23,13 +23,13 @@
                                 <a class="nav-link" href="{{ route('home') }}">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="">About</a>
+                                <a class="nav-link" href="{{ route('about') }}">About</a>
                             </li>
-                            <li class="has-droupdown has-menu-child-item">
-                                <a href="#">Blog</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('blogs') }}">Blog</a>
                             </li>
-                            <li class="has-droupdown has-menu-child-item">
-                                <a href="#">Contact</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                             </li>
                             @auth
                                 <li class="has-droupdown has-menu-child-item">
@@ -43,9 +43,8 @@
                                 <li class="has-droupdown has-menu-child-item">
                                     <a href="{{ route('auctionsExplore') }}">Explore</a>
                                     <ul class="submenu">
-                                        <li><a href="#">Service 1</a></li>
-                                        <li><a href="#">Service 2</a></li>
-                                        <li><a href="#">Service 3</a></li>
+                                        <li><a href="{{ route('timedAuctions') }}">Timed Auctions</a></li>
+                                        <li><a href="{{ route('instantAuctions') }}">Instant Auctions</a></li>
                                     </ul>
                                 </li>
                             @endauth

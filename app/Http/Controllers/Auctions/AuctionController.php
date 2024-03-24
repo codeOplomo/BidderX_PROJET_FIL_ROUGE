@@ -23,18 +23,29 @@ class AuctionController extends Controller
 
     public function topOwners(Request $request)
     {
-        $timeframe = $request->input('timeframe', 7);
+        $timeframe = $request->input('timeframe'); // No default value provided
         $topSellers = User::topSellers($timeframe)->get();
 
         return response()->json($topSellers);
-        //return view('welcome', compact('topSellers'));
     }
+
     public function showAuctionsExplore()
     {
         $auctions = Auction::approved()->get();
         return view('auctions.auctions-explore', compact('auctions'));
     }
 
+    public function timedAuctions()
+    {
+        $timedAuctions = Auction::where('is_instant', false)->get();
+        return view('auctions.timed_auctions', compact('timedAuctions'));
+    }
+
+    public function instantAuctions()
+    {
+        $instantAuctions = Auction::where('is_instant', true)->get();
+        return view('auctions.instant_auctions', compact('instantAuctions'));
+    }
 
     public function accept(Request $request, Auction $auction)
     {
@@ -47,11 +58,10 @@ class AuctionController extends Controller
                 $auction->update([
                     'start_time' => now(),
                     'end_time' => $endTime,
-                    'is_approved' => true,
                 ]);
             } else {
                 // For instant auctions, only update start time
-                $auction->update(['start_time' => now(), 'is_approved' => true]);
+                $auction->update(['start_time' => now()]);
             }
 
             return redirect()->back()->with('success', 'Auction accepted successfully!');
@@ -99,8 +109,7 @@ class AuctionController extends Controller
     public function show($id)
     {
         $auction = Auction::findOrFail($id);
-        $auction->load('product.category');
-
+        $auction->load('product.category', 'product.collections');
         // Assuming that the highest bid is always the current bid price,
         // Find the bid with the amount equal to the current_bid_price and load the associated user.
         // This approach assumes that there will not be multiple bids with the exact same amount as the current bid price,

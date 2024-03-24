@@ -20,6 +20,7 @@ class Auction extends Model
         'current_bid_price',
         'is_instant',
         'motif',
+        'winner_id',
         'user_id',
     ];
 
@@ -38,6 +39,12 @@ class Auction extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function winner()
+    {
+        return $this->belongsTo(User::class, 'winner_id');
+    }
+
 
     public function bids()
     {

@@ -16,18 +16,17 @@ class OwnerController extends Controller
 
         if ($user->hasRole('owner')) {
             $ownerData = $user;
-            $tabTitles = ['liked', 'owned', 'onauction', 'created', 'collection'];
+            $tabTitles = ['liked', 'owned', 'created', 'collection'];
 
             // Fetch the auctions and products associated with the owner
             $likedAuctions = Auction::likedByUser($user->id)->with('product')->get();
             $createdAuctions = $user->auctionedProducts;
             //$ownedProducts = Product::ownedByUser($user->id)->get();
             $ownedAuctions = $user->wonProducts;
-            $collections = $user->collections;
+            $collections = $user->collections()->withCount('products')->get();
 
-            $unclosedAuctions = Auction::unclosed()->get();
 
-            return view('owner.profile.ownerProfile', compact('ownerData', 'tabTitles', 'likedAuctions', 'createdAuctions', 'ownedAuctions', 'unclosedAuctions', 'collections'));
+            return view('owner.profile.ownerProfile', compact('ownerData', 'tabTitles', 'likedAuctions', 'createdAuctions', 'ownedAuctions', 'collections'));
         } else {
             return abort(403, 'Unauthorized access');
         }

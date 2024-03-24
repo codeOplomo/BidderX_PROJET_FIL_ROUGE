@@ -119,19 +119,13 @@
                     @endforeach
                 </div>
 
-                <div class="tab-pane row g-5 d-flex fade" id="nav-onauction" role="tabpanel" aria-labelledby="nav-onauction-tab">
-                    @foreach ($unclosedAuctions as $auction)
-                        @include('component.auction-card')
-                    @endforeach
-                </div>
-
-                <div class="tab-pane row g-5 d-flex active" id="nav-created" role="tabpanel" aria-labelledby="nav-created-tab">
+                <div class="tab-pane row g-5 d-flex" id="nav-created" role="tabpanel" aria-labelledby="nav-created-tab">
                     @foreach ($createdAuctions as $auction)
                         @include('component.auction-card')
                     @endforeach
                 </div>
 
-                <div class="tab-pane row g-5 d-flex fade" id="nav-collection" role="tabpanel" aria-labelledby="nav-collection-tab">
+                <div class="tab-pane row g-5 d-flex fade active" id="nav-collection" role="tabpanel" aria-labelledby="nav-collection-tab" style="opacity: unset">
                     @foreach ($collections as $collection)
                         @include('component.collection-card')
                     @endforeach

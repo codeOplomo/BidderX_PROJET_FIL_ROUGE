@@ -56,11 +56,7 @@ class BidController extends Controller
 
 // Combine checks to determine if the auction is ongoing
         $isAuctionOngoing = $hasAuctionStarted && $hasAuctionNotEnded;
-       //
-       // dd($now->greaterThanOrEqualTo($start_time));
-      //  dd($hasAuctionStarted);
-      //  dd($isAuctionOngoing);
-     //   dd($hasAuctionNotEnded);
+
         if (!$isAuctionOngoing) {
             dd($now, $start_time);
             return redirect()->back()->with('error', 'This auction is not currently active.');
@@ -83,6 +79,11 @@ class BidController extends Controller
         if ($bid) {
             $auction->current_bid_price = $request->amount;
             $auction->save();
+
+            if ($auction->is_instant) {
+                $auction->winner_id = Auth::id();
+                $auction->save();
+            }
         }
 
         return redirect()->back()->with('success', 'Bid placed successfully!');
