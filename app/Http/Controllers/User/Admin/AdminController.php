@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Bid;
+use App\Models\BlogPost;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
@@ -93,7 +94,7 @@ public function search(Request $request)
      */
     public function products()
     {
-        $products = Product::paginate(12); 
+        $products = Product::paginate(12);
 
         return view('admin.DashProduct', compact('products'));
     }
@@ -106,6 +107,18 @@ public function search(Request $request)
         $users = User::paginate(12);
         return view('admin.users.DashUsers', compact('users'));
     }
+
+    public function blogs(Request $request)
+    {
+        // Retrieve all blogs with their category and tags
+        $blogs = BlogPost::with('category', 'tags')->get();
+
+        // Pass the blogs data to the view
+        return view('admin.blogs.DashBlogs', compact('blogs'));
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      */

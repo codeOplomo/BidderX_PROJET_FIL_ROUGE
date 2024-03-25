@@ -6,15 +6,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
 
-class BlogPost extends Model
+class BlogPost extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
+
     protected $fillable = [
         'title',
         'content',
-        'user_id', 
+        'user_id',
         'category_id',
+        'status',
         // Add any other attributes you want to be mass assignable
     ];
 
@@ -27,7 +31,12 @@ class BlogPost extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     // Scope for retrieving recent blog posts
     public function scopeRecent($query, $days = 30)
     {

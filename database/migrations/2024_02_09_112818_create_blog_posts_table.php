@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
+            $table->string('status')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id'); // Add this line for the category relationship
+            $table->unsignedBigInteger('category_id');
             $table->timestamps();
 
             // Foreign key constraints

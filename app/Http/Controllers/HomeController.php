@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use App\Models\BlogPost;
+use App\Models\Category;
 use App\Models\Collection;
 use App\Models\Product;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -48,6 +51,21 @@ class HomeController extends Controller
 
     public function blog()
     {
-        return view('blogs.index');
+        $blogPosts = BlogPost::with('category')
+            ->recent()
+            ->get();
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('blogs.index', compact('categories', 'blogPosts', 'tags'));
+    }
+
+
+    public function details($id)
+    {
+        $blog = BlogPost::findOrFail($id);
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('blogs.show', compact('blog', 'categories', 'tags'));
     }
 }

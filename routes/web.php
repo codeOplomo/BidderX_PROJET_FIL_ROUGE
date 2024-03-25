@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auctions\AuctionReactionController;
 use App\Http\Controllers\Auctions\BidController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Blogs\BlogPostController;
 use App\Http\Controllers\Collection\CollectionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
@@ -34,6 +35,7 @@ Route::get('/', [HomeController::class, 'welcome'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/blogs', [HomeController::class, 'blog'])->name('blogs');
+Route::get('/blog/{id}', [HomeController::class, 'details'])->name('blog.details');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -101,6 +103,12 @@ Route::middleware(['auth'])->group(function () {
         // User Status Management
         Route::post('/admin/users/{user}/ban', [UserController::class, 'ban'])->name('admin.users.ban');
         Route::post('/admin/users/{user}/unban', [UserController::class, 'unban'])->name('admin.users.unban');
+
+        // Blog Management
+        Route::get('/admin/blogs', [AdminController::class, 'blogs'])->name('admin.blogs');
+        Route::get('/admin/blogs/create', [BlogPostController::class, 'create'])->name('admin.blogs.create');
+        Route::post('/admin/blogs/store', [BlogPostController::class, 'store'])->name('admin.blogs.store');
+
 
     });
 

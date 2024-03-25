@@ -24,6 +24,11 @@ class Category extends Model
         return $this->hasMany(Collection::class);
     }
 
+    public function blogPosts()
+    {
+        return $this->hasMany(BlogPost::class);
+    }
+
     // Scope for searching categories by name
     public function scopeWithName($query, $name)
     {

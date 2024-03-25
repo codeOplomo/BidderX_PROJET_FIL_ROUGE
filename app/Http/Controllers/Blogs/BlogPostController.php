@@ -4,10 +4,19 @@ namespace App\Http\Controllers\Blogs;;
 
 use App\Http\Controllers\Controller;
 use App\Models\BlogPost;
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class BlogPostController extends Controller
 {
+
+    public function create()
+    {
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('admin.blogs.create', compact('categories', 'tags'));
+    }
     /**
      * Display a listing of the blog posts.
      */
@@ -22,22 +31,39 @@ class BlogPostController extends Controller
     /**
      * Store a newly created blog post in storage.
      */
+
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'user_id' => 'required|exists:users,id', // Assuming blog posts are associated with users
-            'category_id' => 'required|exists:categories,id', // Assuming blog posts are categorized
+            'category' => 'required|exists:categories,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id',
+            'blog_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $blogPost = BlogPost::create($request->all());
+        $blogPost = BlogPost::create([
+            'title' => $validatedData['title'],
+            'content' => $validatedData['content'],
+            'user_id' => auth()->id(),
+            'category_id' => $validatedData['category'],
+            'status' => 'published',
+        ]);
 
-        return response()->json([
-            'message' => 'Blog post created successfully!',
-            'blogPost' => $blogPost
-        ], 201);
+        // Handle image upload if provided
+        if ($request->hasFile('blog_image')) {
+            $blogPost->addMedia($request->file('blog_image'))->toMediaCollection('blog_images');
+        }
+
+        if (isset($validatedData['tags'])) {
+            $blogPost->tags()->attach($validatedData['tags']);
+        }
+
+        return redirect()->route('admin.blogs')->with('success', 'Blog post created successfully.');
     }
+
+
 
     /**
      * Display the specified blog post.

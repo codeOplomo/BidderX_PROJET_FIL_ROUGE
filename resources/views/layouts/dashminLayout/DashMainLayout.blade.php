@@ -401,6 +401,8 @@
                             class="fa fa-box-open me-2"></i>Products</a>
                     <a href="{{ route('admin.users') }}" class="nav-item nav-link"><i
                             class="fa fa-users me-2"></i>Users</a>
+                    <a href="{{ route('admin.blogs') }}" class="nav-item nav-link"><i
+                            class="fa fa-pencil-alt me-2"></i>Blogs</a>
                 </div>
             </nav>
         </div>
