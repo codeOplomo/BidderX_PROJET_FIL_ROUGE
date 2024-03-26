@@ -2,7 +2,7 @@
     <div class="inner">
         <div class="thumbnail">
             <a href="{{ route('blog.details', $blog->id) }}">
-                <img src="{{ $blog->image_url }}" alt="{{ $blog->title }}">
+                <img src="{{$blog->getFirstMediaUrl("blog_images")}}">
             </a>
         </div>
         <div class="content">

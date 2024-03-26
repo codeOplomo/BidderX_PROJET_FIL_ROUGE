@@ -26,12 +26,11 @@ class CollectionController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'category' => 'required|exists:categories,id', // Assuming categories are stored in a table named 'categories'
+            'category' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'logo_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
-            // Add more validation rules as needed
         ]);
 
         //dd($request->all());
@@ -47,16 +46,16 @@ class CollectionController extends Controller
 
 
         // Associate the logo image with the collection under the media collection named "collection"
-        $collection->addMediaFromRequest('logo_image')->toMediaCollection('collection');
+        $collection->addMediaFromRequest('logo_image')->toMediaCollection('blog_logo_image');
 
         // Check if cover_image is present and add it to the media collection if so
         if ($request->hasFile('cover_image')) {
-            $collection->addMediaFromRequest('cover_image')->toMediaCollection('collection');
+            $collection->addMediaFromRequest('cover_image')->toMediaCollection('blog_cover_image');
         }
 
         // Check if featured_image is present and add it to the media collection if so
         if ($request->hasFile('featured_image')) {
-            $collection->addMediaFromRequest('featured_image')->toMediaCollection('collection');
+            $collection->addMediaFromRequest('featured_image')->toMediaCollection('blog_featured_image');
         }
 
         // Optionally, you can redirect the user to a relevant page after storing the collection

@@ -2,16 +2,54 @@
 
 
 <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
-<link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/vendor/slick.css">
-    <link rel="stylesheet" href="assets/css/vendor/slick-theme.css">
-    <link rel="stylesheet" href="assets/css/vendor/nice-select.css">
-    <link rel="stylesheet" href="assets/css/plugins/feature.css">
-    <link rel="stylesheet" href="assets/css/plugins/jquery-ui.min.css">
-    <link rel="stylesheet" href="assets/css/vendor/odometer.css">
 
-    <!-- Style css -->
-    <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/feature.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/odometer.css') }}">
+
+
+<style>
+    .rn-collection-inner-one .collection-wrapper {
+        position: relative;
+        padding: 18px;
+        background: var(--background-color-1);
+        border-radius: 5px;
+    }
+    .rn-collection-inner-one .collection-wrapper .collection-big-thumbnail {
+        overflow: hidden;
+        border-radius: 5px;
+    }
+    .rn-collection-inner-one .collection-wrapper .collection-big-thumbnail img {
+        border-radius: 5px;
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+        transition: var(--transition);
+    }
+    .rn-collection-inner-one .collection-wrapper .collenction-small-thumbnail {
+        display: flex;
+        justify-content: space-between;
+        margin: -4px;
+        margin-top: 4px;
+    }
+    .rn-collection-inner-one .collection-wrapper .collenction-small-thumbnail img {
+        display: inline-block;
+        width: 33.33%;
+        padding: 4px;
+        border-radius: 10px;
+    }
+    .rn-collection-inner-one .collection-wrapper .collection-profile {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+</style>
 
 @section('content')
     <div class="rn-author-bg-area bg_image--9 bg_image ptb--150">

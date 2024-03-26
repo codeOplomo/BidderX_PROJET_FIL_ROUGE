@@ -91,10 +91,6 @@
             </div>
         </div>
     </div>
-
-@endsection
-
-@push('scripts')
     <script>
         function appendFileInput() {
             // Clone the file input from the upload area
@@ -112,4 +108,9 @@
             appendFileInput();
         });
     </script>
+@endsection
+
+@push('scripts')
+
+
 @endpush
