@@ -27,7 +27,7 @@
                     <div class="author-wrapper">
                         <div class="author-inner">
                             <div class="user-thumbnail">
-                                <img src="{{ asset('assets/images/slider/banner-06.png') }}" alt="">
+                                <img src="{{ $bidderData->getFirstMediaUrl("profile_images") ?: asset('assets/images/slider/banner-06.png') }}" alt="">
                             </div>
                             <div class="rn-author-info-content">
                                 <h4 class="title">{{ $bidderData->firstname }} {{ $bidderData->lastname }}</h4>

@@ -65,7 +65,9 @@ class HomeController extends Controller
         $blog = BlogPost::findOrFail($id);
         $categories = Category::all();
         $tags = Tag::all();
+        $comments = $blog->comments()->with('user')->get(); // Fetch comments associated with the blog post
 
-        return view('blogs.show', compact('blog', 'categories', 'tags'));
+        return view('blogs.show', compact('blog', 'categories', 'tags', 'comments'));
     }
+
 }

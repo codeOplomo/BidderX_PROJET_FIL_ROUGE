@@ -27,6 +27,10 @@ class BlogPost extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
     public function category()
     {
         return $this->belongsTo(Category::class);

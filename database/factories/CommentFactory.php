@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\BlogPost;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Comment;
@@ -23,13 +24,13 @@ class CommentFactory extends Factory
     public function definition()
     {
         $users = User::pluck('id')->toArray();
-        $products = Product::pluck('id')->toArray();
-        $commentIds = Comment::pluck('id')->toArray(); // Fetch existing comment IDs to use as potential parents
+        $commentIds = Comment::pluck('id')->toArray();
+        $blogPostIds = BlogPost::pluck('id')->toArray();
 
         return [
             'comment' => $this->faker->paragraph,
             'user_id' => $this->faker->randomElement($users),
-            'product_id' => $this->faker->randomElement($products),
+            'blog_post_id' => $this->faker->randomElement($blogPostIds),
             'parent_id' => $this->faker->boolean(50) ? $this->faker->randomElement($commentIds) : null, // 50% chance to assign a parent comment
         ];
     }

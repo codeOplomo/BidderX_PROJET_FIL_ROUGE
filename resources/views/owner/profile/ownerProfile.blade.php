@@ -52,12 +52,14 @@
 </style>
 
 @section('content')
-    <div class="rn-author-bg-area bg_image--9 bg_image ptb--150">
+    <div class="rn-author-bg-area bg_image ptb--150" style="background-image: url('{{ $ownerData->getFirstMediaUrl("cover_images") }}');">
         <div class="container">
             <div class="row">
+                <!-- Content goes here -->
             </div>
         </div>
     </div>
+
     <div class="rn-author-area mb--30 mt_dec--120">
         <div class="container">
             <div class="row padding-tb-50 align-items-center d-flex">
@@ -65,7 +67,7 @@
                     <div class="author-wrapper">
                         <div class="author-inner">
                             <div class="user-thumbnail">
-                                <img src="{{ asset('assets/images/slider/banner-06.png') }}" alt="">
+                                <img src="{{ $ownerData->getFirstMediaUrl("profile_images") ?: asset('assets/images/slider/banner-06.png') }}" alt="">
                             </div>
                             <div class="rn-author-info-content">
                                 <h4 class="title">{{ $ownerData->firstname }} {{ $ownerData->lastname }}</h4>

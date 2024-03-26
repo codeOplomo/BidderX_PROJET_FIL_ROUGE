@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
 
-    
+
 public function changePassword(Request $request)
 {
     $request->validate([
@@ -34,5 +34,21 @@ public function changePassword(Request $request)
     return back()->with('success', 'Password changed successfully.');
 }
 
+    public function storeImages(Request $request)
+    {
+        $request->validate([
+            'profile_image' => 'required|image|max:2048',
+            'cover_image' => 'required|image|max:2048',
+        ]);
 
+        $user = Auth::user(); // Assuming you're storing images for the authenticated user
+
+        // Store the profile image using MediaLibrary
+        $user->addMedia($request->file('profile_image'))->toMediaCollection('profile_images');
+
+        // Store the cover image using MediaLibrary
+        $user->addMedia($request->file('cover_image'))->toMediaCollection('cover_images');
+
+        return redirect()->route('ownerProfile')->with('success', 'Images uploaded successfully!');
+    }
 }

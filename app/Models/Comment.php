@@ -10,9 +10,9 @@ class Comment extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'product_id',
+        'blog_post_id',
         'comment',
-        'parent_id', // Make 'parent_id' mass assignable
+        'parent_id',
     ];
 
     public function user()
@@ -20,9 +20,9 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function product()
+    public function blog()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(BlogPost::class);
     }
 
     // Parent comment relationship: defines a comment's parent

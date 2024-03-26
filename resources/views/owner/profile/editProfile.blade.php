@@ -37,46 +37,47 @@
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                             aria-labelledby="nav-home-tab">
                             <!-- start personal information -->
-                            <div class="nuron-information">
-
-                                <div class="profile-change row g-5">
-                                    <div class="profile-left col-lg-4">
-                                        <div class="profile-image mb--30">
-                                            <h6 class="title">Change Your Profile Picture</h6>
-                                            <img id="rbtinput1" src="{{ asset('assets/images/profile/profile-01.jpg') }}"
-                                                alt="Profile-NFT">
+                            <div class="nuron-information position-relative">
+                                <form action="{{ route('store.profile.images') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="profile-change row g-5">
+                                        <div class="profile-left col-lg-4">
+                                            <div class="profile-image mb--30">
+                                                <h6 class="title">Change Your Profile Picture</h6>
+                                                <img id="profile-image-preview" src="{{ $user->getFirstMediaUrl('profile_images') ?: asset('assets/images/profile/profile-01.jpg') }}" alt="Profile-NFT">
+                                            </div>
+                                            <div class="button-area">
+                                                <div class="brows-file-wrapper">
+                                                    <input name="profile_image" id="profile_image" type="file">
+                                                    <label for="profile_image" title="No File Choosen">
+                                                        <span class="text-center color-white">Upload Profile</span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="button-area">
-                                            <div class="brows-file-wrapper">
-                                                <!-- actual upload which is hidden -->
-                                                <input name="fatima" id="fatima" type="file">
-                                                <!-- our custom upload button -->
-                                                <label for="fatima" title="No File Choosen">
-                                                    <span class="text-center color-white">Upload Profile</span>
-                                                </label>
+                                        <div class="profile-left right col-lg-8">
+                                            <div class="profile-image mb--30">
+                                                <h6 class="title">Change Your Cover Photo</h6>
+                                                <img id="cover-image-preview" src="{{ $user->getFirstMediaUrl('cover_images') ?: asset('assets/images/profile/cover-05.jpg') }}" alt="Profile-NFT">
+                                            </div>
+                                            <div class="button-area">
+                                                <div class="brows-file-wrapper">
+                                                    <input name="cover_image" id="cover_image" type="file">
+                                                    <label for="cover_image" title="No File Choosen">
+                                                        <span class="text-center color-white">Upload Cover</span>
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="profile-left right col-lg-8">
-                                        <div class="profile-image mb--30">
-                                            <h6 class="title">Change Your Cover Photo</h6>
-                                            <img id="rbtinput2" src="{{ asset('assets/images/profile/cover-04.png') }}"
-                                                alt="Profile-NFT">
-                                        </div>
-                                        <div class="button-area">
-                                            <div class="brows-file-wrapper">
-                                                <!-- actual upload which is hidden -->
-                                                <input name="nipa" id="nipa" type="file">
-                                                <!-- our custom upload button -->
-                                                <label for="nipa" title="No File Choosen">
-                                                    <span class="text-center color-white">Upload Cover</span>
-                                                </label>
-                                            </div>
-                                        </div>
+                                    <div class="position-absolute bottom-0 end-0 mb-3 me-3">
+                                        <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
                                     </div>
-                                </div>
+                                </form>
+
                             </div>
+
+
                             <!-- End personal information -->
                         </div>
                         <!-- End single tabv content -->
@@ -207,7 +208,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary save-btn-edit">Save</button>
                                 </form>
-                                
+
                             </div>
                             <!-- change password area ENd -->
                         </div>

@@ -2,7 +2,7 @@
     <div class="top-seller-inner-one">
         <div class="top-seller-wrapper">
             <div class="thumbnail varified">
-                <a href="author.html"><img src="assets/images/client/client-12.png" alt="Nft_Profile"></a>
+                <a href="author.html"><img src="{{ $owner->getFirstMediaUrl('profile_images') ?: asset('assets/images/client/client-12.png') }}" alt="Nft_Profile"></a>
             </div>
             <div class="top-seller-content">
                 <a href="author.html">

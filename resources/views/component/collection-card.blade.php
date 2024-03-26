@@ -75,8 +75,8 @@
                 <img src="{{$collection->getFirstMediaUrl("blog_logo_image")}}" alt="Nft_Profile">
             </div>
             <div class="collection-deg">
-                <h6 class="title">Cubic Trad</h6>
-                <span class="items">27 Items</span>
+                <h6 class="title">{{ $collection->name }}</h6>
+                <span class="items">{{ $collection->products_count }} Items</span>
             </div>
         </div>
     </a>

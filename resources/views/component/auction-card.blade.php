@@ -10,9 +10,13 @@
         </div>
         <div class="product-share-wrapper">
             <div class="profile-share">
-                <a href="author.html" class="avatar" data-tooltip="Jone lee"><img src="assets/images/client/client-1.png" alt="Nft_Profile"></a>
-                <a href="author.html" class="avatar" data-tooltip="Jone Due"><img src="assets/images/client/client-2.png" alt="Nft_Profile"></a>
-                <a href="author.html" class="avatar" data-tooltip="Nisat Tara"><img src="assets/images/client/client-3.png" alt="Nft_Profile"></a>
+                @php $count = 0; @endphp
+                @foreach ($auction->bids()->with('user')->get()->unique('user_id') as $bid)
+                    @if ($count < 3)
+                        <a href="" class="avatar" data-tooltip="{{ $bid->user->firstname }} {{ $bid->user->lastname }}"><img src="{{ $bid->user->getFirstMediaUrl('profile_images') ?: asset('assets/images/client/client-1.png') }}" alt="Nft_Profile"></a>
+                        @php $count++; @endphp
+                    @endif
+                @endforeach
                 <a class="more-author-text" href="#">
                     {{ $auction->uniqueBidderCount - 1 }}+ Place Bit.
                 </a>

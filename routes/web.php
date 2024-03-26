@@ -4,6 +4,7 @@ use App\Http\Controllers\Auctions\AuctionReactionController;
 use App\Http\Controllers\Auctions\BidController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Blogs\BlogPostController;
+use App\Http\Controllers\Blogs\CommentController;
 use App\Http\Controllers\Collection\CollectionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
@@ -52,7 +53,9 @@ Route::get('/top-owners', [AuctionController::class, 'topOwners'])->name('topOwn
 Route::middleware(['auth'])->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
+    Route::post('/store-image', [ProfileController::class, 'storeImages'])->name('store.profile.images');
     Route::get('/auctions-explore', [AuctionController::class, 'showAuctionsExplore'])->name('auctionsExplore');
     Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('product.details');
     Route::post('/auctions/{auction}/react', [AuctionReactionController::class, 'toggle'])->name('auctions.react');
@@ -97,7 +100,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
         Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-        Route::put('/users/{user}', [UserController::class, 'update'])->name('admin.users.update'); // Ensure this is the correct method name
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
         // User Status Management

@@ -23,6 +23,24 @@
                         <div class="news-details">
                             {!! $blog->content !!}
                         </div>
+
+                        <div class="comments-wrapper pt--40">
+                            <div class="comments-area">
+                                <div class="trydo-blog-comment">
+                                    <h5 class="comment-title mb--40">9 replies on “{{ $blog->title }}”</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="comment-list">
+                            @include('component.single-comment')
+                        </ul>
+
+
+                        <div class="rn-comment-form pt--60">
+                            @include('component.comment-form')
+                        </div>
+
                     </div>
                 </div>
 
@@ -32,5 +50,24 @@
             </div>
         </div>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.comment-reply-link').click(function(e) {
+                e.preventDefault();
+                // Hide all existing subforms
+                $('.subform').hide();
+                // Show subform related to the clicked "Reply" link
+                $(this).closest('.comment').find('.subform').show();
+            });
+
+            // Hide subform after submitting reply
+            $('.reply-form').submit(function() {
+                $(this).closest('.subform').hide();
+            });
+        });
+    </script>
 
 @endsection
