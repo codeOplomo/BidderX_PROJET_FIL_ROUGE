@@ -27,7 +27,7 @@
                         <div class="comments-wrapper pt--40">
                             <div class="comments-area">
                                 <div class="trydo-blog-comment">
-                                    <h5 class="comment-title mb--40">9 replies on “{{ $blog->title }}”</h5>
+                                    <h5 class="comment-title mb--40">{{ $commentCount }} replies on “{{ $blog->title }}”</h5>
                                 </div>
                             </div>
                         </div>

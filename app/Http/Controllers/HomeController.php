@@ -6,6 +6,7 @@ use App\Models\Auction;
 use App\Models\BlogPost;
 use App\Models\Category;
 use App\Models\Collection;
+use App\Models\Comment;
 use App\Models\Product;
 use App\Models\Tag;
 use App\Models\User;
@@ -65,9 +66,10 @@ class HomeController extends Controller
         $blog = BlogPost::findOrFail($id);
         $categories = Category::all();
         $tags = Tag::all();
-        $comments = $blog->comments()->with('user')->get(); // Fetch comments associated with the blog post
+        $comments = $blog->comments()->with('user')->get();
+        $commentCount = Comment::where('blog_post_id', $id)->whereNull('parent_id')->count();
 
-        return view('blogs.show', compact('blog', 'categories', 'tags', 'comments'));
+        return view('blogs.show', compact('blog', 'categories', 'tags', 'comments', 'commentCount'));
     }
 
 }
