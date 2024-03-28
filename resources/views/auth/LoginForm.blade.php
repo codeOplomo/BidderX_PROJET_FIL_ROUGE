@@ -30,7 +30,7 @@
                             <label class="rn-check-box-label" for="remember">Remember me later</label>
                         </div>
                         <div class="mb-5">
-                            <a class="btn start-button" href="{{ route('password.request') }}">
+                            <a class="btn start-button" href="{{ route('forgot-password') }}">
                                 Forgot Your Password?
                             </a>
                         </div>

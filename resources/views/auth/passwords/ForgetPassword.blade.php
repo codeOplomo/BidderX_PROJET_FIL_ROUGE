@@ -14,16 +14,16 @@
                         <a class="logo-dark" href="{{ url('/') }}"><img src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="nft-logo"></a>
                     </div>
 
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{route('forgot-password')}}">
                         @csrf
                         <div class="mb-5">
                             <label for="exampleInputEmail1" class="form-label">Email address</label>
                             <input type="email" id="exampleInputEmail1" name="email" class="form-control" placeholder="Enter your email">
                         </div>
-                        <div class="mb-5">
+                        {{-- <div class="mb-5">
                             <input type="checkbox" class="rn-check-box-input" id="exampleCheck1">
                             <label class="rn-check-box-label" for="exampleCheck1">I agree to the <a href="{{ url('privacy-policy') }}">privacy policy</a></label>
-                        </div>
+                        </div> --}}
 
                         <div class="mb-5">
                             <button type="submit" class="btn btn-large btn-primary">Send</button>

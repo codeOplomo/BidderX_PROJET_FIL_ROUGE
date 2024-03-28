@@ -40,13 +40,26 @@ Route::get('/blog/{id}', [HomeController::class, 'details'])->name('blog.details
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 Route::post('/subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');
 Route::get('/top-owners', [AuctionController::class, 'topOwners'])->name('topOwners');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+
+
+
+// Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+// Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+// Route::get('password-reset', [ResetPasswordController::class, 'showResetForm'])->name('showResetForm');
+// Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'forgotPasswordForm'])->name('forgot-password');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+Route::get('/reset-password', [ResetPasswordController::class, 'showResetForm'])->name('showResetForm');
+Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name('password.update');
+
+
 
 
 

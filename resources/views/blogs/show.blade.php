@@ -32,8 +32,8 @@
                             </div>
                         </div>
 
-                        <ul class="comment-list">
-                            @include('component.single-comment')
+                        <ul id="comment-container" class="comment-list">
+                            @include('component.single-comment', ['comments' => $comments])
                         </ul>
 
 
@@ -51,6 +51,8 @@
         </div>
     </div>
 
+
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
@@ -66,6 +68,18 @@
             // Hide subform after submitting reply
             $('.reply-form').submit(function() {
                 $(this).closest('.subform').hide();
+            });
+
+            // Subscribe to Pusher channel and listen for new comments
+            var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+                cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+                encrypted: true
+            });
+
+            var channel = pusher.subscribe('comment-channel');
+            channel.bind('new-comment', function(data) {
+                // Append new comment to comment container
+                $('#comment-container').append(data.comment);
             });
         });
     </script>
