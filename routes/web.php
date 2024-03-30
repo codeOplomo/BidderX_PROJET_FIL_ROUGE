@@ -67,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/comments-fetch/{blogId}', [CommentController::class, 'fetchComments'])->name('comments.fetch');
     Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
     Route::post('/store-image', [ProfileController::class, 'storeImages'])->name('store.profile.images');
     Route::get('/auctions-explore', [AuctionController::class, 'showAuctionsExplore'])->name('auctionsExplore');

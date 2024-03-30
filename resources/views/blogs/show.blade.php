@@ -33,7 +33,7 @@
                         </div>
 
                         <ul id="comment-container" class="comment-list">
-                            @include('component.single-comment', ['comments' => $comments])
+                            @include('component.single-comment')
                         </ul>
 
 
@@ -52,12 +52,64 @@
     </div>
 
 
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
+        // Function to fetch updated comments from the server
+        function fetchUpdatedComments() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('comments.fetch', ['blogId' => $blog->id]) }}',
+                success: function(response) {
+                    // Replace the entire comments section with the updated comments
+                    $('#comment-container').html(response.comments);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText); // Log the response from the server
+                }
+            });
+        }
+
+        // Function to fetch updated comments initially and then set up polling
+        function initializeRealTimeUpdates() {
+            fetchUpdatedComments(); // Fetch comments initially
+
+            // Set up polling to fetch updated comments every 5 seconds (5000 milliseconds)
+            setInterval(function() {
+                fetchUpdatedComments();
+            }, 5000);
+        }
+
         $(document).ready(function() {
-            $('.comment-reply-link').click(function(e) {
+
+            // Initialize real-time updates when the document is ready
+            initializeRealTimeUpdates();
+
+            $('#comment-form').submit(function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                // Serialize form data
+                var formData = $(this).serialize();
+
+                // Send AJAX request
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        // Replace the entire comments section with the updated comments
+                        $('#comment-container').html(response.comments);
+                        // Clear the form fields after submission
+                        $('#comment-form')[0].reset();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Log the response from the server
+                    }
+                });
+            });
+
+            // Event delegation for reply links
+            $('#comment-container').on('click', '.comment-reply-link', function(e) {
                 e.preventDefault();
                 // Hide all existing subforms
                 $('.subform').hide();
@@ -65,23 +117,34 @@
                 $(this).closest('.comment').find('.subform').show();
             });
 
-            // Hide subform after submitting reply
-            $('.reply-form').submit(function() {
-                $(this).closest('.subform').hide();
-            });
+            // Event delegation for reply form submission
+            $('#comment-container').on('submit', '.reply-form', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize(); // Serialize form data
+                var actionUrl = $(this).attr('action'); // Get the form action URL
 
-            // Subscribe to Pusher channel and listen for new comments
-            var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-                cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-                encrypted: true
-            });
-
-            var channel = pusher.subscribe('comment-channel');
-            channel.bind('new-comment', function(data) {
-                // Append new comment to comment container
-                $('#comment-container').append(data.comment);
+                // Send AJAX request to submit the reply
+                $.ajax({
+                    type: 'POST',
+                    url: actionUrl,
+                    data: formData,
+                    success: function(response) {
+                        // Replace the entire comments section with the updated comments
+                        $('#comment-container').html(response.comments);
+                        // Clear the form fields after submission
+                        $('.reply-form').find('textarea[name="comment"]').val('');
+                        // Hide the reply subform
+                        $('.subform').hide();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Log the response from the server
+                    }
+                });
             });
         });
+
+
     </script>
+
 
 @endsection

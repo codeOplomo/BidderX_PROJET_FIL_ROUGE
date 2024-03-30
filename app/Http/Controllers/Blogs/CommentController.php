@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Blogs;
 
 use App\Http\Controllers\Controller;
+use App\Models\BlogPost;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,10 +13,25 @@ use Pusher\Pusher;
 
 class CommentController extends Controller
 {
+
+    public function fetchComments($blogId)
+    {
+        // Fetch the blog post
+        $blog = BlogPost::findOrFail($blogId);
+
+        // Fetch all comments or use any specific logic to fetch comments
+        $comments = Comment::with('user')->where('blog_post_id', $blogId)->get(); // Assuming you have a relationship with the user
+
+        // Render the comments view and return it as JSON
+        $commentsView = view('component.single-comment', ['comments' => $comments, 'blog' => $blog])->render();
+
+        return response()->json(['comments' => $commentsView]);
+    }
+
+
     // Store a newly created comment in storage.
     public function store(Request $request)
     {
-        //dd($request->all());
         $request->validate([
             'blog_post_id' => 'required|exists:blog_posts,id',
             'comment' => 'required|string',
@@ -38,12 +54,9 @@ class CommentController extends Controller
             $reply->parent_id = $parentComment->id; // Set parent_id to the ID of the parent comment
             $reply->save();
 
-            // Broadcast the comment event using Pusher
-            $this->broadcastCommentEvent($reply);
-
-            // Render the single comment view and return it as JSON
-            $replyView = view('component.single-comment', ['comments' => $reply])->render();
-            return response()->json(['reply' => $replyView]);
+            // Get all comments for the blog post after adding the reply
+            $blog = BlogPost::findOrFail($request->blog_post_id);
+            $comments = BlogPost::findOrFail($request->blog_post_id)->comments()->with('user')->get();
         } else {
             // This is a regular comment
             $comment = new Comment();
@@ -53,14 +66,16 @@ class CommentController extends Controller
             $comment->parent_id = null; // Set parent_id to null for regular comments
             $comment->save();
 
-            // Broadcast the comment event using Pusher
-            $this->broadcastCommentEvent($comment);
-
-            // Render the single comment view and return it as JSON
-            $commentView = view('component.single-comment', ['comments' => $comment])->render();
-            return response()->json(['comment' => $commentView]);
+            // Get all comments for the blog post after adding the comment
+            $blog = BlogPost::findOrFail($request->blog_post_id);
+            $comments = BlogPost::findOrFail($request->blog_post_id)->comments()->with('user')->get();
         }
+
+        // Render the comments view and return it as JSON
+        $commentsView = view('component.single-comment', ['comments' => $comments, 'blog' => $blog])->render();
+        return response()->json(['comments' => $commentsView]);
     }
+
 
 
 

@@ -1,14 +1,16 @@
 <ul class="comment-list">
+
     @foreach($comments as $comment)
         {{-- Check if the comment is not a reply (i.e., it has no parent) --}}
         @if(is_null($comment->parent_id))
+
             <div id="comment-{{ $comment->id }}" class="comment-container"> <!-- Unique identifier for each comment -->
                 <li class="comment parent" data-comment-id="{{ $comment->id }}">
                     <div class="single-comment">
                         <div class="comment-author comment-img">
                             <img class="comment-avatar" src="{{ $comment->user->getFirstMediaUrl("product_picture") ?: asset('assets/images/client/client-1.png') }}" alt="Comment Image">
                             <div class="m-b-20">
-                                <div class="commenter">{{ $comment->user->firstname }} {{ $comment->user->lasttname }}</div>
+                                <div class="commenter">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</div>
                                 <div class="time-spent">{{ $comment->created_at->format('F d, Y \a\t h:i a') }}</div>
                             </div>
                         </div>
