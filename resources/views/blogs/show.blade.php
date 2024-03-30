@@ -55,32 +55,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-        // Function to fetch updated comments from the server
-        function fetchUpdatedComments() {
-            $.ajax({
-                type: 'GET',
-                url: '{{ route('comments.fetch', ['blogId' => $blog->id]) }}',
-                success: function(response) {
-                    // Replace the entire comments section with the updated comments
-                    $('#comment-container').html(response.comments);
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText); // Log the response from the server
-                }
-            });
-        }
-
-        // Function to fetch updated comments initially and then set up polling
-        function initializeRealTimeUpdates() {
-            fetchUpdatedComments(); // Fetch comments initially
-
-            // Set up polling to fetch updated comments every 5 seconds (5000 milliseconds)
-            setInterval(function() {
-                fetchUpdatedComments();
-            }, 5000);
-        }
-
         $(document).ready(function() {
+            var commentUpdateInterval; // Variable to store the interval
+
+            // Function to fetch updated comments from the server
+            function fetchUpdatedComments() {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('comments.fetch', ['blogId' => $blog->id]) }}',
+                    success: function(response) {
+                        // Replace the entire comments section with the updated comments
+                        $('#comment-container').html(response.comments);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Log the response from the server
+                    }
+                });
+            }
+
+            // Function to fetch updated comments initially and then set up polling
+            function initializeRealTimeUpdates() {
+                fetchUpdatedComments(); // Fetch comments initially
+
+                // Set up polling to fetch updated comments every 5 seconds (5000 milliseconds)
+                commentUpdateInterval = setInterval(function() {
+                    fetchUpdatedComments();
+                }, 5000);
+            }
 
             // Initialize real-time updates when the document is ready
             initializeRealTimeUpdates();
@@ -111,6 +112,8 @@
             // Event delegation for reply links
             $('#comment-container').on('click', '.comment-reply-link', function(e) {
                 e.preventDefault();
+                // Pause the comment update interval
+                clearInterval(commentUpdateInterval);
                 // Hide all existing subforms
                 $('.subform').hide();
                 // Show subform related to the clicked "Reply" link
@@ -135,6 +138,10 @@
                         $('.reply-form').find('textarea[name="comment"]').val('');
                         // Hide the reply subform
                         $('.subform').hide();
+                        // Resume the comment update interval after submitting the reply
+                        commentUpdateInterval = setInterval(function() {
+                            fetchUpdatedComments();
+                        }, 5000);
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText); // Log the response from the server
@@ -142,6 +149,7 @@
                 });
             });
         });
+
 
 
     </script>
