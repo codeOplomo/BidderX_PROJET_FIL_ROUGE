@@ -7,6 +7,7 @@ use App\Http\Controllers\Blogs\BlogPostController;
 use App\Http\Controllers\Blogs\CommentController;
 use App\Http\Controllers\Collection\CollectionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Messaging\MessageController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\ProductController;
@@ -76,6 +77,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/place-bid', [BidController::class, 'store'])->name('bid.place');
     Route::get('/timed-auctions', [AuctionController::class, 'timedAuctions'])->name('timedAuctions');
     Route::get('/instant-auctions', [AuctionController::class, 'instantAuctions'])->name('instantAuctions');
+    Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');
 
 
 

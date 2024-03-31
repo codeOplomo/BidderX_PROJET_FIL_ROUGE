@@ -47,6 +47,7 @@
                                 <div class="author-button-area">
                                     <a href="{{ route('owner.auction.auctionCreate') }}"
                                         class="btn at-follw follow-button"><i data-feather="plus"></i> Create Auction</a>
+                                    <a href="{{ route('chat.page') }}" class="btn at-follw message-button"><i data-feather="message-circle"></i></a>
                                     <span class="btn at-follw share-button" data-bs-toggle="modal"
                                         data-bs-target="#shareModal"><i data-feather="share-2"></i></span>
                                     <div class="count at-follw">

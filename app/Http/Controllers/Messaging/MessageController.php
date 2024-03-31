@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
+
+    public function chatPage()
+    {
+        return view('messaging.chat');
+    }
     /**
      * Display a listing of messages for the authenticated user.
      */
