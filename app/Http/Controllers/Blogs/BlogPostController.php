@@ -22,7 +22,7 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        $blogPosts = BlogPost::with('user', 'category') // Optionally eager load relationships
+        $blogPosts = BlogPost::with('user', 'category')
                              ->recent()
                              ->get();
         return response()->json($blogPosts);
@@ -51,7 +51,7 @@ class BlogPostController extends Controller
             'status' => 'published',
         ]);
 
-        // Handle image upload if provided
+
         if ($request->hasFile('blog_image')) {
             $blogPost->addMedia($request->file('blog_image'))->toMediaCollection('blog_images');
         }
@@ -70,7 +70,7 @@ class BlogPostController extends Controller
      */
     public function show($id)
     {
-        $blogPost = BlogPost::with('user', 'category') // Optionally eager load relationships
+        $blogPost = BlogPost::with('user', 'category')
                              ->find($id);
 
         if (!$blogPost) {

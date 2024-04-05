@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserPresenceChanged;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\Address;
@@ -29,6 +30,7 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request): RedirectResponse
     {
+        //dd($request->all());
         DB::beginTransaction();
         try {
             $user = User::create([
@@ -37,7 +39,7 @@ class AuthController extends Controller
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
             ]);
-
+//dd($user);
             $bidderRole = Role::where('id', 2)->firstOrFail();
 
             $user->roles()->attach($bidderRole);
@@ -66,14 +68,16 @@ class AuthController extends Controller
 {
     $credentials = $request->validated();
 
-    // Check if "Remember Me" checkbox is checked
     $remember = $request->has('remember');
 
-    // Attempt to authenticate the user
     if (Auth::attempt($credentials, $remember)) {
         $request->session()->regenerate();
 
         $user = Auth::user();
+        $user->update(['is_active' => true]);
+
+        //event(new UserPresenceChanged($user->id, true));
+
         if ($user->roles->contains('id', 1)) {
             return redirect()->route('admin.dashboard');
         } elseif($user->roles->contains('id', 2)) {
@@ -90,13 +94,18 @@ class AuthController extends Controller
     ]);
 }
 
-    
+
 
 
 
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
+        $user->update(['is_active' => false]);
+
+        //event(new UserPresenceChanged($user->id, false));
+
         Auth::logout();
 
         $request->session()->invalidate();

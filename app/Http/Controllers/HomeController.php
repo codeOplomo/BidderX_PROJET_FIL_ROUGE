@@ -53,11 +53,17 @@ class HomeController extends Controller
     public function blog()
     {
         $blogPosts = BlogPost::with('category')
-            ->recent()
+            ->orderByDesc('created_at')
             ->get();
+
+        $recentBlogPosts = BlogPost::with('category')
+            ->orderByDesc('created_at')
+            ->take(4)
+            ->get();
+
         $categories = Category::all();
         $tags = Tag::all();
-        return view('blogs.index', compact('categories', 'blogPosts', 'tags'));
+        return view('blogs.index', compact('categories', 'blogPosts', 'tags', 'recentBlogPosts'));
     }
 
 
@@ -69,7 +75,25 @@ class HomeController extends Controller
         $comments = $blog->comments()->with('user')->get();
         $commentCount = Comment::where('blog_post_id', $id)->whereNull('parent_id')->count();
 
-        return view('blogs.show', compact('blog', 'categories', 'tags', 'comments', 'commentCount'));
+        $recentBlogPosts = BlogPost::with('category')
+            ->orderByDesc('created_at')
+            ->take(4)
+            ->get();
+
+        return view('blogs.show', compact('blog', 'categories', 'tags', 'comments', 'commentCount', 'recentBlogPosts'));
+    }
+
+    public function blogsByCategory(Category $category)
+    {
+        $blogPosts = $category->blogPosts()->orderByDesc('created_at')->get();
+        return response()->json(['blogPosts' => $blogPosts]);
+    }
+
+    public function getBlogsByTag($tag)
+    {
+        $tag = Tag::where('name', $tag)->firstOrFail();
+        $blogPosts = $tag->blogPosts()->orderByDesc('created_at')->get();
+        return response()->json(['blogPosts' => $blogPosts]);
     }
 
 }

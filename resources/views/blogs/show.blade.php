@@ -56,38 +56,33 @@
 
     <script>
         $(document).ready(function() {
-            var commentUpdateInterval; // Variable to store the interval
+            var commentUpdateInterval;
 
-            // Function to fetch updated comments from the server
             function fetchUpdatedComments() {
                 $.ajax({
                     type: 'GET',
                     url: '{{ route('comments.fetch', ['blogId' => $blog->id]) }}',
                     success: function(response) {
-                        // Replace the entire comments section with the updated comments
                         $('#comment-container').html(response.comments);
                     },
                     error: function(xhr, status, error) {
-                        console.error(xhr.responseText); // Log the response from the server
+                        console.error(xhr.responseText);
                     }
                 });
             }
 
-            // Function to fetch updated comments initially and then set up polling
             function initializeRealTimeUpdates() {
-                fetchUpdatedComments(); // Fetch comments initially
+                fetchUpdatedComments();
 
-                // Set up polling to fetch updated comments every 5 seconds (5000 milliseconds)
                 commentUpdateInterval = setInterval(function() {
                     fetchUpdatedComments();
                 }, 5000);
             }
 
-            // Initialize real-time updates when the document is ready
             initializeRealTimeUpdates();
 
             $('#comment-form').submit(function(e) {
-                e.preventDefault(); // Prevent default form submission
+                e.preventDefault();
 
                 // Serialize form data
                 var formData = $(this).serialize();
@@ -98,13 +93,11 @@
                     url: $(this).attr('action'),
                     data: formData,
                     success: function(response) {
-                        // Replace the entire comments section with the updated comments
                         $('#comment-container').html(response.comments);
-                        // Clear the form fields after submission
                         $('#comment-form')[0].reset();
                     },
                     error: function(xhr, status, error) {
-                        console.error(xhr.responseText); // Log the response from the server
+                        console.error(xhr.responseText);
                     }
                 });
             });
@@ -114,37 +107,32 @@
                 e.preventDefault();
                 // Pause the comment update interval
                 clearInterval(commentUpdateInterval);
-                // Hide all existing subforms
                 $('.subform').hide();
-                // Show subform related to the clicked "Reply" link
                 $(this).closest('.comment').find('.subform').show();
             });
 
-            // Event delegation for reply form submission
             $('#comment-container').on('submit', '.reply-form', function(e) {
                 e.preventDefault();
-                var formData = $(this).serialize(); // Serialize form data
-                var actionUrl = $(this).attr('action'); // Get the form action URL
+                var formData = $(this).serialize();
+                var actionUrl = $(this).attr('action');
 
-                // Send AJAX request to submit the reply
                 $.ajax({
                     type: 'POST',
                     url: actionUrl,
                     data: formData,
                     success: function(response) {
-                        // Replace the entire comments section with the updated comments
                         $('#comment-container').html(response.comments);
-                        // Clear the form fields after submission
+
                         $('.reply-form').find('textarea[name="comment"]').val('');
-                        // Hide the reply subform
+
                         $('.subform').hide();
-                        // Resume the comment update interval after submitting the reply
+
                         commentUpdateInterval = setInterval(function() {
                             fetchUpdatedComments();
                         }, 5000);
                     },
                     error: function(xhr, status, error) {
-                        console.error(xhr.responseText); // Log the response from the server
+                        console.error(xhr.responseText);
                     }
                 });
             });

@@ -38,6 +38,8 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/blogs', [HomeController::class, 'blog'])->name('blogs');
 Route::get('/blog/{id}', [HomeController::class, 'details'])->name('blog.details');
+Route::get('/blogs/category/{category}', [HomeController::class, 'blogsByCategory'])->name('blogs.by.category');
+Route::get('/blogs/by-tag/{tag}', [HomeController::class, 'getBlogsByTag'])->name('blogs.by.tag');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -78,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/timed-auctions', [AuctionController::class, 'timedAuctions'])->name('timedAuctions');
     Route::get('/instant-auctions', [AuctionController::class, 'instantAuctions'])->name('instantAuctions');
     Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');
+    Route::post('/send-messages', [MessageController::class, 'sendMessage'])->name('messages.send');
 
 
 

@@ -647,6 +647,18 @@
 
 
     <script>
+        console.log('Hello from the main layout!');
+        Echo.join(`presence-user-presence.${userId}`)
+            .here((users) => {
+                console.log('Initial list of online users:', users);
+            })
+            .joining((user) => {
+                console.log('User joined:', user);
+            })
+            .leaving((user) => {
+                console.log('User left:', user);
+            });
+
         function toggleReaction(auctionId, element) {
             fetch(`/auctions/${auctionId}/react`, {
                 method: 'POST',
@@ -656,18 +668,20 @@
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ liked: true }) // or use a dynamic value
+                body: JSON.stringify({ liked: true })
             })
                 .then(response => response.json())
                 .then(data => {
                     // Update the UI based on the response
                     if (data.success) {
                         const reactCountElement = document.getElementById(`reactCount-${auctionId}`);
-                        reactCountElement.textContent = data.newCount; // assuming your server returns the new react count
+                        reactCountElement.textContent = data.newCount;
                     }
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+
     </script>
 
     <!-- Scripts -->

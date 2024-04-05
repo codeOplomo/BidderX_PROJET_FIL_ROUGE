@@ -5,7 +5,7 @@
         <div class="inner">
             <ul class="category-list">
                 @foreach($categories as $category)
-                    <li><a href="#"><span class="left-content">{{ $category->name }}</span><span class="count-text"></span></a></li>
+                    <li><a href="#" class="category-link" data-category="{{ $category->id }}"><span class="left-content">{{ $category->name }}</span><span class="count-text">({{ $category->blogPosts->count() }})</span></a></li>
                 @endforeach
             </ul>
         </div>
@@ -16,15 +16,14 @@
         <h3 class="title">Recent Posts</h3>
         <div class="inner">
             <ul>
-                <li><a class="d-block" href="#">Best Corporate Tips You Will
-                        Read This Year.</a><span class="cate">Music NFT's</span></li>
-                <li><a class="d-block" href="#">Should Fixing Corporate Take
-                        100 Steps.</a><span class="cate">Digital Arts</span></li>
-                <li><a class="d-block" href="#">The Next 100 Things To
-                        Immediately Do About.</a><span class="cate">NFT Creators</span></li>
-                <li><a class="d-block" href="#">Top 5 Lessons About
-                        Corporate
-                        To Learn Before.</a><span class="cate">Rare Products</span></li>
+                @foreach($recentBlogPosts as $blog)
+                    <li>
+                        <a class="d-block" href="{{ route('blog.details', $blog->id) }}">
+                            {{ $blog->title }}
+                        </a>
+                        <span class="cate">{{ $blog->category->name }}</span>
+                    </li>
+                @endforeach
             </ul>
         </div>
     </div>
@@ -35,7 +34,7 @@
         <div class="inner mt--20">
             <div class="tagcloud">
                 @foreach($tags as $tag)
-                    <a href="#">{{ $tag->name }}</a>
+                    <a href="#" class="tag-link" data-tag="{{ $tag->name }}">{{ $tag->name }}</a>
                 @endforeach
             </div>
         </div>

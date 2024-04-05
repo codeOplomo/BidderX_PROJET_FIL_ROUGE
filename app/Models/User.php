@@ -20,6 +20,7 @@ class User extends Authenticatable implements HasMedia
         'email',
         'password',
         'phone',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -32,7 +33,7 @@ class User extends Authenticatable implements HasMedia
         'password' => 'hashed',
     ];
 
-    // Define the relationship with the Address model
+
     public function addresses()
     {
         return $this->hasMany(Address::class);
@@ -107,7 +108,7 @@ class User extends Authenticatable implements HasMedia
         return $this->roles()->where('name', $role)->exists();
     }
 
-    // Define a method to retrieve owner data
+
     public function owner()
     {
         return $this->roles()->where('name', 'owner');

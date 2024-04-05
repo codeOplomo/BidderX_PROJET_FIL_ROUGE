@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Messaging;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 
 class MessageController extends Controller
 {
@@ -13,6 +15,30 @@ class MessageController extends Controller
     public function chatPage()
     {
         return view('messaging.chat');
+    }
+
+    public function sendMessage(Request $request)
+    {
+        dd($request->all());
+        // Validate the request
+        $request->validate([
+            'content' => 'required|string',
+        ]);
+
+        // Create a new message
+        $message = new Message();
+        $message->content = $request->content;
+        $message->sender_id = Auth::id(); // Assuming you're using authentication
+        // Add more logic as needed for receiver_id or any other fields
+
+        // Save the message to the database
+        $message->save();
+
+        // Broadcast the message
+        broadcast(new MessageSent($message->content));
+
+        // You can return a response if needed
+        return response()->json(['message' => 'Message sent successfully'], 200);
     }
     /**
      * Display a listing of messages for the authenticated user.
