@@ -50,20 +50,68 @@ class HomeController extends Controller
         return view('contact');
     }
 
-    public function blog()
-    {
-        $blogPosts = BlogPost::with('category')
-            ->orderByDesc('created_at')
-            ->get();
+    public function blog(Request $request)
+    {//dd($request->all());
+        $queryBlogPosts = $request->has('queryBlogPosts') ? $request->get('queryBlogPosts') : null;
+
+        if (is_array($queryBlogPosts)) {
+            $blogPostIds = [];
+
+            foreach ($queryBlogPosts as $blogPost) {
+                $blogPostIds[] = $blogPost['id'];
+            }
+
+            $blogPosts = BlogPost::with('category')
+                ->whereIn('id', $blogPostIds)
+                ->orderByDesc('created_at')
+                ->get();
+        } else {
+            $blogPosts = BlogPost::with('category')
+                ->orderByDesc('created_at')
+                ->get();
+        }
 
         $recentBlogPosts = BlogPost::with('category')
             ->orderByDesc('created_at')
             ->take(4)
             ->get();
-
+//dd($recentBlogPosts, $blogPosts);
         $categories = Category::all();
         $tags = Tag::all();
         return view('blogs.index', compact('categories', 'blogPosts', 'tags', 'recentBlogPosts'));
+    }
+
+
+
+
+    public function searchBlogsRedirect(Request $request)
+    {
+        $query = $request->input('query');
+
+        $blogPosts = BlogPost::where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('title', 'like', '%' . $query . '%')
+                ->orWhere('content', 'like', '%' . $query . '%');
+        })
+            ->get()
+            ->toArray();
+//dd($blogPosts);
+        return redirect()->route('blogs', ['queryBlogPosts' => $blogPosts]);
+    }
+
+
+    public function searchBlogsSp(Request $request)
+    {
+        $query = $request->input('query');
+
+        $blogPosts = BlogPost::where('title', 'like', '%' . $query . '%')
+            ->orWhere('content', 'like', '%' . $query . '%')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Search successful.',
+            'blogPosts' => $blogPosts,
+        ]);
     }
 
 

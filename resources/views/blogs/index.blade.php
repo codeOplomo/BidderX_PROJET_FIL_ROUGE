@@ -35,24 +35,10 @@
         </div>
     </div>
 
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-
-        function formatTimeDiff(time) {
-            const now = new Date();
-            const diff = Math.abs(now - new Date(time));
-
-            const minutes = Math.floor(diff / 60000);
-
-            if (minutes < 60) {
-                return `${minutes} minutes ago`;
-            } else if (minutes < 1440) {
-                return `${Math.floor(minutes / 60)} hour ago`;
-            } else {
-                return `${Math.floor(minutes / 1440)} day ago`;
-            }
-        }
 
 
         $(document).ready(function() {

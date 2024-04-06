@@ -54,13 +54,14 @@
             </div>
             <div class="header-right">
                 <div class="setting-option d-none d-lg-block">
-                    <form class="search-form-wrapper" action="#">
-                        <input type="search" placeholder="Search Here" aria-label="Search">
+                    <form class="search-form-wrapper" id="search-form" method="GET" action="{{ route('search.blogs.redirect') }}">
+                        @csrf
+                        <input type="search" name="query" placeholder="Search Here" aria-label="Search" id="search-input">
                         <div class="search-icon">
-                            <button>
+                            <button type="submit" id="search-button">
                                 <lord-icon src="https://cdn.lordicon.com/kkvxgpti.json" trigger="hover"
-                                    colors="primary:#ddd8c4"
-                                    style=" width: 20px; height: 20px; max-width: 40px; max-height: 40px;">
+                                           colors="primary:#ddd8c4"
+                                           style=" width: 20px; height: 20px; max-width: 40px; max-height: 40px;">
                                 </lord-icon>
                             </button>
                         </div>

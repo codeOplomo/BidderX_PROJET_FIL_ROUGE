@@ -626,7 +626,7 @@
                     text: '{{ session('success') }}',
                     showConfirmButton: true,
                     background: 'red',
-                    timer: 2000
+                    timer: 5000
                 });
             </script>
         @endif
@@ -639,14 +639,136 @@
                     title: 'Error!',
                     text: '{{ session('error') }}',
                     showConfirmButton: false,
-                    timer: 2000
+                    timer: 5000
                 });
             </script>
         @endif
     </div>
 
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+
+
+
+        function formatTimeDiff(time) {
+            const now = new Date();
+            const diff = Math.abs(now - new Date(time));
+
+            const minutes = Math.floor(diff / 60000);
+
+            if (minutes < 60) {
+                return `${minutes} minutes ago`;
+            } else if (minutes < 1440) {
+                return `${Math.floor(minutes / 60)} hour ago`;
+            } else {
+                return `${Math.floor(minutes / 1440)} day ago`;
+            }
+        }
+
+        $(document).ready(function() {
+            var currentUrl = window.location.pathname;
+
+            function getCsrfToken() {
+                return $('meta[name="csrf-token"]').attr('content');
+            }
+
+            if (currentUrl.includes("/blogs")) {
+                $('#search-form').submit(function(event) {
+                    event.preventDefault();
+
+                    var searchQuery = $('#search-input').val();
+
+                    $.ajax({
+                        url: "{{ route('search.blogs.sp') }}",
+                        method: 'GET',
+                        data: {
+                            query: searchQuery
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': getCsrfToken()
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#blog-posts').empty();
+
+                                $.each(response.blogPosts, function(index, blogPost) {
+                                    var formattedTimeDiff = formatTimeDiff(blogPost.created_at);
+
+                                    var blogCardHtml = `
+                <div class="rn-blog single-column mb--30" data-toggle="modal" data-target="#exampleModalCenters" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" style="opacity: unset;">
+                    <div class="inner">
+                        <div class="thumbnail">
+                            <a href="/blog/${blogPost.id}">
+                                <img src="${blogPost.image}">
+                            </a>
+                        </div>
+                        <div class="content">
+                            <div class="category-info">
+                                <div class="category-list">
+                                    <a href="/blog/${blogPost.id}">${blogPost.category}</a>
+                                </div>
+                                <div class="meta">
+                                    <span><i class="feather-clock"></i> ${formattedTimeDiff} </span>
+                                </div>
+                            </div>
+                            <h4 class="title"><a href="/blog/${blogPost.id}">${blogPost.title} <i class="feather-arrow-up-right"></i></a></h4>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                                    // Append the blog card HTML to the search results container
+                                    $('#blog-posts').append(blogCardHtml);
+                                });
+                            } else {
+                                // Handle unsuccessful search (optional)
+                                console.log(response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                });
+            } else if (currentUrl.includes("/blog")) {
+                // Handle other blog pages here
+                //$('#search-form').attr('method', 'GET');
+                //$('#search-form').attr('action', "{{ route('search.blogs.redirect') }}");
+            } else if (currentUrl.includes("/auctions-explore")) {
+                $('#search-form').submit(function(event) {
+                    event.preventDefault();
+
+                    var searchQuery = $('#search-input').val();
+
+                    $.ajax({
+                        url: "{{ route('search.explore') }}",
+                        method: 'GET',
+                        data: {
+                            query: searchQuery
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': getCsrfToken()
+                        },
+                        success: function(response) {
+                            // Handle the response
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle errors
+                        }
+                    });
+                });
+            } else if (currentUrl.includes("/auction/")) {
+                $('#search-form').attr('method', 'GET');
+               // $('#search-form').attr('action', "{{ route('search.auctions') }}?_token=" + getCsrfToken());
+               // $('#search-form').append('<input type="hidden" name="_token" value="' + getCsrfToken() + '">');
+            } else {
+                $('.search-form-wrapper').hide();
+            }
+        });
+
+
+
         console.log('Hello from the main layout!');
         Echo.join(`presence-user-presence.${userId}`)
             .here((users) => {

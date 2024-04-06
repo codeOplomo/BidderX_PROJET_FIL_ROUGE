@@ -95,6 +95,16 @@ class AuctionController extends Controller
         return view('owner.auction.auctionCreate', compact('categories', 'collections'));
     }
 
+
+    public function searchForExplore(Request $request)
+    {
+        // Handle the search logic for the explore page
+        // Access the search query using $request->query('query')
+
+        // Perform the search logic here and return the results
+        // For now, let's just return a dummy response
+        return response()->json(['message' => 'Search request received for explore page']);
+    }
     /**
      * Store a newly created auction in storage.
      */
