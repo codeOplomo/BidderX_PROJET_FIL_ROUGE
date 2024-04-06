@@ -52,17 +52,12 @@ class HomeController extends Controller
 
     public function blog(Request $request)
     {//dd($request->all());
-        $queryBlogPosts = $request->has('queryBlogPosts') ? $request->get('queryBlogPosts') : null;
+        $query = $request->input('query');
 
-        if (is_array($queryBlogPosts)) {
-            $blogPostIds = [];
-
-            foreach ($queryBlogPosts as $blogPost) {
-                $blogPostIds[] = $blogPost['id'];
-            }
-
-            $blogPosts = BlogPost::with('category')
-                ->whereIn('id', $blogPostIds)
+        if (!empty($query)) {
+            $blogPosts = BlogPost::where('title', 'like', '%' . $query . '%')
+                ->orWhere('content', 'like', '%' . $query . '%')
+                ->with('category')
                 ->orderByDesc('created_at')
                 ->get();
         } else {
@@ -82,21 +77,6 @@ class HomeController extends Controller
     }
 
 
-
-
-    public function searchBlogsRedirect(Request $request)
-    {
-        $query = $request->input('query');
-
-        $blogPosts = BlogPost::where(function ($queryBuilder) use ($query) {
-            $queryBuilder->where('title', 'like', '%' . $query . '%')
-                ->orWhere('content', 'like', '%' . $query . '%');
-        })
-            ->get()
-            ->toArray();
-//dd($blogPosts);
-        return redirect()->route('blogs', ['queryBlogPosts' => $blogPosts]);
-    }
 
 
     public function searchBlogsSp(Request $request)

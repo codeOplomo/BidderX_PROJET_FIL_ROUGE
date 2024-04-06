@@ -40,7 +40,6 @@ Route::get('/blogs', [HomeController::class, 'blog'])->name('blogs');
 Route::get('/blog/{id}', [HomeController::class, 'details'])->name('blog.details');
 Route::get('/blogs/category/{category}', [HomeController::class, 'blogsByCategory'])->name('blogs.by.category');
 Route::get('/blogs/by-tag/{tag}', [HomeController::class, 'getBlogsByTag'])->name('blogs.by.tag');
-Route::get('/search-blogs-redirect', [HomeController::class, 'searchBlogsRedirect'])->name('search.blogs.redirect');
 Route::get('/search-blogs-sp', [HomeController::class, 'searchBlogsSp'])->name('search.blogs.sp');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -81,8 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/place-bid', [BidController::class, 'store'])->name('bid.place');
     Route::get('/timed-auctions', [AuctionController::class, 'timedAuctions'])->name('timedAuctions');
     Route::get('/instant-auctions', [AuctionController::class, 'instantAuctions'])->name('instantAuctions');
-    Route::get('/search-explore', [AuctionController::class, 'searchForExplore'])->name('search.explore');
-    Route::get('/search-auctions', [AuctionController::class, 'searchForAuctions'])->name('search.auctions');
+    Route::get('/search-auctions-sp', [AuctionController::class, 'searchForAuctions'])->name('search.auctions.sp');
     Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');
     Route::post('/send-messages', [MessageController::class, 'sendMessage'])->name('messages.send');
 

@@ -732,9 +732,10 @@
                     });
                 });
             } else if (currentUrl.includes("/blog")) {
-                // Handle other blog pages here
-                //$('#search-form').attr('method', 'GET');
-                //$('#search-form').attr('action', "{{ route('search.blogs.redirect') }}");
+                var searchUrl;
+                searchUrl = "{{ route('blogs') }}";
+                $('#search-form').attr('action', searchUrl);
+
             } else if (currentUrl.includes("/auctions-explore")) {
                 $('#search-form').submit(function(event) {
                     event.preventDefault();
@@ -742,7 +743,7 @@
                     var searchQuery = $('#search-input').val();
 
                     $.ajax({
-                        url: "{{ route('search.explore') }}",
+                        url: "{{ route('search.auctions.sp') }}",
                         method: 'GET',
                         data: {
                             query: searchQuery
@@ -751,17 +752,48 @@
                             'X-CSRF-TOKEN': getCsrfToken()
                         },
                         success: function(response) {
-                            // Handle the response
+                            if (response.success) {
+                                $('#auctions-section').empty();
+
+                                $.each(response.auctions, function(index, auction) {
+                                    var auctionCardHtml = `
+                <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" style="opacity: unset">
+                    <div class="product-style-one no-overlay with-placeBid">
+                        <div class="card-thumbnail">
+                            <a href="{{ route('product.details', $auction->id) }}"><img src="${auction.product_picture}" alt="NFT_portfolio"></a>
+                        </div>
+                        <a href="{{ route('product.details', $auction->id) }}"><span class="product-name">${auction.title}</span></a>
+                        <span class="auction-type"></span>
+                        <span class="auction-type">
+                            ${auction.winner_id ? `Owned by ${auction.winner_firstname} ${auction.winner_lastname}` : auction.is_instant ? 'Instant Auction' : 'Normal Auction'}
+                        </span>
+                        <div class="bid-react-area">
+                            <div class="last-bid">${auction.current_bid_price} $</div>
+                            <div class="react-count-display">
+                                ${auction.total_reactions}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                                    $('#auctions-section').append(auctionCardHtml);
+                                });
+                            } else {
+                                // Handle unsuccessful search (optional)
+                                console.log(response.message);
+                            }
                         },
                         error: function(xhr, status, error) {
                             // Handle errors
                         }
                     });
                 });
-            } else if (currentUrl.includes("/auction/")) {
-                $('#search-form').attr('method', 'GET');
-               // $('#search-form').attr('action', "{{ route('search.auctions') }}?_token=" + getCsrfToken());
-               // $('#search-form').append('<input type="hidden" name="_token" value="' + getCsrfToken() + '">');
+            } else if (currentUrl.includes("auction")) {
+                var searchUrl;
+                searchUrl = "{{ route('auctionsExplore') }}";
+                $('#search-form').attr('action', searchUrl);
+
             } else {
                 $('.search-form-wrapper').hide();
             }

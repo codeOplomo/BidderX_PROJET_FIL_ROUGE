@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <div class="row g-5">
+        <div class="row g-5" id="auctions-section">
             <!-- Loop through your products to display them dynamically -->
             @foreach($auctions as $auction)
                 @include('component.auction-card')

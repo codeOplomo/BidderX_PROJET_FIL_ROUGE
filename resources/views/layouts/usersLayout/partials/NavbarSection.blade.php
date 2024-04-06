@@ -54,7 +54,7 @@
             </div>
             <div class="header-right">
                 <div class="setting-option d-none d-lg-block">
-                    <form class="search-form-wrapper" id="search-form" method="GET" action="{{ route('search.blogs.redirect') }}">
+                    <form class="search-form-wrapper" id="search-form" method="GET" action="">
                         @csrf
                         <input type="search" name="query" placeholder="Search Here" aria-label="Search" id="search-input">
                         <div class="search-icon">

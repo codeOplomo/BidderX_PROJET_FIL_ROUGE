@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Collection;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -29,10 +30,39 @@ class AuctionController extends Controller
         return response()->json($topSellers);
     }
 
-    public function showAuctionsExplore()
+    public function showAuctionsExplore(Request $request)
     {
-        $auctions = Auction::approved()->get();
+        $query = $request->input('query');
+
+        if (!empty($query)) {
+            $auctions = Auction::whereHas('product', function (Builder $queryBuilder) use ($query) {
+                $queryBuilder->where('title', 'like', '%' . $query . '%')
+                    ->orWhere('description', 'like', '%' . $query . '%')
+                    ->orWhere('manufacturer', 'like', '%' . $query . '%');
+            })->get();
+        } else {
+            $auctions = Auction::approved()->get();
+        }
+
         return view('auctions.auctions-explore', compact('auctions'));
+    }
+
+
+    public function searchForAuctions(Request $request)
+    {
+        $query = $request->input('query');
+
+        $auctions = Auction::whereHas('product', function (Builder $queryBuilder) use ($query) {
+            $queryBuilder->where('title', 'like', '%' . $query . '%')
+                ->orWhere('description', 'like', '%' . $query . '%')
+                ->orWhere('manufacturer', 'like', '%' . $query . '%');
+        })->with('product:id,title,description,manufacturer')->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Search successful.',
+            'auctions' => $auctions,
+        ]);
     }
 
     public function timedAuctions()
@@ -96,15 +126,6 @@ class AuctionController extends Controller
     }
 
 
-    public function searchForExplore(Request $request)
-    {
-        // Handle the search logic for the explore page
-        // Access the search query using $request->query('query')
-
-        // Perform the search logic here and return the results
-        // For now, let's just return a dummy response
-        return response()->json(['message' => 'Search request received for explore page']);
-    }
     /**
      * Store a newly created auction in storage.
      */
