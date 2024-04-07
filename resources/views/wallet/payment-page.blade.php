@@ -1,40 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Laravel</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <style type="text/css">
-        .panel-title {
-            display: inline;
-            font-weight: bold;
-        }
-        .display-table {
-            display: table;
-        }
-        .display-tr {
-            display: table-row;
-        }
-        .display-td {
-            display: table-cell;
-            vertical-align: middle;
-            width: 61%;
-        }
-    </style>
-</head>
-<body>
+@extends('layouts.usersLayout.MainLayout')
 
+@section('content')
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style type="text/css">
+    .panel-title {
+        display: inline;
+        font-weight: bold;
+    }
+    .display-table {
+        display: table;
+    }
+    .display-tr {
+        display: table-row;
+    }
+    .display-td {
+        display: table-cell;
+        vertical-align: middle;
+        width: 61%;
+    }
+</style>
 <div class="container">
 
 
     <br><br><br><br>
-    <div class="row">
+    <div class="row align-content-center justify-content-center">
 
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default credit-card-box">
 
                 <div class="panel-body">
-                    <h1>Stripe Payment Gateway  </h1>
+                    <h1>XBidder Payment Gateway  </h1>
 
                     @if (Session::has('success'))
                         <div class="alert alert-success text-center">
@@ -63,7 +60,7 @@
                         </div>
 
                         <div class='form-row row'>
-                            <div class='col-xs-12 form-group card required'>
+                            <div class='col-xs-12 form-group card required' style="background-color: unset">
                                 <label class='control-label'>Card Number</label> <input
                                     autocomplete='off' class='form-control card-number' size='20'
                                     type='text'>
@@ -98,13 +95,13 @@
 
 
                         <div class="row">
-                            <div class="col-xs-12">
-                                <button class="btn btn-success btn-lg btn-block" type="submit"> Make a Deposit </button><br>
+                            <div class="col-xs-12 pb-md-4">
+                                <button class="btn btn-success btn-lg btn-block" type="submit" style="width: 100%;"> Make a Deposit </button><br>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <a href="{{ route('wallet.connect') }}" class="btn btn-primary btn-lg btn-block">Back to Wallets</a>
+                                <a href="{{ route('wallet.connect') }}" class="btn btn-primary btn-lg btn-block" style="width: 100%;">Back to Wallets</a>
                             </div>
                         </div>
 
@@ -117,7 +114,6 @@
 
 </div>
 
-</body>
 
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
@@ -177,4 +173,4 @@
 
     });
 </script>
-</html>
+@endsection

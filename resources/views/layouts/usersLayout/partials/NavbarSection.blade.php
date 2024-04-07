@@ -33,11 +33,9 @@
                             </li>
                             @auth
                                 <li class="has-droupdown has-menu-child-item">
-                                    <a href="#">Services</a>
+                                    <a href="{{ route('wallet.connect') }}">Wallets</a>
                                     <ul class="submenu">
-                                        <li><a href="#">Service 1</a></li>
-                                        <li><a href="#">Service 2</a></li>
-                                        <li><a href="#">Service 3</a></li>
+                                        <li><a href="{{ route('payment.page') }}">Make Deposit</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-droupdown has-menu-child-item">
@@ -75,9 +73,19 @@
                 @endguest
                 @auth
                     <div class="setting-option header-btn rbt-site-header" id="rbt-site-header">
-                        <div class="icon-box">
-                            <a id="connectbtn" class="btn btn-primary-alta btn-small" href="{{ route('wallet.connect') }}">Wallet connect</a>
-                        </div>
+                        {{-- Check if user has made at least one deposit --}}
+                        @if(auth()->user()->walletBalance > 0)
+                            {{-- User Balance Display --}}
+                            <div class="icon-box">
+                                <span class="balance-display">Balance: {{ auth()->user()->walletBalance }} $ </span>
+                            </div>
+                            {{-- Hide Wallet Connect if the user has made a deposit --}}
+                        @else
+                            {{-- Show Wallet Connect if no deposits made --}}
+                            <div class="icon-box">
+                                <a id="connectbtn" class="btn btn-primary-alta btn-small" href="{{ route('wallet.connect') }}">Wallet connect</a>
+                            </div>
+                        @endif
                     </div>
                     <div class="ms-3">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
@@ -86,6 +94,7 @@
                         </form>
                     </div>
                 @endauth
+
                 <!-- Search icon for mobile -->
                 <div class="setting-option rn-icon-list d-block d-lg-none">
                     <div class="icon-box search-mobile-icon">
