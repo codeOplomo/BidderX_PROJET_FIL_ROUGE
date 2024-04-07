@@ -76,7 +76,7 @@
                 @auth
                     <div class="setting-option header-btn rbt-site-header" id="rbt-site-header">
                         <div class="icon-box">
-                            <a id="connectbtn" class="btn btn-primary-alta btn-small" href="connect.html">Wallet connect</a>
+                            <a id="connectbtn" class="btn btn-primary-alta btn-small" href="{{ route('wallet.connect') }}">Wallet connect</a>
                         </div>
                     </div>
                     <div class="ms-3">

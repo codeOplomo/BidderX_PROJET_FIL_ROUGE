@@ -1,6 +1,6 @@
 ﻿@charset "UTF-8";
 /*---------------------------
- CSS Index  
+ CSS Index
 ****************************
 
 01. Variables
@@ -471,7 +471,7 @@ var {
 }
 
 /*---------------------------
-	List Style 
+	List Style
 ---------------------------*/
 ul,
 ol {
@@ -548,7 +548,7 @@ ol ul {
 }
 
 /*=========================
-    Section Separation 
+    Section Separation
 ==========================*/
 .slick-dotted.slick-slider {
   margin-bottom: 0;
@@ -6867,7 +6867,7 @@ input[type=submit]:hover {
 /*==============================
  *  Utilities
 =================================*/
-/* 
+/*
 font-family: 'Red Hat Display', sans-serif;
 */
 .clearfix:before,
@@ -6900,7 +6900,7 @@ iframe {
 }
 
 /*===============================
-    Background Color 
+    Background Color
 =================================*/
 .bg-color-primary {
   background: var(--color-primary);
@@ -6931,7 +6931,7 @@ iframe {
 }
 
 /*===========================
-Background Image 
+Background Image
 =============================*/
 .bg_image {
   background-repeat: no-repeat;
@@ -7505,7 +7505,7 @@ textarea:-ms-input-placeholder {
 }
 
 /*=============================
-	Overlay styles 
+	Overlay styles
 ==============================*/
 [data-overlay],
 [data-black-overlay],
@@ -7609,7 +7609,7 @@ textarea:-ms-input-placeholder {
 }
 
 /*------------------------------
-    Scroll Up 
+    Scroll Up
 --------------------------------*/
 #scrollUp {
   width: 70px;
@@ -7703,7 +7703,7 @@ textarea:-ms-input-placeholder {
 }
 
 /*--------------------
-    Contact Form 
+    Contact Form
 ----------------------*/
 .form-message {
   margin-bottom: 0;
@@ -7723,7 +7723,7 @@ body {
 }
 
 /*------------------------
-    Header Sticky 
+    Header Sticky
 --------------------------*/
 .background--1 {
   background: var(--background-color-1);
@@ -11032,9 +11032,9 @@ Copyright (c) 2015 Daniel Eden
   opacity: 1;
 }
 
-/* -------------------------------- 
+/* --------------------------------
 
-xclip 
+xclip
 
 -------------------------------- */
 .cd-headline.clip span {
@@ -11514,7 +11514,7 @@ body.sal-disabled [data-sal|=flip] {
 
 /* Header  */
 /*------------------------
-    Header Sticky 
+    Header Sticky
 --------------------------*/
 .logo-custom-css .logo-dark {
   display: none;
@@ -12134,7 +12134,7 @@ input[type=search]::-webkit-search-results-decoration {
 }
 
 /*------------------------
-    Mailmenu Nav  
+    Mailmenu Nav
 -------------------------*/
 .mainmenu-nav .mainmenu {
   display: flex;
@@ -12395,7 +12395,7 @@ span.rn-badge-card::before {
 }
 
 /*------------------------------
-    Popup Menu Styles  
+    Popup Menu Styles
 --------------------------------*/
 .logo-thumbnail a {
   display: block;
@@ -12838,7 +12838,7 @@ span.rn-badge-card::before {
 }
 
 /*---------------------------
-    Notification Area  
+    Notification Area
 -----------------------------*/
 .header-right-fixed {
   position: fixed;
@@ -13052,7 +13052,7 @@ span.rn-badge-card::before {
 }
 
 /*---------------------------
-    Main Header Styles 
+    Main Header Styles
 ----------------------------*/
 .rn-header {
   position: relative;
@@ -13605,7 +13605,7 @@ iframe {
 
 /* Elements  */
 /*--------------------------
-    Button Styles 
+    Button Styles
 ----------------------------*/
 .button-group {
   margin: -5px;
@@ -13711,7 +13711,7 @@ button.btn.btn-large {
 }
 
 /*-------------------------------------
- Filter Button Style 
+ Filter Button Style
 -------------------------------*/
 .discover-filter-button {
   padding: 10px 20px;
@@ -13733,7 +13733,7 @@ button.btn.btn-large {
 }
 
 /*-------------------------
-    Price Filter  
+    Price Filter
 --------------------------*/
 .content-shopby {
   margin-top: 32px;
@@ -13841,7 +13841,7 @@ button.btn.btn-large {
 }
 
 /*-------------------------
-    Back To Top  
+    Back To Top
 ---------------------------*/
 @-webkit-keyframes border-transform {
   0%, 100% {
@@ -14334,7 +14334,7 @@ figcaption {
 }
 
 /*-------------------------
-    Section Title  
+    Section Title
 --------------------------*/
 .live-bidding-title {
   position: relative;
@@ -14369,7 +14369,7 @@ figcaption {
 }
 
 /*-------------------------
- Banner Styles  
+ Banner Styles
 ----------------------------*/
 .with-particles {
   position: relative;
@@ -14453,7 +14453,7 @@ figcaption {
 }
 
 /*--------------------------
-    Banner Style 1 
+    Banner Style 1
 ---------------------------*/
 .slider-one h2.title {
   font-size: 60px;
@@ -14495,7 +14495,7 @@ figcaption {
 }
 
 /*--------------------------
-    Banner Style 2 
+    Banner Style 2
 ---------------------------*/
 .slider-style-2 .single-slide {
   padding: 0 15px;
@@ -14543,7 +14543,7 @@ figcaption {
 }
 
 /*--------------------------
-    Banner Style Three  
+    Banner Style Three
 ---------------------------*/
 .slider-style-3 .wrapper {
   background: var(--background-color-1);
@@ -14669,7 +14669,7 @@ figcaption {
 }
 
 /*-------------------------
-    Slider Style Four  
+    Slider Style Four
 ---------------------------*/
 .banner-style-4 .sldier-content .title {
   color: var(--color-white);
@@ -14765,7 +14765,7 @@ figcaption {
 }
 
 /*-------------------------
-    Slider Style 5  
+    Slider Style 5
 ---------------------------*/
 .slider-style-5 .banner-left-content .title {
   color: var(--color-heading);
@@ -14782,7 +14782,7 @@ figcaption {
 }
 
 /*--------------------------
-    Banner Style 6  
+    Banner Style 6
 ---------------------------*/
 .slider-style-6 {
   padding: 15px;
@@ -14888,7 +14888,7 @@ figcaption {
 }
 
 /*--------------------------
-    Banner Style 7 
+    Banner Style 7
 ---------------------------*/
 .slider-style-7 {
   height: auto;
@@ -14973,7 +14973,7 @@ figcaption {
 }
 
 /*----------------------
- Common Styles 
+ Common Styles
 ------------------------*/
 .title-badge {
   color: var(--color-primary);
@@ -14992,7 +14992,7 @@ figcaption {
 }
 
 /*-----------------------
- common slider-nav 
+ common slider-nav
 --------------------------*/
 .slider .previous-slide,
 .slider .next-slide {
@@ -17005,7 +17005,7 @@ button .small-image {
 }
 
 /*-----------------------
-    Author Styles  
+    Author Styles
 ---------------------------*/
 .padding-tb-50 {
   border-radius: 5px;
@@ -17551,7 +17551,7 @@ button .small-image {
 }
 
 /*-------------------------
- Footer Widget  
+ Footer Widget
 ------------------------*/
 .footer-widget .widget-title {
   font-size: 24px;
@@ -17619,7 +17619,7 @@ button .small-image {
 }
 
 /*-------------------------------
-    Footer Slicky Header Area  
+    Footer Slicky Header Area
 ---------------------------------*/
 .footer-for-left-sticky-header {
   padding-left: 320px;
@@ -17673,7 +17673,7 @@ button .small-image {
 }
 
 /*-----------------------
-    Recent Post  
+    Recent Post
 ---------------------------*/
 .footer-recent-post {
   list-style: none;
@@ -17785,7 +17785,7 @@ button .small-image {
 }
 
 /*--------------------------
-    Copyright Area  
+    Copyright Area
 ----------------------------*/
 .copy-right-one {
   border-top: 1px solid var(--color-border);
@@ -18293,7 +18293,7 @@ button .small-image {
 }
 
 /*---------------------------
-    Filter Exanded  
+    Filter Exanded
 -----------------------------*/
 .default-exp-wrapper {
   border-top: 1px solid var(--color-border);
@@ -19471,7 +19471,7 @@ button .small-image {
 }
 
 /*--------------------------
-    Swicher Styles  
+    Swicher Styles
 ----------------------------*/
 .active-dark-mode .my_switcher ul li .setColor.dark {
   display: none;
@@ -19677,7 +19677,7 @@ button .small-image {
   }
 }
 /*--------------------------
-    Social Share  
+    Social Share
 ----------------------------*/
 .social-share-default {
   display: flex;
@@ -19729,7 +19729,7 @@ button .small-image {
 }
 
 /*-----------------------------
- Modal Styles  
+ Modal Styles
 -----------------------------------*/
 body.modal-open {
   padding: 0 !important;
@@ -19762,7 +19762,7 @@ body.modal-open {
 }
 
 /*---------------------------------
-    Share Modal Wrapper  
+    Share Modal Wrapper
 ----------------------------------*/
 .modal-backdrop {
   background-color: #000;
@@ -19826,7 +19826,7 @@ body.modal-open {
 }
 
 /*--------------------------------
-    Place Bid Modal Popup  
+    Place Bid Modal Popup
 ---------------------------------*/
 .placebid-modal-wrapper p {
   color: #fff;
@@ -20256,7 +20256,7 @@ body.modal-open {
 }
 
 /*---------------------------
- Masonary Item  
+ Masonary Item
 -----------------------------*/
 .grid-metro3 {
   margin: 0 -15px;
@@ -20417,7 +20417,7 @@ body.modal-open {
 }
 
 /*--------------------------
-    Breadcrumb Styles 
+    Breadcrumb Styles
 ----------------------------*/
 .rn-breadcrumb-inner {
   border-bottom: 1px solid var(--color-border);
@@ -20453,7 +20453,7 @@ body.modal-open {
 }
 
 /*-------------------------------
-    Slick Arrow And Dots Styles  
+    Slick Arrow And Dots Styles
 ----------------------------------*/
 button.slide-arrow {
   height: 50px;
@@ -20610,7 +20610,7 @@ body.count_bg--4 .countdown .countdown-container .countdown-value {
 }
 
 /*------------------------------
- Comming Soon Styles  
+ Comming Soon Styles
 --------------------------------*/
 .maintanance-plr {
   padding-left: 150px;
@@ -20886,7 +20886,7 @@ tbody.ranking tr td .thumbnail img {
 }
 
 /*-------------------------
-    404 Page Style Here  
+    404 Page Style Here
 --------------------------*/
 .rn-not-found-wrapper {
   text-align: center;
@@ -20917,7 +20917,7 @@ tbody.ranking tr td .thumbnail img {
   margin-bottom: 30px;
 }
 /*-------------------------
-    maintanance Page Style Here  
+    maintanance Page Style Here
 --------------------------*/
 .maintanence-area .logo a img {
   margin-bottom: 50px;
@@ -22837,7 +22837,7 @@ hr.form-ans-separator {
 }
 
 /*----------------------------------
-    White Version Demo  
+    White Version Demo
 -----------------------------------*/
 body.active-light-mode {
   background: #f5f8fa;

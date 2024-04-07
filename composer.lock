@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cecf534a3d60f691abf297028906b1fd",
+    "content-hash": "1bbcba905df51212ca335ed44595f34f",
     "packages": [
         {
             "name": "beyondcode/laravel-websockets",
@@ -1346,6 +1346,81 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "hpwebdeveloper/laravel-pay-pocket",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HPWebdeveloper/laravel-pay-pocket.git",
+                "reference": "445bb28a96920df9327f32d3ff103406b15de37d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HPWebdeveloper/laravel-pay-pocket/zipball/445bb28a96920df9327f32d3ff103406b15de37d",
+                "reference": "445bb28a96920df9327f32d3ff103406b15de37d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "imanghafoori/php-imports-analyzer": "1.0.*",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.8",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.8",
+                "pestphp/pest": "^2.20",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "HPWebdeveloper\\LaravelPayPocket\\LaravelPayPocketServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelPayPocket": "HPWebdeveloper\\LaravelPayPocket\\Facades\\LaravelPayPocket"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "HPWebdeveloper\\LaravelPayPocket\\": "src/",
+                    "HPWebdeveloper\\LaravelPayPocket\\Database\\Factories\\": "database/factories/",
+                    "HPWebdeveloper\\LaravelPayPocket\\Tests\\Database\\Factories\\": "tests/database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hamed Panjeh",
+                    "email": "panjeh@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Pay Pocket",
+            "homepage": "https://github.com/hpwebdeveloper/laravel-pay-pocket",
+            "keywords": [
+                "Hamed Panjeh",
+                "laravel",
+                "laravel-pay-pocket"
+            ],
+            "support": {
+                "issues": "https://github.com/HPWebdeveloper/laravel-pay-pocket/issues",
+                "source": "https://github.com/HPWebdeveloper/laravel-pay-pocket/tree/2.0.0"
+            },
+            "time": "2024-01-11T18:44:28+00:00"
         },
         {
             "name": "laravel/framework",

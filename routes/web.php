@@ -16,6 +16,7 @@ use App\Http\Controllers\User\Bidder\BidderController;
 use App\Http\Controllers\User\Owner\OwnerController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auctions\AuctionController;
 
@@ -83,6 +84,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search-auctions-sp', [AuctionController::class, 'searchForAuctions'])->name('search.auctions.sp');
     Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');
     Route::post('/send-messages', [MessageController::class, 'sendMessage'])->name('messages.send');
+    Route::get('/wallet-connect', [WalletController::class, 'connectWallet'])->name('wallet.connect');
 
 
 
