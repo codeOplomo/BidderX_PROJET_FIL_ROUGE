@@ -51,11 +51,11 @@
                                         <i class="color-red" data-feather="gitlab"></i>
                                     </div>
                                     <div class="content">
-                                        <h4 class="title"><a href="#">Wallet</a></h4>
+                                        <h4 class="title"><a href="{{ route('payment.page') }}">Wallet</a></h4>
                                         <p class="description">Make a Deposit</p>
                                     </div>
                                 </div>
-                                <a class="over-link" href="#"></a>
+                                <a class="over-link" href="{{ route('payment.page') }}"></a>
                             </div>
                         </div>
                         <!-- start single wallet -->

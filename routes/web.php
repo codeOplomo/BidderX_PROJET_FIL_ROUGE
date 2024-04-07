@@ -85,6 +85,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');
     Route::post('/send-messages', [MessageController::class, 'sendMessage'])->name('messages.send');
     Route::get('/wallet-connect', [WalletController::class, 'connectWallet'])->name('wallet.connect');
+    Route::get('/payment-page', [WalletController::class, 'paymentPage'])->name('payment.page');
+    Route::post('/payment-deposit', [WalletController::class, 'depositPayment'])->name('payment.deposit');
 
 
 
