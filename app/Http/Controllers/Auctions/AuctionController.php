@@ -44,7 +44,61 @@ class AuctionController extends Controller
             $auctions = Auction::approved()->get();
         }
 
-        return view('auctions.auctions-explore', compact('auctions'));
+        $categories = Category::all();
+        $collections = Collection::all();
+
+        return view('auctions.auctions-explore', compact('auctions', 'categories', 'collections'));
+    }
+
+    public function filterAuctions(Request $request)
+    {
+        $query = Auction::query();
+
+        // Apply category filter if provided
+        if ($request->has('category') && !empty($request->category)) {
+            $query->whereHas('product.category', function ($q) use ($request) {
+                $q->where('id', $request->category);
+            });
+        }
+
+        // Apply collection filter if provided
+        if ($request->has('collection') && !empty($request->collection)) {
+            $query->whereHas('product.collections', function ($q) use ($request) {
+                $q->where('collections.id', $request->collection);
+            });
+        }
+
+        // Apply price range filter if provided
+        if ($request->has('minPrice') && $request->has('maxPrice')) {
+            $minPrice = $request->minPrice;
+            $maxPrice = $request->maxPrice;
+
+            // Ensure that the minimum price is not greater than the maximum price
+            if ($minPrice <= $maxPrice) {
+                $query->whereBetween('current_bid_price', [$minPrice, $maxPrice]);
+            }
+        }
+
+        if ($request->has('saleType')) {
+            $saleType = $request->saleType;
+            if ($saleType == "1") {
+                $query->where('is_instant', true);
+            } elseif ($saleType == "0") {
+                $query->where('is_instant', false);
+            }
+        }
+
+        // Eager load the 'product' relationship with specific fields
+        $auctions = $query->with(['product' => function ($query) {
+            $query->select('id', 'title', 'description', 'manufacturer');
+        }])->get();
+
+        // Return the response as JSON
+        return response()->json([
+            'success' => true,
+            'message' => 'Search successful.',
+            'auctions' => $auctions,
+        ]);
     }
 
 

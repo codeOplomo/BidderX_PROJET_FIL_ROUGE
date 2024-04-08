@@ -76,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
     Route::post('/store-image', [ProfileController::class, 'storeImages'])->name('store.profile.images');
     Route::get('/auctions-explore', [AuctionController::class, 'showAuctionsExplore'])->name('auctionsExplore');
+    Route::get('/auctions-filter', [AuctionController::class, 'filterAuctions'])->name('auctions.filter');
     Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('product.details');
     Route::post('/auctions/{auction}/react', [AuctionReactionController::class, 'toggle'])->name('auctions.react');
     Route::post('/place-bid', [BidController::class, 'store'])->name('bid.place');
