@@ -56,6 +56,25 @@ class Auction extends Model
         return $this->hasMany(AuctionReaction::class);
     }
 
+
+    public function scopeMostLiked($query)
+    {
+        return $query->withCount('reactions as likes_count')
+            ->orderByDesc('likes_count');
+    }
+
+    /**
+     * Scope a query to include auctions with the least likes first.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLeastLiked($query)
+    {
+        return $query->withCount('reactions as likes_count')
+            ->orderBy('likes_count');
+    }
+
     public function getUniqueBidderCountAttribute()
     {
         return $this->bids()->with('user')->get()->unique('user_id')->count();

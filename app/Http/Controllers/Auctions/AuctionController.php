@@ -24,7 +24,7 @@ class AuctionController extends Controller
 
     public function topOwners(Request $request)
     {
-        $timeframe = $request->input('timeframe'); // No default value provided
+        $timeframe = $request->input('timeframe');
         $topSellers = User::topSellers($timeframe)->get();
 
         return response()->json($topSellers);
@@ -52,54 +52,70 @@ class AuctionController extends Controller
 
     public function filterAuctions(Request $request)
     {
-        $query = Auction::query();
+        $query = Auction::with(['product' => function ($query) {
+            $query->select('id', 'title', 'description', 'manufacturer');
+        }]);
 
         // Apply category filter if provided
-        if ($request->has('category') && !empty($request->category)) {
-            $query->whereHas('product.category', function ($q) use ($request) {
+        $query->when($request->filled('category'), function ($q) use ($request) {
+            return $q->whereHas('product.category', function ($q) use ($request) {
                 $q->where('id', $request->category);
             });
-        }
+        });
 
         // Apply collection filter if provided
-        if ($request->has('collection') && !empty($request->collection)) {
-            $query->whereHas('product.collections', function ($q) use ($request) {
+        $query->when($request->filled('collection'), function ($q) use ($request) {
+            return $q->whereHas('product.collections', function ($q) use ($request) {
                 $q->where('collections.id', $request->collection);
             });
-        }
+        });
 
         // Apply price range filter if provided
-        if ($request->has('minPrice') && $request->has('maxPrice')) {
+        $query->when($request->filled('minPrice') && $request->filled('maxPrice'), function ($q) use ($request) {
             $minPrice = $request->minPrice;
             $maxPrice = $request->maxPrice;
 
             // Ensure that the minimum price is not greater than the maximum price
             if ($minPrice <= $maxPrice) {
-                $query->whereBetween('current_bid_price', [$minPrice, $maxPrice]);
+                return $q->whereBetween('current_bid_price', [$minPrice, $maxPrice]);
             }
-        }
+        });
 
-        if ($request->has('saleType')) {
+        // Apply saleType filter if provided
+        $query->when($request->filled('saleType'), function ($q) use ($request) {
             $saleType = $request->saleType;
             if ($saleType == "1") {
-                $query->where('is_instant', true);
+                return $q->where('is_instant', true);
             } elseif ($saleType == "0") {
-                $query->where('is_instant', false);
+                return $q->where('is_instant', false);
             }
+        });
+
+        $query->when($request->filled('likes'), function ($q) use ($request) {
+            if ($request->likes == "0") {
+                return $q->mostLiked();
+            } elseif ($request->likes == "1") {
+                return $q->leastLiked();
+            }
+        });
+
+        $auctions = $query->get();
+
+        if ($auctions->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No auctions found matching the criteria.',
+                'auctions' => $auctions,
+            ]);
         }
 
-        // Eager load the 'product' relationship with specific fields
-        $auctions = $query->with(['product' => function ($query) {
-            $query->select('id', 'title', 'description', 'manufacturer');
-        }])->get();
-
-        // Return the response as JSON
         return response()->json([
             'success' => true,
             'message' => 'Search successful.',
             'auctions' => $auctions,
         ]);
     }
+
 
 
     public function searchForAuctions(Request $request)
@@ -116,6 +132,18 @@ class AuctionController extends Controller
             'success' => true,
             'message' => 'Search successful.',
             'auctions' => $auctions,
+        ]);
+    }
+
+    public function getPriceRange()
+    {
+        // Fetch the minimum and maximum of the current bid prices
+        $minPrice = Auction::min('current_bid_price');
+        $maxPrice = Auction::max('current_bid_price');
+
+        return response()->json([
+            'minPrice' => $minPrice ?? 1,
+            'maxPrice' => $maxPrice ?? 500,
         ]);
     }
 

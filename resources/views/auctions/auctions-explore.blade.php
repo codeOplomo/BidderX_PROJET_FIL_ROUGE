@@ -22,8 +22,8 @@
             <div class="inner">
                 <div class="filter-select-option">
                     <label class="filter-leble">LIKES</label>
-                    <select>
-                        <option data-display="Most liked">Most liked</option>
+                    <select name="likes">
+                        <option data-display="Most liked" value="0">Most liked</option>
                         <option value="1">Least liked</option>
                     </select>
                 </div>
@@ -90,34 +90,85 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
     $(document).ready(function() {
+        function initializePriceRangeSlider() {
+            $.ajax({
+                url: "{{ route('price.range') }}", // Make sure this URL is correct
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    // Destroy the slider if it already exists
+                    if ($("#slider-range").hasClass('ui-slider')) {
+                        $("#slider-range").slider("destroy");
+                    }
+
+                    // Initialize the slider with the fetched price range
+                    $("#slider-range").slider({
+                        range: true,
+                        min: parseInt(response.minPrice, 10),
+                        max: parseInt(response.maxPrice, 10),
+                        values: [parseInt(response.minPrice, 10), parseInt(response.maxPrice, 10)],
+                        slide: function(event, ui) {
+                            $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                        }
+                    });
+
+                    // Set the initial value of the amount input box
+                    $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+                        " - $" + $("#slider-range").slider("values", 1));
+                }
+            });
+        }
+
+        initializePriceRangeSlider();
+
         // Filter auctions
         $('#filter-auctions-button').click(function() {
             console.log('Filtering auctions...');
             var category = $('select[name="category"]').val();
             var collection = $('select[name="collection"]').val();
             var saleType = $('select[name="saleType"]').val();
+            var likes = $('select[name="likes"]').val();
             var priceRange = $('#amount').val().split(' - ');
             var minPrice = priceRange[0].replace('$', '');
             var maxPrice = priceRange[1].replace('$', '');
+
+            var data = {
+                minPrice: minPrice,
+                maxPrice: maxPrice,
+            };
+
+            if (category && category !== "Category") {
+                data.category = category;
+            }
+
+            if (collection && collection !== "Select Collection") {
+                data.collection = collection;
+            }
+
+            if (saleType && saleType !== "Sale type") {
+                data.saleType = saleType;
+            }
+
+            if (likes) {
+                data.likes = likes;
+            }
+
+
             console.log('Filtering with:', {category, collection, minPrice, maxPrice});
 
-            console.log(category, collection);
             $.ajax({
                 url: "{{ route('auctions.filter') }}",
                 type: 'GET',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                data: {
-                    category: category,
-                    collection: collection,
-                    minPrice: minPrice,
-                    maxPrice: maxPrice,
-                    saleType: saleType
-                },
+                data: data,
+
                 success: function(response) {
                     if (response.success) {
-                        $('#auctions-section').empty(); // Clear the current content
+                        $('#auctions-section').empty();
 
                         $.each(response.auctions, function(index, auction) {
                             // Assuming you have a route named 'product.details' that accepts an auction's ID
@@ -143,8 +194,12 @@
                             $('#auctions-section').append(auctionCardHtml);
                         });
                     } else {
-                        // Handle unsuccessful search
-                        console.log(response.message); // Log error or display it to the user
+                        $('#auctions-section').empty();
+                        var noAuctionsHtml = `<div class="col-12 text-center">
+            <p>${response.message}</p>
+        </div>`;
+                        $('#auctions-section').append(noAuctionsHtml);
+                        console.log(response.message);
                     }
                 },
                 error: function(error) {
