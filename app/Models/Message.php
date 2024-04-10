@@ -23,6 +23,11 @@ class Message extends Model
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
+    public function getContent()
+    {
+        return $this->content;
+    }
+
     // Scope for unread messages
     public function scopeUnread($query)
     {
