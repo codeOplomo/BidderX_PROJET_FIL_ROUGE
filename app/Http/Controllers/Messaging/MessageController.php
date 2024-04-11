@@ -47,22 +47,19 @@ class MessageController extends Controller
             ]);
 
 
-            // Create a new message in the database
             $message = Message::create([
-                'sender_id' => Auth::id(), // Use the authenticated user's ID as the sender
-                'receiver_id' => $request->input('receiver_id'), // Use the provided receiver_id from the request
-                'content' => $request->input('content'), // Use the content from the request
-                'is_read' => false, // Default to false when a message is first created
+                'sender_id' => Auth::id(),
+                'receiver_id' => $request->input('receiver_id'),
+                'content' => $request->input('content'),
+                'is_read' => false,
             ]);
 
             // Dispatch an event for real-time broadcasting
             broadcast(new MessageSent($message))->toOthers();
             //event(new MessageSent($message));
 
-            // Return a successful response with the message data
             return response()->json(['message' => 'Message sent successfully!', 'data' => $message], 201);
         } catch (\Exception $e) {
-            Log::error('Error sending message: ' . $e->getMessage());
             return response()->json(['error' => 'Message sending failed'], 500);
         }
     }

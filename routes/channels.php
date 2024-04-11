@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Log;
 
@@ -14,21 +15,12 @@ use Illuminate\Support\Facades\Log;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('chat.{id}', function (User $user, $id) {
+    return $user->id === $id;
 });
 
-Broadcast::channel('presence-user-presence.{userId}', function ($user, $userId) {
-    return (int) $user->id === (int) $userId;
-});
 
-Broadcast::channel('bidder-chat', function ($user) {
-    Log::debug('Authenticating user for bidder-chat', ['user_id' => $user->id ?? 'guest']);
-    return true;
-});
 
-Broadcast::channel('chat.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+
 
 

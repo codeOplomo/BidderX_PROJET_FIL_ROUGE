@@ -30,11 +30,13 @@ class MessageSent implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return \Illuminate\Broadcasting\PrivateChannel|array
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.' . $this->message->receiver_id);
+        return [
+            new PrivateChannel('chat.' . $this->message->receiver_id),
+        ];
     }
 
 
@@ -47,7 +49,7 @@ class MessageSent implements ShouldBroadcast
         return [
             'message' => [
                 'id' => $this->message->id,
-                'content' => $this->message->getContent(),
+                'content' => $this->message->content,
                 'sender_id' => $this->message->sender_id,
                 'receiver_id' => $this->message->receiver_id,
                 'created_at' => $this->message->created_at->toDateTimeString(),

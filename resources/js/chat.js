@@ -6,7 +6,12 @@ window.io = io;
 // Now we can initialize Echo with Socket.io
 window.Echo = new Echo({
     broadcaster: 'socket.io',
-    host: window.location.hostname + ':6001'
+    host: window.location.hostname + ':6001',
+    auth: {
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    }
 });
 
 var authUserId = window.authUserId;
@@ -34,26 +39,6 @@ function setupSendMessageListener() {
     });
 }
 
-function setupChatListeners() {
-    if(currentReceiverId) {
-        // Listen for messages sent to the receiver
-        window.Echo.private(`chat.${currentReceiverId}`)
-            .listen('MessageSent', (e) => {
-                console.log("Message received from receiver", e.message);
-                appendMessage(e.message, false); // Incoming message
-            });
-    }
-
-    // Always listen for messages sent to the authenticated user
-    window.Echo.private(`chat.${authUserId}`)
-        .listen('MessageSent', (e) => {
-            console.log("Message received for auth user", e.message);
-            if(e.message.sender_id !== authUserId) { // Ensure not to duplicate for sender
-                appendMessage(e.message, true); // Incoming message
-            }
-        });
-}
-
 function sendMessage() {
     const messageInput = document.getElementById('message-input');
     const message = messageInput.value.trim();
@@ -78,7 +63,7 @@ function sendMessage() {
             }
             return response.json();
         })
-    then(data => {
+        .then(data => {
         if (data.message === 'Message sent successfully!') {
             appendMessage(data.data, true); // true to indicate this user is the sender
             messageInput.value = ''; // Clear input after sending
