@@ -23,11 +23,15 @@ class User extends Authenticatable implements HasMedia, WalletOperations
         'password',
         'phone',
         'is_active',
+        'google_id',
+        'google_token',
+        'avatar',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'google_token',
     ];
 
     protected $casts = [

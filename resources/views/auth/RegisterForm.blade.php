@@ -79,9 +79,10 @@
                     <div class="social-share-media form-wrapper-one">
                         <h6>Another way to sign up</h6>
                         <p> Lorem ipsum dolor sit, amet sectetur adipisicing elit.cumque.</p>
-                        <button class="another-login login-facebook"> <img class="small-image"
-                                src="assets/images/icons/google.png" alt=""> <span>Log in with
-                                Google</span></button>
+                        <button class="another-login login-google" onclick="window.location.href='{{ route('login.google') }}'">
+                            <img class="small-image" src="assets/images/icons/google.png" alt="">
+                            <span>Log in with Google</span>
+                        </button>
                         <button class="another-login login-facebook"> <img class="small-image"
                                 src="assets/images/icons/facebook.png" alt=""> <span>Log in with
                                 Facebook</span></button>

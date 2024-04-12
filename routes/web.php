@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auctions\AuctionReactionController;
 use App\Http\Controllers\Auctions\BidController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Blogs\BlogPostController;
 use App\Http\Controllers\Blogs\CommentController;
 use App\Http\Controllers\Collection\CollectionController;
@@ -42,12 +43,16 @@ Route::get('/blog/{id}', [HomeController::class, 'details'])->name('blog.details
 Route::get('/blogs/category/{category}', [HomeController::class, 'blogsByCategory'])->name('blogs.by.category');
 Route::get('/blogs/by-tag/{tag}', [HomeController::class, 'getBlogsByTag'])->name('blogs.by.tag');
 Route::get('/search-blogs-sp', [HomeController::class, 'searchBlogsSp'])->name('search.blogs.sp');
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::get('login/google', [SocialiteController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('login/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
+
 Route::post('/subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');
 Route::get('/top-owners', [AuctionController::class, 'topOwners'])->name('topOwners');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
 
 
