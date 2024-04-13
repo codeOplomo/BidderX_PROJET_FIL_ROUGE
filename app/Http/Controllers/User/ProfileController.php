@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,23 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
+    public function index()
+    {
+        $user = auth()->user();
+        $tabTitles = $user->hasRole('owner') ? ['liked', 'owned', 'created', 'collection'] : ['liked', 'owned'];
+        $likedAuctions = Auction::likedByUser($user->id)->with('product')->get();
+        $ownedAuctions = $user->wonProducts;
+
+        if ($user->hasRole('owner')) {
+            $createdAuctions = $user->auctionedProducts;
+            $collections = $user->collections()->withCount('products')->get();
+        } else {
+            $createdAuctions = collect();
+            $collections = collect();
+        }
+
+        return view('profiles.index', compact('user', 'tabTitles', 'likedAuctions', 'ownedAuctions', 'createdAuctions', 'collections'));
+    }
 
 
 public function changePassword(Request $request)
@@ -34,7 +52,7 @@ public function changePassword(Request $request)
     return back()->with('success', 'Password changed successfully.');
 }
 
-    public function storeImages(Request $request)
+public function storeImages(Request $request)
     {
         $request->validate([
             'profile_image' => 'required|image|max:2048',

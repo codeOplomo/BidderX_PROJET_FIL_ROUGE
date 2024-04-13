@@ -5,17 +5,67 @@ namespace App\Http\Controllers\User\Owner;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OwnerController extends Controller
 {
+
+    public function showCreators()
+    {
+        $creators = User::with('roles')
+        ->whereHas('roles', function($query) {
+            $query->where('name', 'owner');
+        })
+            ->topSellers(30)
+            ->get();
+//dd($creators);
+        return view('auctions.creators', compact('creators'));
+    }
+
+    public function sortCreators(Request $request)
+    {
+        $sort = $request->query('sort', 'recent_added');
+        $timeframe = 30;
+
+        switch ($sort) {
+            case 'recent_added':
+                $creators = User::with('roles')
+                    ->whereHas('roles', function($query) {
+                        $query->where('name', 'owner');
+                    })
+                    ->where('created_at', '>=', now()->subDays(30)) // Filtering users added within the last 30 days
+                    ->orderByDesc('created_at')
+                    ->select([
+                        'users.*',
+                        DB::raw('COALESCE((SELECT SUM(auctions.current_bid_price)
+                FROM auctions
+                WHERE auctions.user_id = users.id
+                AND auctions.winner_id IS NOT NULL), 0) AS total_revenue') // Removed start_time constraint
+                    ])
+                    ->get();
+                break;
+            default:
+                $creators = User::with('roles')
+                    ->whereHas('roles', function($query) {
+                        $query->where('name', 'owner');
+                    })
+                    ->topSellers($timeframe)
+                    ->get();
+                break;
+        }
+        return view('component.creator-list', compact('creators'))->render();
+    }
+
+
     public function index()
     {
         $user = auth()->user();
 
         if ($user->hasRole('owner')) {
-            $ownerData = $user;
+            //$ownerData = $user;
             $tabTitles = ['liked', 'owned', 'created', 'collection'];
 
             // Fetch the auctions and products associated with the owner
@@ -26,7 +76,7 @@ class OwnerController extends Controller
             $collections = $user->collections()->withCount('products')->get();
 
 
-            return view('owner.profile.ownerProfile', compact('ownerData', 'tabTitles', 'likedAuctions', 'createdAuctions', 'ownedAuctions', 'collections'));
+            return view('profiles.index', compact('user', 'tabTitles', 'likedAuctions', 'createdAuctions', 'ownedAuctions', 'collections'));
         } else {
             return abort(403, 'Unauthorized access');
         }
@@ -39,7 +89,7 @@ class OwnerController extends Controller
     {
         $user = auth()->user();
 
-        return view('owner.profile.editProfile', compact('user'));
+        return view('profiles.edit', compact('user'));
     }
 
     public function storeAuction(Request $request)

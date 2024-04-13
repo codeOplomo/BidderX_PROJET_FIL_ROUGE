@@ -4,13 +4,13 @@
 <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
 
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick-theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/vendor/nice-select.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/feature.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery-ui.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/vendor/odometer.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/vendor/slick-theme.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/vendor/nice-select.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugins/feature.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery-ui.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/vendor/odometer.css') }}">
 
 
 <style>
@@ -52,7 +52,7 @@
 </style>
 
 @section('content')
-    <div class="rn-author-bg-area bg_image ptb--150" style="background-image: url('{{ $user->getFirstMediaUrl("cover_images") }}');">
+    <div class="rn-author-bg-area bg_image--9 bg_image ptb--150">
         <div class="container">
             <div class="row">
                 <!-- Placeholder for additional content if necessary -->
@@ -89,6 +89,29 @@
                                         <a href="{{ route('owner.collections.create') }}" class="btn at-follw follow-button"><i data-feather="plus"></i> Create Collection</a>
                                     @endif
                                     <span class="btn at-follw share-button" data-bs-toggle="modal" data-bs-target="#shareModal"><i data-feather="share-2"></i></span>
+                                        <div class="count at-follw">
+                                            <div class="share-btn share-btn-activation dropdown">
+                                                <button class="icon" type="button" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    <svg viewBox="0 0 14 4" fill="none" width="16" height="16"
+                                                         class="sc-bdnxRM sc-hKFxyN hOiKLt">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                              d="M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM8.5 2C8.5 2.82843 7.82843 3.5 7 3.5C6.17157 3.5 5.5 2.82843 5.5 2C5.5 1.17157 6.17157 0.5 7 0.5C7.82843 0.5 8.5 1.17157 8.5 2ZM11.999 3.5C12.8274 3.5 13.499 2.82843 13.499 2C13.499 1.17157 12.8274 0.5 11.999 0.5C11.1706 0.5 10.499 1.17157 10.499 2C10.499 2.82843 11.1706 3.5 11.999 3.5Z"
+                                                              fill="currentColor"></path>
+                                                    </svg>
+                                                </button>
+
+                                                <div class="share-btn-setting dropdown-menu dropdown-menu-end">
+                                                    <button type="button" class="btn-setting-text report-text"
+                                                            data-bs-toggle="modal" data-bs-target="#reportModal">
+                                                        Report
+                                                    </button>
+                                                    <button type="button" class="btn-setting-text report-text">
+                                                        Claim Owenership
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +156,7 @@
 
             <!-- Modal -->
             <div class="rn-popup-modal share-modal-wrapper modal fade" id="shareModal" tabindex="-1"
-                aria-hidden="true">
+                 aria-hidden="true">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
                         data-feather="x"></i></button>
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -161,7 +184,7 @@
 
             <!-- Modal -->
             <div class="rn-popup-modal report-modal-wrapper modal fade" id="reportModal" tabindex="-1"
-                aria-hidden="true">
+                 aria-hidden="true">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
                         data-feather="x"></i></button>
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -178,7 +201,7 @@
                                 <div class="report-button">
                                     <button type="button" class="btn btn-primary mr--10 w-auto">Report</button>
                                     <button type="button" class="btn btn-primary-alta w-auto"
-                                        data-bs-dismiss="modal">Cancel</button>
+                                            data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>

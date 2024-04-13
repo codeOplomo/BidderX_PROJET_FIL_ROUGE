@@ -43,6 +43,7 @@
                                     <ul class="submenu">
                                         <li><a href="{{ route('timedAuctions') }}">Timed Auctions</a></li>
                                         <li><a href="{{ route('instantAuctions') }}">Instant Auctions</a></li>
+                                        <li><a href="{{ route('creators.show') }}">Creators</a></li>
                                     </ul>
                                 </li>
                             @endauth

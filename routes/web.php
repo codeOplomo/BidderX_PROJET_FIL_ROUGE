@@ -50,6 +50,8 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 Route::get('login/google', [SocialiteController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
+Route::get('login/twitter', [SocialiteController::class, 'redirectToTwitter'])->name('login.twitter');
+Route::get('login/twitter/callback', [SocialiteController::class, 'handleTwitterCallback']);
 
 Route::post('/subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');
 Route::get('/top-owners', [AuctionController::class, 'topOwners'])->name('topOwners');
@@ -95,6 +97,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/wallet-connect', [WalletController::class, 'connectWallet'])->name('wallet.connect');
     Route::get('/payment-page', [WalletController::class, 'paymentPage'])->name('payment.page');
     Route::post('/payment-deposit', [WalletController::class, 'depositPayment'])->name('payment.deposit');
+    Route::get('/creators', [OwnerController::class, 'showCreators'])->name('creators.show');
+    Route::get('/creators/sort', [OwnerController::class, 'sortCreators'])->name('creators.sort');
+    Route::get('/profile/{id}', [ProfileController::class, 'showProfile'])->name('user.profile');
+    Route::get('/profile', [UserProfileController::class, 'index'])->name('profile');
+
+
+
 
 
 

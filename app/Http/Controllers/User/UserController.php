@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,27 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    public function index()
+    {
+        $user = auth()->user();
+
+        if (Gate::allows('is-owner', $user)) {
+            $tabTitles = ['liked', 'owned', 'created', 'collection'];
+            $likedAuctions = Auction::likedByUser($user->id)->with('product')->get();
+            $ownedAuctions = $user->wonProducts;
+            $collections = $user->collections()->withCount('products')->get();
+            $createdAuctions = $user->auctionedProducts;
+        } elseif (Gate::allows('is-bidder', $user)) {
+            $tabTitles = ['liked', 'owned'];
+            $likedAuctions = Auction::likedByUser($user->id)->with('product')->get();
+            $ownedAuctions = $user->wonProducts;
+        } else {
+            abort(403, 'Unauthorized access');
+        }
+
+        return view('profiles.index', compact('user', 'tabTitles', 'likedAuctions', 'ownedAuctions', 'createdAuctions', 'collections'));
+    }
 
     public function ban(User $user)
 {
@@ -74,7 +96,7 @@ public function unban(User $user)
     }
     public function index(Request $request)
 {
-    
+
 }
 
 

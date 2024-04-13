@@ -22,7 +22,7 @@ class BidderController extends Controller
         $likedAuctions = Auction::likedByUser($user->id)->with('product')->get();
         $ownedAuctions = $user->wonProducts;
 
-        return view('bidder.profile.bidderProfile', compact('bidderData', 'tabTitles', 'likedAuctions', 'ownedAuctions'));
+        return view('profiles.index', compact('bidderData', 'tabTitles', 'likedAuctions', 'ownedAuctions'));
     } else {
         return abort(403, 'Unauthorized access');
     }
@@ -33,7 +33,7 @@ public function profileEdit()
     {
         $user = auth()->user();
 
-        return view('owner.profile.editProfile', compact('user'));
+        return view('profiles.edit', compact('user'));
     }
 
 }
