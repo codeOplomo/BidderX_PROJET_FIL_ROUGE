@@ -16,13 +16,13 @@ class BidderController extends Controller
     $user = auth()->user();
 
     if ($user->hasRole('bidder')) {
-        $bidderData = $user;
+        //$bidderData = $user;
         $tabTitles = ['liked', 'owned'];
 
         $likedAuctions = Auction::likedByUser($user->id)->with('product')->get();
         $ownedAuctions = $user->wonProducts;
 
-        return view('profiles.index', compact('bidderData', 'tabTitles', 'likedAuctions', 'ownedAuctions'));
+        return view('profiles.index', compact('user', 'tabTitles', 'likedAuctions', 'ownedAuctions'));
     } else {
         return abort(403, 'Unauthorized access');
     }

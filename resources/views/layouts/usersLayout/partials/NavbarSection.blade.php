@@ -9,15 +9,9 @@
                     <nav id="sideNav" class="mainmenu-nav d-none d-xl-block">
                         <ul class="mainmenu">
                             @auth
-                                @if (Auth::user()->roles->contains('id', 3))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('ownerProfile') }}">My Profile</a>
-                                    </li>
-                                @elseif(Auth::user()->roles->contains('id', 2))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('bidderProfile') }}">My Profile</a>
-                                    </li>
-                                @endif
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('profile.index') }}">My Profile</a>
+                                </li>
                             @endauth
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('home') }}">Home</a>

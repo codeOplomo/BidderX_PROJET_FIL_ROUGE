@@ -81,9 +81,9 @@ class AuthController extends Controller
         if ($user->roles->contains('id', 1)) {
             return redirect()->route('admin.dashboard');
         } elseif($user->roles->contains('id', 2)) {
-            return redirect()->route('bidderProfile');
+            return redirect()->route('profile.index');
         } elseif ($user->roles->contains('id', 3)) {
-            return redirect()->route('ownerProfile');
+            return redirect()->route('profile.index');
         }
 
         return redirect()->route('home');

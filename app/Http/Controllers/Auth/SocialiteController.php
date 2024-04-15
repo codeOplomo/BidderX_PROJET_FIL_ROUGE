@@ -48,7 +48,7 @@ class SocialiteController extends Controller
                 $newUser->update(['is_active' => true]);
                 Auth::login($newUser, true);
             }
-            return redirect()->route('home');
+            return redirect()->route('profile.index');
         } catch (\Exception $e) {
             Log::error('Google Auth error: ' . $e->getMessage());
             return redirect('login')->withErrors('Something went wrong or you have refused the app!');

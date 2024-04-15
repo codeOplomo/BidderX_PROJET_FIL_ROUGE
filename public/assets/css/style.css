@@ -12358,8 +12358,8 @@ span.rn-badge-card::before {
   left: 0;
   top: 0;
   position: absolute;
-  background: linear-gradient(95deg, #000000 15%, #0074b9 45%, #0400ff 75%, #2a1b95) 95%/200% 100%;
-  z-index: -1;
+    background: linear-gradient(95deg, #ff7f00 15%, #ff9800 45%, #ff5722 75%, #ff4500) 95%/200% 100%;
+    z-index: -1;
   border-radius: 100px;
   opacity: 0.5;
 }
@@ -16407,7 +16407,7 @@ figcaption {
 
 .rn-about-card {
   border: 1px solid var(--color-border);
-  background: #191925;
+  background: var(--background-color-1);
   padding: 50px 40px;
   border-radius: 5px;
 }
@@ -17952,7 +17952,6 @@ button .small-image {
   background: var(--background-color-4);
   height: 100%;
   position: relative;
-  z-index: 5;
 }
 
 .product-style-one::before {
@@ -17962,8 +17961,8 @@ button .small-image {
   bottom: 0;
   left: 0;
   border-radius: 15px;
-  background-image: linear-gradient(100deg, #13131d, #0398ed);
-  background-repeat: repeat-x;
+    background-image: linear-gradient(80deg, #ff7f00, #ffcc66);
+    background-repeat: repeat-x;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   width: 100%;

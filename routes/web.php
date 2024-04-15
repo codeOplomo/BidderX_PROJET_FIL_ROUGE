@@ -100,8 +100,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/creators', [OwnerController::class, 'showCreators'])->name('creators.show');
     Route::get('/creators/sort', [OwnerController::class, 'sortCreators'])->name('creators.sort');
     Route::get('/profile/{id}', [ProfileController::class, 'showProfile'])->name('user.profile');
-    Route::get('/profile', [UserProfileController::class, 'index'])->name('profile');
-
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit/user', [ProfileController::class, 'userProfileEdit'])->name('user.profile.edit');
 
 
 
@@ -160,16 +160,13 @@ Route::middleware(['auth'])->group(function () {
 
 // Bidder routes
     Route::middleware(['bidder'])->group(function () {
-        Route::get('/bidder-profile', [BidderController::class, 'index'])->name('bidderProfile');
-        Route::get('/bidder/profile/edit', [BidderController::class, 'profileEdit'])->name('bidder.profile.edit');
+
     });
 
 // Owner routes
     Route::middleware(['owner'])->group(function () {
-        Route::get('/owner-profile', [OwnerController::class, 'index'])->name('ownerProfile');
         Route::get('/owner/auction/create', [AuctionController::class, 'create'])->name('owner.auction.auctionCreate');
         Route::post('/owner/auction/submit', [OwnerController::class, 'storeAuction'])->name('owner.auction.submit');
-        Route::get('/owner/profile/edit', [OwnerController::class, 'profileEdit'])->name('owner.profile.edit');
         Route::get('/collections/create', [CollectionController::class, 'create'])->name('owner.collections.create');
         Route::post('/collections', [CollectionController::class, 'store'])->name('owner.collections.store');
     });

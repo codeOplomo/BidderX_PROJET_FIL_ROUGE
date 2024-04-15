@@ -13,24 +13,40 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
-        $tabTitles = $user->hasRole('owner') ? ['liked', 'owned', 'created', 'collection'] : ['liked', 'owned'];
-        $likedAuctions = Auction::likedByUser($user->id)->with('product')->get();
-        $ownedAuctions = $user->wonProducts;
+        $user = Auth::user();
+        // Initialize an empty array for data
+        $data = [
+            'liked' => [],
+            'owned' => []
+        ];
+
+        // Fetch data for 'liked' and 'owned' tabs, these are common to all users
+        $data['liked'] = Auction::likedByUser($user->id)->with('product')->get();
+        $data['owned'] = $user->wonProducts;
+
+        // Initialize tabTitles with common tabs
+        $tabTitles = ['liked', 'owned'];
 
         if ($user->hasRole('owner')) {
-            $createdAuctions = $user->auctionedProducts;
-            $collections = $user->collections()->withCount('products')->get();
-        } else {
-            $createdAuctions = collect();
-            $collections = collect();
+            // Additional data and tabs for owners
+            $data['created'] = $user->auctionedProducts;
+            $data['collection'] = $user->collections()->withCount('products')->get();
+            $tabTitles = array_merge($tabTitles, ['created', 'collection']);
         }
 
-        return view('profiles.index', compact('user', 'tabTitles', 'likedAuctions', 'ownedAuctions', 'createdAuctions', 'collections'));
+        // Ensure all data and tabTitles are passed to the view
+        return view('profiles.index', compact('user', 'tabTitles', 'data'));
+    }
+
+    public function userProfileEdit()
+    {
+        $user = auth()->user();
+
+        return view('profiles.edit', compact('user'));
     }
 
 
-public function changePassword(Request $request)
+    public function changePassword(Request $request)
 {
     $request->validate([
         'email' => ['required', 'email', 'exists:users,email'],

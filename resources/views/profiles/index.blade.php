@@ -112,6 +112,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <a href="{{ route('user.profile.edit') }}"
+                                           class="btn at-follw follow-button edit-btn"><i data-feather="edit"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -143,16 +145,17 @@
             </div>
 
             <div class="tab-content rn-bid-content" id="nav-tabContent">
-                @foreach(['liked' => $likedAuctions, 'owned' => $ownedAuctions, 'created' => $createdAuctions, 'collection' => $collections] as $tabName => $items)
-                    @if(in_array($tabName, $tabTitles))
-                        <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="nav-{{ Str::slug($tabName) }}" role="tabpanel" aria-labelledby="nav-{{ Str::slug($tabName) }}-tab">
-                            @foreach($items as $item)
+                @foreach($tabTitles as $tabName)
+                    <div class="tab-pane row g-5 d-flex fade {{ $loop->first ? 'show active' : '' }}" id="nav-{{ Str::slug($tabName) }}" role="tabpanel" aria-labelledby="nav-{{ Str::slug($tabName) }}-tab">
+                        @if (array_key_exists($tabName, $data))
+                            @foreach($data[$tabName] as $item)
                                 @include('component.auction-card', ['auction' => $item])
                             @endforeach
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 @endforeach
             </div>
+
 
             <!-- Modal -->
             <div class="rn-popup-modal share-modal-wrapper modal fade" id="shareModal" tabindex="-1"

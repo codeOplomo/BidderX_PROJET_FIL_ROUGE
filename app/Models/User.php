@@ -26,6 +26,7 @@ class User extends Authenticatable implements HasMedia, WalletOperations
         'google_id',
         'google_token',
         'avatar',
+        'is_banned',
     ];
 
     protected $hidden = [
@@ -37,6 +38,7 @@ class User extends Authenticatable implements HasMedia, WalletOperations
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_banned' => 'boolean',
     ];
 
 
