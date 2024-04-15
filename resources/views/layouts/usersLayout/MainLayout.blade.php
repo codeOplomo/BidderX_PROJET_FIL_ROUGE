@@ -39,6 +39,15 @@
 
 
     <style>
+
+        .chat-thumbnail {
+            border-radius: 100%; max-height: 60px; object-fit: cover; max-width: 100%; height: auto;
+        }
+
+        .chat-history {
+            display: none;
+        }
+
         .navbar {
             background-color: transparent;
             transition: background-color 0.3s ease, backdrop-filter 0.3s ease;

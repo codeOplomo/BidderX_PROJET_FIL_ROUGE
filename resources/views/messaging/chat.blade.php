@@ -1,16 +1,7 @@
 @extends('layouts.usersLayout.MainLayout')
 
 @section('content')
-    <style>
-        .chat-thumbnail {
-            border-radius: 100%; max-height: 60px; object-fit: cover; max-width: 100%; height: auto;
-        }
 
-        .chat-history {
-            display: none;
-        }
-
-    </style>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <div class="container">

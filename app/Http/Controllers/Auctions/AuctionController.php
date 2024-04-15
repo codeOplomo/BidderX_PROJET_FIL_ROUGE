@@ -202,10 +202,17 @@ class AuctionController extends Controller
 
     public function create()
     {
+        // First, authorize the user
+        $this->authorize('createAuction', User::class);
+
+        // If the authorization is successful, fetch categories and collections
         $categories = Category::all();
         $collections = Auth::user()->collections;
+
+        // Then render the view with the necessary data
         return view('owner.auction.auctionCreate', compact('categories', 'collections'));
     }
+
 
 
     /**

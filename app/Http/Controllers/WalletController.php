@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\WalletEnums;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -14,16 +15,19 @@ class WalletController extends Controller
 {
     public function connectWallet()
     {
+        $this->authorize('useWallet', User::class);
         return view('wallet.connect-wallet');
     }
 
     public function paymentPage()
     {
+        $this->authorize('useWallet', User::class);
         return view('wallet.payment-page');
     }
 
     public function depositPayment(Request $request)
     {
+        $this->authorize('useWallet', User::class);
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {

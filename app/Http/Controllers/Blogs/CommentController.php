@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Blogs;
 use App\Http\Controllers\Controller;
 use App\Models\BlogPost;
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -16,22 +17,23 @@ class CommentController extends Controller
 
     public function fetchComments($blogId)
     {
-        // Fetch the blog post
+        $user = auth()->user();
+        $this->authorize('comment', $user);
+
         $blog = BlogPost::findOrFail($blogId);
 
-        // Fetch all comments or use any specific logic to fetch comments
         $comments = Comment::with('user')->where('blog_post_id', $blogId)->get(); // Assuming you have a relationship with the user
 
-        // Render the comments view and return it as JSON
         $commentsView = view('component.single-comment', ['comments' => $comments, 'blog' => $blog])->render();
 
         return response()->json(['comments' => $commentsView]);
     }
 
 
-    // Store a newly created comment in storage.
     public function store(Request $request)
     {
+        $this->authorize('comment', User::class);
+
         $request->validate([
             'blog_post_id' => 'required|exists:blog_posts,id',
             'comment' => 'required|string',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Collection;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CollectionController extends Controller
@@ -16,14 +17,16 @@ class CollectionController extends Controller
     }
     public function create()
     {
-        $categories = Category::all();
+        $this->authorize('createCollection', User::class);
 
+        $categories = Category::all();
         return view('collections.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        // Validate the incoming request data
+        $this->authorize('createCollection', User::class);
+
         $validatedData = $request->validate([
             'name' => 'required|string',
             'category' => 'required|exists:categories,id',
@@ -36,7 +39,6 @@ class CollectionController extends Controller
         //dd($request->all());
         $owner = auth()->user();
 
-        // Create a new collection using the validated data
         $collection = Collection::create([
             'name' => $validatedData['name'],
             'category_id' => $validatedData['category'],
@@ -48,18 +50,15 @@ class CollectionController extends Controller
         // Associate the logo image with the collection under the media collection named "collection"
         $collection->addMediaFromRequest('logo_image')->toMediaCollection('blog_logo_image');
 
-        // Check if cover_image is present and add it to the media collection if so
         if ($request->hasFile('cover_image')) {
             $collection->addMediaFromRequest('cover_image')->toMediaCollection('blog_cover_image');
         }
 
-        // Check if featured_image is present and add it to the media collection if so
         if ($request->hasFile('featured_image')) {
             $collection->addMediaFromRequest('featured_image')->toMediaCollection('blog_featured_image');
         }
 
-        // Optionally, you can redirect the user to a relevant page after storing the collection
-        return redirect()->route('ownerProfile')->with('success', 'Collection created successfully!');
+        return redirect()->route('profile.index')->with('success', 'Collection created successfully!');
     }
 
 }

@@ -37,9 +37,13 @@
                         </ul>
 
 
+                        @can('comment', Auth::user())
                         <div class="rn-comment-form pt--60">
                             @include('component.comment-form')
                         </div>
+                        @else
+                            <p class="text-muted">You are not authorized to post comments.</p>
+                        @endcan
 
                     </div>
                 </div>

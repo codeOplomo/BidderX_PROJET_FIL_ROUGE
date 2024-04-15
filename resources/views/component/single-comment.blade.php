@@ -8,7 +8,7 @@
                 <li class="comment parent" data-comment-id="{{ $comment->id }}">
                     <div class="single-comment">
                         <div class="comment-author comment-img">
-                            <img class="comment-avatar" src="{{ $comment->user->getFirstMediaUrl("product_picture") ?: asset('assets/images/client/client-1.png') }}" alt="Comment Image">
+                            <img class="comment-avatar chat-thumbnail" src="{{ $comment->user->getFirstMediaUrl("product_picture") ?: asset('assets/images/client/client-1.png') }}" alt="Comment Image">
                             <div class="m-b-20">
                                 <div class="commenter">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</div>
                                 <div class="time-spent">{{ $comment->created_at->format('F d, Y \a\t h:i a') }}</div>
@@ -18,12 +18,14 @@
                             <p>{{ $comment->comment }}</p>
                         </div>
                         <div class="reply-edit">
+                            @can('comment', Auth::user())
                             <div class="reply">
                                 <a class="comment-reply-link" href="#">
                                     <i class="rbt feather-corner-down-right"></i>
                                     Reply
                                 </a>
                             </div>
+                            @endcan
                         </div>
                     </div>
                     <!-- Subform for replying -->
@@ -50,7 +52,7 @@
                                 <li class="comment byuser">
                                     <div class="single-comment">
                                         <div class="comment-author comment-img">
-                                            <img class="comment-avatar"  src="{{ $child->user->getFirstMediaUrl("product_picture") ?: asset('assets/images/client/client-1.png') }}" alt="Comment Image">
+                                            <img class="comment-avatar chat-thumbnail"  src="{{ $child->user->getFirstMediaUrl("product_picture") ?: asset('assets/images/client/client-1.png') }}" alt="Comment Image">
                                             <div class="m-b-20">
                                                 <div class="commenter">{{ $child->user->firstname }} {{ $child->user->lasttname }}</div>
                                                 <div class="time-spent">{{ $child->created_at->format('F d, Y \a\t h:i a') }}</div>

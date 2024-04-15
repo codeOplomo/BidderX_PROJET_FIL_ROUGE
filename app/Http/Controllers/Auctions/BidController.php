@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auctions;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Bid;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,20 +39,18 @@ class BidController extends Controller
 
         $auction = Auction::find($request->auction_id);
 
-        // Check for instant auction and if a bid has already been placed
+        $this->authorize('bid', User::class);
+
         if ($auction->is_instant && !is_null($auction->current_bid_price)) {
             return redirect()->back()->with('error', 'This instant auction has already been sold.');
         }
 
-        // Ensure $auction->start_time and $auction->end_time are instances of Carbon or are null
         $start_time = $auction->start_time ? new Carbon($auction->start_time) : null;
         $end_time = $auction->end_time ? new Carbon($auction->end_time) : null;
         $now = now();
 
-// Check if the auction has started (or has no start time, which means it's immediately active)
         $hasAuctionStarted = !$start_time || $now->greaterThanOrEqualTo($start_time);
 
-// Check if the auction has not ended (or has no end time, which means it remains active indefinitely)
         $hasAuctionNotEnded = !$end_time || $now->lessThanOrEqualTo($end_time);
 
 // Combine checks to determine if the auction is ongoing
