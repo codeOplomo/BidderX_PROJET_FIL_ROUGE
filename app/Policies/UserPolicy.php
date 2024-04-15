@@ -47,4 +47,9 @@ class UserPolicy
     {
         return !$user->is_banned;
     }
+
+    public function react(User $user)
+    {
+        return !$user->is_banned;
+    }
 }

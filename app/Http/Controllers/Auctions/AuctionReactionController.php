@@ -13,13 +13,13 @@ class AuctionReactionController extends Controller
     public function toggle(Request $request, $auctionId)
     {
         $user = auth()->user();
+        $this->authorize('react', $user);
+
         $auction = Auction::findOrFail($auctionId);
 
-        // Check if the user already reacted to this auction
         $reaction = $user->auctionReactions()->where('auction_id', $auctionId)->first();
 
         if ($reaction) {
-            // If a reaction exists, delete it to toggle off the reaction
             $reaction->delete();
         } else {
             // If no reaction exists, create a new one to toggle on the reaction
