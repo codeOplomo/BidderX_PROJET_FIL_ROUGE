@@ -1,7 +1,15 @@
-<div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-4 col-md-6 col-sm-6 col-12">
+
+
+<div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" style="opacity: unset">
     <div class="product-style-one no-overlay with-placeBid">
         <div class="card-thumbnail">
-            <a href="{{ route('product.details', $auction->id) }}"><img src="{{$auction->product->getFirstMediaUrl("product_picture")}}" alt="NFT_portfolio"></a>
+            <a href="{{ route('product.details', $auction->id) }}">
+                @if($auction->product && $auction->product->getFirstMediaUrl("product_picture"))
+                    <img src="{{ $auction->product->getFirstMediaUrl("product_picture") }}" alt="NFT_portfolio">
+                @else
+                    <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Default Image">
+                @endif
+            </a>
             @auth
                 @if((!$auction->is_instant && \Carbon\Carbon::now()->lessThan($auction->end_time)) || ($auction->is_instant && is_null($auction->current_bid_price)))
                     <a href="{{ route('product.details', $auction->id) }}" class="btn btn-primary">Place Bid</a>
@@ -54,10 +62,19 @@
             <div class="last-bid">{{ $auction->current_bid_price }} $</div>
             @auth
                 <!-- React area for authenticated users -->
-                <div class="react-area" onclick="toggleReaction({{ $auction->id }}, this)">
-                    @include('component.react-icon')
-                    <span class="number" id="reactCount-{{ $auction->id }}">{{ $auction->total_reactions }}</span>
-                </div>
+                @can('react', Auth::user())
+                    <div class="react-area" onclick="toggleReaction({{ $auction->id }}, this)">
+                        @include('component.react-icon')
+                        <span class="number" id="reactCount-{{ $auction->id }}">{{ $auction->total_reactions }}</span>
+                    </div>
+                @else
+                    <div class="" >
+                        @include('component.react-icon')
+                        <span class="number" id="reactCount-{{ $auction->id }}">{{ $auction->total_reactions }}</span>
+                    </div>
+                @endcan
+
+
             @endauth
             @guest
                 <!-- Static react count display for guests -->

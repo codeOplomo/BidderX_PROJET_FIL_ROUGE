@@ -20,6 +20,7 @@ class User extends Authenticatable implements HasMedia, WalletOperations
         'firstname',
         'lastname',
         'email',
+        'bio',
         'password',
         'phone',
         'is_active',
@@ -43,9 +44,9 @@ class User extends Authenticatable implements HasMedia, WalletOperations
 
 
 
-    public function addresses()
+    public function address()
     {
-        return $this->hasMany(Address::class);
+        return $this->hasOne(Address::class);
     }
 
     public function ratings()

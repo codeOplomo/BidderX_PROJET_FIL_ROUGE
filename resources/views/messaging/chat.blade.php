@@ -69,15 +69,17 @@
     </div>
 
 
-    <script src="//cdn.jsdelivr.net/npm/socket.io-client/dist/socket.io.js"></script>
+
     <script src="//cdn.jsdelivr.net/npm/laravel-echo/dist/echo.js"></script>
     <script>
         window.authUserId = @json(auth()->user()->id);
         window.routes = {
-            sendMessage: @json(route('messages.send')),
-            fetchChatHistory: @json(route('fetch.chat.history', ['userId' => 'REPLACE']))
+            sendMessage: '{{ route("messages.send") }}', // Assuming you have a route named send.message
+            fetchChatHistory: '{{ route("fetch.chat.history", ["userId" => "REPLACE"]) }}'
         };
     </script>
+
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     @vite('resources/js/chat.js')
 
 

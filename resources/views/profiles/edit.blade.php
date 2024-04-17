@@ -85,88 +85,131 @@
                         <div class="tab-pane fade" id="nav-homes" role="tabpanel" aria-labelledby="nav-home-tab">
                             <!-- start personal information -->
                             <div class="nuron-information">
-
                                 <div class="profile-form-wrapper">
-                                    <div class="input-two-wrapper mb--15">
-                                        <div class="first-name half-wid">
-                                            <label for="contact-name" class="form-label">First Name</label>
-                                            <input name="contact-name" id="contact-name" type="text"
-                                                   value="{{ $user->firstname ?? '' }}">
+                                    <form action="{{ route('user.info.update') }}" method="POST">
+                                        @csrf
+                                        <div class="input-two-wrapper mb--15">
+                                            <!-- First Name -->
+                                            <div class="first-name half-wid">
+                                                <label for="firstname" class="form-label">First Name</label>
+                                                <input name="firstname" id="firstname" type="text" class="form-control"
+                                                       value="{{ old('firstname', $user->firstname) }}">
+                                                @error('firstname')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <!-- Last Name -->
+                                            <div class="last-name half-wid">
+                                                <label for="lastname" class="form-label">Last Name</label>
+                                                <input name="lastname" id="lastname" type="text" class="form-control"
+                                                       value="{{ old('lastname', $user->lastname) }}">
+                                                @error('lastname')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                        <div class="last-name half-wid">
-                                            <label for="contact-name-last" class="form-label">Last Name</label>
-                                            <input name="contact-name" id="contact-name-last" type="text"
-                                                   value="{{ $user->lastname ?? '' }}">
+                                        <!-- Email -->
+                                        <div class="email-area">
+                                            <label for="email" class="form-label">Email (Read-only)</label>
+                                            <input name="email" id="email" type="email" class="form-control" readonly
+                                                   value="{{ $user->email }}">
                                         </div>
-                                    </div>
-                                    <div class="email-area">
-                                        <label for="Email" class="form-label">Edit Your Email</label>
-                                        <input name="email" id="Email" type="email"
-                                               value="{{ $user->email ?? '' }}">
-                                    </div>
+                                        <!-- Bio -->
+                                        <div class="edit-bio-area mt--20">
+                                            <label for="bio" class="form-label">Bio</label>
+                                            <textarea name="bio" id="bio" class="form-control">{{ old('bio', $user->bio) }}</textarea>
+                                            @error('bio')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <!-- Currency -->
+                                        <div class="input-two-wrapper mt--15">
 
-                                    <!-- edit bio area Start-->
-                                    <div class="edit-bio-area mt--20">
-                                        <label for="Discription" class="form-label">Edit Your Bio</label>
-                                        <textarea id="Discription">{{ $user->bio ?? '' }}</textarea>
-                                    </div>
-                                    <!-- edit bio area End -->
+                                            <div class="half-wid currency">
+                                                <label for="currency" class="form-label"></label>
+                                                <select name="currency" id="currency" class="profile-edit-select">
+                                                    <option selected>{{ $user->currency ?? 'Currency' }}</option>
+                                                    <option value="USD" {{ old('currency', $user->currency) == 'USD' ? 'selected' : '' }}>($) USD</option>
+                                                    <option value="wETH" {{ old('currency', $user->currency) == 'wETH' ? 'selected' : '' }}>wETH</option>
+                                                    <option value="Bitcoin" {{ old('currency', $user->currency) == 'Bitcoin' ? 'selected' : '' }}>Bitcoin</option>
+                                                </select>
+                                                @error('currency')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <!-- Phone Number -->
+                                            <div class="half-wid phone-number">
+                                                <label for="phone" class="form-label">Phone Number</label>
+                                                <input name="phone" id="phone" type="text" class="form-control"
+                                                       value="{{ old('phone', $user->phone) }}">
+                                                @error('phone')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
 
-                                    <!-- currency and phone number fields -->
-                                    <div class="input-two-wrapper mt--15">
-                                        <div class="half-wid currency">
-                                            <!-- select currency -->
-                                            <select class="profile-edit-select">
-                                                <option selected>{{ $user->currency ?? 'Currency' }}</option>
-                                                <option value="1">($)USD</option>
-                                                <option value="2">wETH</option>
-                                                <option value="3">BIT Coin</option>
-                                            </select>
-                                            <!-- end select currency -->
+                                            <div class="half-wid phone-number">
+                                                <label for="postal_code" class="form-label">Postal Code</label>
+                                                <input name="postal_code" id="postal_code" type="text" class="form-control"
+                                                       value="{{ old('postal_code', $user->postal_code) }}">
+                                                @error('postal_code')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                        <div class="half-wid phone-number">
-                                            <label for="PhoneNumber" class="form-label">Phone Number</label>
-                                            <input name="contact-name" id="PhoneNumber" type="text"
-                                                   value="{{ $user->phone ?? '' }}">
-                                        </div>
-                                    </div>
+                                        <!-- Address and Postal Code -->
+                                        <div class="input-two-wrapper mt--15">
+                                            <div class="half-wid phone-number">
+                                                <select name="country" id="country" class="profile-edit-select">
+                                                    <option selected>{{ $user->country ?? 'Location' }}</option>
+                                                    <option value="United States">United States</option>
+                                                    <option value="Qatar">Qatar</option>
+                                                    <option value="Canada">Canada</option>
+                                                </select>
+                                                @error('country')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="half-wid phone-number">
+                                                <label for="city" class="form-label"></label>
+                                                <select name="city" id="city" class="profile-edit-select">
+                                                    <option selected>{{ $user->city ?? 'City' }}</option>
+                                                    <option value="New York">New York</option>
+                                                    <option value="Los Angeles">Los Angeles</option>
+                                                    <option value="Chicago">Chicago</option>
+                                                    <option value="Houston">Houston</option>
+                                                    <option value="Phoenix">Phoenix</option>
+                                                    <option value="Philadelphia" >Philadelphia</option>
+                                                    <option value="San Antonio">San Antonio</option>
+                                                    <option value="San Diego">San Diego</option>
+                                                    <option value="Dallas" >Dallas</option>
+                                                    <option value="San Jose">San Jose</option>
+                                                </select>
+                                                @error('city')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
 
-                                    <!-- location, address, and postal code fields -->
-                                    <div class="input-two-wrapper mt--15">
-                                        <div class="half-wid currency">
-                                            <!-- select location -->
-                                            <select class="profile-edit-select">
-                                                <option selected>{{ $user->location ?? 'Location' }}</option>
-                                                <option value="1">United States</option>
-                                                <option value="2">Qatar</option>
-                                                <option value="3">Canada</option>
-                                            </select>
-                                            <!-- end select location -->
+                                            <div class="half-wid phone-number">
+                                                <label for="street" class="form-label">Address</label>
+                                                <input name="street" id="street" type="text" class="form-control"
+                                                       value="{{ old('street', $user->street) }}">
+                                                @error('address')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                        <div class="half-wid phone-number">
-                                            <label for="PhoneNumbers" class="form-label">Address</label>
-                                            <input name="contact-name" id="PhoneNumbers" type="text"
-                                                   value="{{ $user->address ?? '' }}">
+                                        <!-- Save and Cancel buttons -->
+                                        <div class="button-area save-btn-edit">
+                                            <button type="button" class="btn btn-secondary mr--15" onclick="history.back();">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
-                                        <div class="half-wid phone-number">
-                                            <label for="codePostal" class="form-label">Postal Code</label>
-                                            <input name="contact-name" id="codePostal" type="text"
-                                                   value="{{ $user->postal_code ?? '' }}">
-                                        </div>
-                                    </div>
-
-                                    <!-- Save and Cancel buttons -->
-                                    <div class="button-area save-btn-edit">
-                                        <a href="#" class="btn btn-primary-alta mr--15"
-                                           onclick="customAlert.alert('Cancel Edit Profile?')">Cancel</a>
-                                        <a href="#" class="btn btn-primary"
-                                           onclick="customAlert.alert('Successfully Saved Your Profile?')">Save</a>
-                                    </div>
-
-                                </div <!-- End personal information -->
+                                    </form>
+                                </div>
                             </div>
+
                         </div>
                         <!-- End single tabv content -->
+
 
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                             <!-- change password area Start -->

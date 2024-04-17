@@ -71,10 +71,20 @@
                             </div>
                             <div class="rn-author-info-content">
                                 <h4 class="title">{{ $user->firstname }} {{ $user->lastname }}</h4>
-                                <a href="#" class="social-follow">
-                                    <i data-feather="twitter"></i>
-                                    <span class="user-name">it0bsession</span>
-                                </a>
+                                @if($user->google_id)
+                                    <a href="#" class="social-follow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                            <polyline points="22,6 12,13 2,6"></polyline>
+                                        </svg>
+                                        <span class="user-name">{{ $user->email }}</span>
+                                    </a>
+                                @endif
+
+                                <div class="author-info pt-4 pb-2">
+                                    <p>{{ $user->bio ?: 'No bio available.' }}</p>
+                                </div>
+
                                 <div class="follow-area">
                                     <div class="follow followers">
                                         <span>186k <a href="#" class="color-body">followers</a></span>
@@ -84,11 +94,11 @@
                                     </div>
                                 </div>
                                 <div class="author-button-area">
-                                    @if($user->hasRole('owner'))
+                                    @if(auth()->user()->id == $user->id && auth()->user()->hasRole('owner'))
                                         <a href="{{ route('owner.auction.auctionCreate') }}" class="btn at-follw follow-button"><i data-feather="plus"></i> Create Auction</a>
                                         <a href="{{ route('owner.collections.create') }}" class="btn at-follw follow-button"><i data-feather="plus"></i> Create Collection</a>
                                     @endif
-                                    <span class="btn at-follw share-button" data-bs-toggle="modal" data-bs-target="#shareModal"><i data-feather="share-2"></i></span>
+                                    <span class="btn at-follw share-button" data-bs-toggle="modal" data-bs-target="#shareModal"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></span>
                                         <div class="count at-follw">
                                             <div class="share-btn share-btn-activation dropdown">
                                                 <button class="icon" type="button" data-bs-toggle="dropdown"
@@ -112,8 +122,16 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if(auth()->user()->id == $user->id)
                                         <a href="{{ route('user.profile.edit') }}"
-                                           class="btn at-follw follow-button edit-btn"><i data-feather="edit"></i></a>
+                                           class="btn at-follw follow-button edit-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></a>
+                                        @else
+                                            <a href="#" class="btn at-follw follow-button message-btn d-flex justify-content-center align-items-center p-2" style="width: 40px; height: 40px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square">
+                                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"></path>
+                                                </svg>
+                                            </a>
+                                        @endif
                                 </div>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-<div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12" style="opacity: unset">
+<div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12" style="    opacity: unset">
     <a href="" class="rn-collection-inner-one">
         <div class="collection-wrapper">
             <div class="collection-big-thumbnail">

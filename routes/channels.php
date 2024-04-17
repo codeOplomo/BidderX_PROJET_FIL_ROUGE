@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Log;
 |
 */
 
-Broadcast::channel('chat.{id}', function (User $user, $id) {
-    return $user->id === $id;
+Broadcast::channel('chat.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
 });
 
 

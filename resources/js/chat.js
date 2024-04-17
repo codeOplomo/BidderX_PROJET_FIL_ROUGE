@@ -1,18 +1,20 @@
 import Echo from "laravel-echo";
-import io from 'socket.io-client';
+import Pusher from "pusher-js";
 
-window.io = io;
+window.Pusher = Pusher;
 
-// Now we can initialize Echo with Socket.io
 window.Echo = new Echo({
-    broadcaster: 'socket.io',
-    host: window.location.hostname + ':6001',
+    broadcaster: 'pusher',
+    key: '3bc885dd0e42d76beb05',
+    cluster: 'eu',
+    forceTLS: true,
     auth: {
         headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     }
 });
+
 
 var authUserId = window.authUserId;
 let currentReceiverId = null;
@@ -81,12 +83,11 @@ function listenForIncomingMessages() {
     window.Echo.private(`chat.${authUserId}`)
         .listen('MessageSent', (e) => {
             console.log('Incoming message:', e.message);
-            // Assuming the incoming message structure has a sender_id and matches the current chat
-            if (e.message.receiver_id === currentReceiverId || e.message.sender_id === currentReceiverId) {
                 appendMessage(e.message, e.message.sender_id === authUserId);
-            }
+
         });
 }
+
 
 function appendMessage(message, isSender) {
     const messageList = document.getElementById('message-list');

@@ -22,11 +22,10 @@ class AuctionReactionController extends Controller
         if ($reaction) {
             $reaction->delete();
         } else {
-            // If no reaction exists, create a new one to toggle on the reaction
             AuctionReaction::create([
                 'user_id' => $user->id,
                 'auction_id' => $auctionId,
-                'liked' => true, // Assuming you're just tracking likes
+                'liked' => true,
             ]);
         }
 

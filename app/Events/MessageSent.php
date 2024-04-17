@@ -32,29 +32,19 @@ class MessageSent implements ShouldBroadcast
      *
      * @return \Illuminate\Broadcasting\PrivateChannel|array
      */
-    public function broadcastOn()
-    {
-        return [
-            new PrivateChannel('chat.' . $this->message->receiver_id),
-        ];
+    public function broadcastOn(){
+        return new PrivateChannel('chat.' . $this->message->receiver_id);
     }
 
+
+    public function broadcastAs()
+    {
+        return 'MessageSent';
+    }
 
 
     /**
      * Data to broadcast with the event.
      */
-    public function broadcastWith()
-    {
-        return [
-            'message' => [
-                'id' => $this->message->id,
-                'content' => $this->message->content,
-                'sender_id' => $this->message->sender_id,
-                'receiver_id' => $this->message->receiver_id,
-                'created_at' => $this->message->created_at->toDateTimeString(),
-                // Add more fields as necessary
-            ]
-        ];
-    }
+
 }

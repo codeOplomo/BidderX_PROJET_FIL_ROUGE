@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/comments-fetch/{blogId}', [CommentController::class, 'fetchComments'])->name('comments.fetch');
     Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
     Route::post('/store-image', [ProfileController::class, 'storeImages'])->name('store.profile.images');
+    Route::post('/user/info/update', [ProfileController::class, 'updateInfo'])->name('user.info.update');
     Route::get('/price-range', [AuctionController::class, 'getPriceRange'])->name('price.range');
     Route::get('/auctions-explore', [AuctionController::class, 'showAuctionsExplore'])->name('auctionsExplore');
     Route::get('/auctions-filter', [AuctionController::class, 'filterAuctions'])->name('auctions.filter');

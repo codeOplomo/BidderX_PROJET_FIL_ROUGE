@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Auction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,13 +30,62 @@ class ProfileController extends Controller
         $tabTitles = ['liked', 'owned'];
 
         if ($user->hasRole('owner')) {
+            $data['created'] = $user->auctionedProducts;
+            $data['collection'] = $user->collections()->withCount('products')->get();
+            $tabTitles = array_merge($tabTitles, ['created', 'collection']);
+        }
+
+        return view('profiles.index', compact('user', 'tabTitles', 'data'));
+    }
+
+    public function updateInfo(UpdateProfileRequest $request)
+    {
+        $user = Auth::user();
+
+        $validatedData = $request->validated();
+
+        $userData = Arr::only($validatedData, ['firstname', 'lastname', 'bio', 'phone']);
+        $addressData = Arr::only($validatedData, ['country', 'city', 'street', 'postal_code']);
+
+        //dd($userData, $addressData);
+
+        if (!empty($userData)) {
+            $user->update($userData);
+        }
+
+        if (!empty($addressData)) {
+            $user->address()->updateOrCreate([], $addressData);
+        }
+
+        return back()->with('success', 'Profile updated successfully!');
+    }
+
+
+
+    public function showProfile($id)
+    {
+
+        $user = User::findOrFail($id);
+        //dd($user);
+        $data = [
+            'liked' => [],
+            'owned' => []
+        ];
+
+        // Fetch data for 'liked' and 'owned' tabs, these are common to all users
+        $data['liked'] = Auction::likedByUser($user->id)->with('product')->get();
+        $data['owned'] = $user->wonProducts;
+
+        // Initialize tabTitles with common tabs
+        $tabTitles = ['liked', 'owned'];
+
+        if ($user->hasRole('owner')) {
             // Additional data and tabs for owners
             $data['created'] = $user->auctionedProducts;
             $data['collection'] = $user->collections()->withCount('products')->get();
             $tabTitles = array_merge($tabTitles, ['created', 'collection']);
         }
 
-        // Ensure all data and tabTitles are passed to the view
         return view('profiles.index', compact('user', 'tabTitles', 'data'));
     }
 

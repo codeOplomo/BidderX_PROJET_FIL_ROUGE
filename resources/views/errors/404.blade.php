@@ -10,7 +10,7 @@
                         <h2 class="large-title">404</h2>
                         <h3 class="title">Page not found!</h3>
                         <p>The page you are looking for not available.</p>
-                        <a href="index.html" class="btn btn-primary btn-large">Go Back To Home</a>
+                        <a href="{{ route('home') }}" class="btn btn-primary btn-large">Go Back To Home</a>
                     </div>
                 </div>
             </div>
