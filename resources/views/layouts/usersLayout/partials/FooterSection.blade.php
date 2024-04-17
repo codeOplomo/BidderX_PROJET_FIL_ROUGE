@@ -8,15 +8,16 @@
                 <div class="widget-content-wrapper">
                     <div class="footer-left">
                         <div class="logo-thumbnail logo-custom-css">
-                            <a class="logo-light" href="index.html"><img src="assets/images/logo/logo-white.png" alt="nft-logo"></a>
-                            <a class="logo-dark" href="index.html"><img src="assets/images/logo/logo-dark.png" alt="nft-logo"></a>
+                            <a href="{{ route('home') }}">
+                                <img src="{{ asset('assets/images/logo/bidder_logo.png') }}" alt="BidderXBidder Logo">
+                            </a>
                         </div>
                         <p class="rn-footer-describe">
-                            Created with the collaboration of over 60 of the world's best Nuron Artists.
+                            Created with the collaboration of over 60 of the world's best XBidder Artists.
                         </p>
                     </div>
                     <div class="widget-bottom mt--40 pt--40">
-                        <h6 class="title">Get The Latest Nuron Updates </h6>
+                        <h6 class="title">Get The Latest XBidder Updates </h6>
                         <div class="input-group">
                             <input type="text" class="form-control bg-color--2" placeholder="Your username" aria-label="Recipient's username">
                             <div class="input-group-append">
@@ -31,7 +32,7 @@
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6 col-12 mt_mobile--40">
                 <div class="footer-widget widget-quicklink">
-                    <h6 class="widget-title">Nuron</h6>
+                    <h6 class="widget-title">XBidder</h6>
                     <ul class="footer-list-one">
                         <li class="single-list"><a href="#">Protocol Explore</a></li>
                         <li class="single-list"><a href="#">System Token</a></li>

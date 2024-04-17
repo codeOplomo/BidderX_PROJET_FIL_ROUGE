@@ -124,7 +124,12 @@
                                 <h3 data-sal="slide-up" data-sal-duration="800" data-sal-delay="150">Discover unique auctions and collect vintage and unique products at BidderXBidder</h3>
                                 <p data-sal="slide-up" data-sal-duration="800" data-sal-delay="150">BidderXBidder offers a curated selection of vintage and unique items that you won't find anywhere else. From collectibles to one-of-a-kind artworks, explore our marketplace to find treasures that speak to you.</p>
                                 <div class="callto-action-btn-wrapper" data-sal="slide-up" data-sal-duration="800" data-sal-delay="150">
-                                    <a href="create.html" class="btn btn-primary btn-large">Create</a>
+                                    @guest
+                                        <a href="{{ route('register') }}" class="btn btn-primary btn-large">Create</a>
+                                    @endguest
+                                    @auth
+                                        <a href="{{ route('auctionsExplore') }}" class="btn btn-primary btn-large">Explore</a>
+                                    @endauth
                                     <a href="{{ route('contact') }}" class="btn btn-primary-alta btn-large">Contact Us</a>
                                 </div>
                             </div>

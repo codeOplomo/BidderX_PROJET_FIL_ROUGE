@@ -3,7 +3,9 @@
         <div class="header-inner">
             <div class="header-left">
                 <div class="logo-thumbnail logo-custom-css">
-                    <img src="path_to_your_logo_image" alt="BidderXBidder Logo">
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('assets/images/logo/bidder_logo.png') }}" alt="BidderXBidder Logo">
+                    </a>
                 </div>
                 <div class="mainmenu-wrapper">
                     <nav id="sideNav" class="mainmenu-nav d-none d-xl-block">
@@ -70,7 +72,6 @@
                     <div class="setting-option header-btn rbt-site-header" id="rbt-site-header">
                         {{-- Check if user has made at least one deposit --}}
                         @if(auth()->user()->walletBalance > 0)
-                            {{-- User Balance Display --}}
                             <div class="icon-box">
                                 <span class="balance-display">Balance: {{ auth()->user()->walletBalance }} $ </span>
                             </div>
