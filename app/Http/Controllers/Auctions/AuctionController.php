@@ -52,9 +52,12 @@ class AuctionController extends Controller
 
     public function filterAuctions(Request $request)
     {
-        $query = Auction::with(['product' => function ($query) {
-            $query->select('id', 'title', 'description', 'manufacturer');
-        }]);
+        $user = Auth::user();
+        $query = Auction::with([
+            'product:id,title,description,manufacturer',
+            'winner:id,firstname,lastname',
+            'bids.user:id,firstname,lastname',
+        ])->withCount('reactions as total_reactions');
 
         // Apply category filter if provided
         $query->when($request->filled('category'), function ($q) use ($request) {
@@ -101,6 +104,10 @@ class AuctionController extends Controller
 
         $auctions = $query->get();
 
+        $auctions->each(function ($auction) use ($user) {
+            $auction->canReact = $user ? $user->can('react', $auction) : false;
+        });
+
         if ($auctions->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -119,20 +126,22 @@ class AuctionController extends Controller
 
     public function searchForAuctions(Request $request)
     {
+        $user = Auth::user();
         $query = $request->input('query');
 
-        $auctions = Auction::with('product')->whereHas('product', function ($queryBuilder) use ($query) {
+        $auctions = Auction::with([
+            'product:id,title,description,manufacturer',
+            'winner:id,firstname,lastname',
+            'bids.user:id,firstname,lastname'
+        ])->withCount('reactions as total_reactions')->whereHas('product', function ($queryBuilder) use ($query) {
             $queryBuilder->where('title', 'like', '%' . $query . '%')
                 ->orWhere('description', 'like', '%' . $query . '%')
                 ->orWhere('manufacturer', 'like', '%' . $query . '%');
         })->get();
 
-        // Ensure winner data is loaded separately
-        foreach ($auctions as $auction) {
-            if ($auction->winner_id) {
-                $auction->loadWinner();
-            }
-        }
+        $auctions->each(function ($auction) use ($user) {
+            $auction->canReact = $user ? $user->can('react', $auction) : false;
+        });
 
         return response()->json([
             'success' => true,

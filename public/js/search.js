@@ -80,45 +80,77 @@ $(document).ready(function() {
             $.ajax({
                 url: routes.searchAuctions,
                 method: 'GET',
-                data: {
-                    query: searchQuery
-                },
-                headers: {
-                    'X-CSRF-TOKEN': getCsrfToken()
-                },
+                data: { query: searchQuery },
+                headers: { 'X-CSRF-TOKEN': getCsrfToken() },
                 success: function(response) {
-                    if (response.success) {
-                        $('#auctions-section').empty(); // Clear previous results
-
+                    console.log("Response received:", response);  // Debug: log the entire response
+                    if (response.success && response.auctions.length > 0) {
+                        $('#auctions-section').empty();
                         response.auctions.forEach(function(auction) {
+                            var reactAreaHtml = auction.canReact ?
+                                `<div class="react-count-display">
+                        <i class="feather-heart"></i> <span>${auction.total_reactions}</span>
+                    </div>` :
+                                 `<div class="react-area" onclick="toggleReaction(${auction.id}, this)">
+<svg viewBox="0 0 17 16" fill="none" width="16" height="16" class="sc-bdnxRM sc-hKFxyN kBvkOu">
+    <path d="M8.2112 14L12.1056 9.69231L14.1853 7.39185C15.2497 6.21455 15.3683 4.46116 14.4723 3.15121V3.15121C13.3207 1.46757 10.9637 1.15351 9.41139 2.47685L8.2112 3.5L6.95566 2.42966C5.40738 1.10976 3.06841 1.3603 1.83482 2.97819V2.97819C0.777858 4.36443 0.885104 6.31329 2.08779 7.57518L8.2112 14Z" stroke="currentColor" stroke-width="2"></path>
+</svg>
+<span class="number" id="reactCount- ${auction.id} ">${auction.total_reactions}</span>
+                    </div>`;
+
+                            var bidsHtml = auction.bids.map(bid => `
+                    <a href="#" class="avatar" data-tooltip="${bid.user.firstname} ${bid.user.lastname}">
+                        <img src="${bid.user.profile_image || '/assets/images/client/client-1.png'}" alt="Profile Image">
+                    </a>
+                `).join('');
+
+                            var auctionTypeText = auction.winner_id ? `Owned by ${auction.winner.firstname} ${auction.winner.lastname}` :
+                                auction.is_instant ? 'Instant Auction' : 'Normal Auction';
+
                             var auctionCardHtml = `
-                            <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" style="opacity: unset">
-                                <div class="product-style-one no-overlay with-placeBid">
-                                    <div class="card-thumbnail">
-                                        <a href="/auctions/${auction.id}">
-                                            <img src="${auction.product.picture || '/assets/images/default-avatar.png'}" alt="${auction.product.title}">
-                                        </a>
-                                    </div>
-                                    <a href="/auctions/${auction.id}"><span class="product-name">${auction.product.title}</span></a>
-                                    <span class="auction-type">${auction.is_instant ? 'Instant Auction' : 'Normal Auction'}</span>
-                                    <div class="bid-react-area">
-                                        <div class="last-bid">${auction.current_bid_price} $</div>
-                                        <div class="react-count-display">${auction.total_reactions}</div>
+                    <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" style="opacity: unset">
+                        <div class="product-style-one no-overlay with-placeBid">
+                            <div class="card-thumbnail">
+                                <a href="/auctions/${auction.id}">
+                                    <img src="${auction.product.picture || '/assets/images/default-avatar.png'}" alt="${auction.product.title}">
+                                </a>
+                            </div>
+                            <div class="product-share-wrapper">
+                                <div class="profile-share">${bidsHtml}</div>
+                                <div class="share-btn share-btn-activation dropdown">
+                                    <button class="icon" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="feather-more-vertical"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Share</a>
+                                        <a class="dropdown-item" href="#">Report</a>
                                     </div>
                                 </div>
                             </div>
-                        `;
+                            <div class="product-details">
+                                <a href="/auctions/${auction.id}">
+                                    <span class="product-name">${auction.product.title}</span>
+                                </a>
+                                <span class="auction-type">${auctionTypeText}</span>
+                                <div class="bid-react-area">
+                                       <div class="last-bid">${auction.current_bid_price} $</div>
+                                       ${reactAreaHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
                             $('#auctions-section').append(auctionCardHtml);
                         });
-                    }else {
-                        // Handle unsuccessful search (optional)
-                        console.log(response.message);
+                    } else {
+                        $('#auctions-section').html(`<div class="col-12 text-center"><p>No auctions found or ${response.message}</p></div>`);
                     }
                 },
                 error: function(xhr, status, error) {
-                    // Handle errors
+                    console.error('Error during AJAX request:', status, error);
+                    $('#auctions-section').html(`<div class="col-12 text-center"><p>Error fetching data</p></div>`);
                 }
             });
+
         });
     } else if (currentUrl.includes("auction")) {
         form.attr('action', routes.auctionsExplore);
