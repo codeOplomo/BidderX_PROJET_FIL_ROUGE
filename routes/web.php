@@ -150,6 +150,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
         Route::put('/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        Route::post('/creators/applications/approve/{id}',[UserController::class, 'approveApplication'])->name('creators.approveApplication');
+        Route::post('/creators/applications/reject/{id}', [UserController::class, 'rejectApplication'])->name('creators.rejectApplication');
+
 
         // User Status Management
         Route::post('/admin/users/{user}/ban', [UserController::class, 'ban'])->name('admin.users.ban');
@@ -166,7 +169,8 @@ Route::middleware(['auth'])->group(function () {
 
 // Bidder routes
     Route::middleware(['bidder'])->group(function () {
-
+        Route::get('/bidder/application', [BidderController::class, 'applicationForm'])->name('bidder.application');
+        Route::post('/bidder/submit-application', [BidderController::class, 'submitApplication'])->name('bidder.submitApplication');
     });
 
 // Owner routes

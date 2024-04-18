@@ -389,7 +389,7 @@
                     <a href="{{ route('profile') }}" class="nav-item nav-link"><i
                             class="fa fa-user-circle me-2"></i>Profile</a>
                     <a href="{{ route('admin.dashboard') }}" class="nav-item nav-link"><i
-                            class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                            class="fa fa-tachometer-alt me-2"></i>Creator Applications</a>
                     <a href="{{ route('admin.categories') }}" class="nav-item nav-link"><i
                             class="fa fa-list me-2"></i>Categories</a>
                     <!-- New sidebar links -->

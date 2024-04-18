@@ -13,13 +13,13 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12">
-                        <div class="table-title-area d-flex">
-                            Pending Auctions
-                        </div>
 
+                    <div class="table-title-area d-flex justify-content-between align-items-center mb-4">
+                        <h3>Pending Auctions</h3>
+                    </div>
                             <div class="box-table table-responsive">
                                 <div class="table custom-table-container">
-                                    <table class="table table-striped">
+                                    <table class="table table-striped text-white">
                                         <thead>
                                         <tr>
                                             <th>#</th>
@@ -34,7 +34,7 @@
                                         </thead>
                                         <tbody class="ranking">
                                         @foreach ($pendingAuctions as $index => $auction)
-                                            <tr class="{{ $index % 2 === 0 ? 'color-light' : '' }}">
+                                            <tr class="{{ $index % 2 === 0 ? 'color-light' : '' }} text-white">
                                                 <td>{{ $auction->id }}</td>
                                                 <td>{{ $auction->product->title }}</td>
                                                 <td>{{ $auction->product->description }}</td>

@@ -83,6 +83,13 @@
                             </div>
                         @endif
                     </div>
+
+                    @if(!auth()->user()->hasRole('owner'))  <!-- Assuming 'owner' role is for creators -->
+                    <div class="icon-box">
+                        <a class="btn btn-primary-alta btn-small" href="{{ route('bidder.application') }}">Become a Creator</a>
+                    </div>
+                    @endif
+
                     <div class="ms-3">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                             @csrf
@@ -119,31 +126,7 @@
                 <!-- Sun and Moon icons -->
                 <div class="ms-3">
                     <!-- Sun Icon -->
-                    <a href="#" class="icon-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                            class="main-grid-item-icon" fill="none" stroke="#E9E0CE" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" onmouseover="this.style.stroke='#766161';"
-                            onmouseout="this.style.stroke='#E9E0CE';">
-                            <circle cx="12" cy="12" r="5" />
-                            <line x1="12" x2="12" y1="1" y2="3" />
-                            <line x1="12" x2="12" y1="21" y2="23" />
-                            <line x1="4.22" x2="5.64" y1="4.22" y2="5.64" />
-                            <line x1="18.36" x2="19.78" y1="18.36" y2="19.78" />
-                            <line x1="1" x2="3" y1="12" y2="12" />
-                            <line x1="21" x2="23" y1="12" y2="12" />
-                            <line x1="4.22" x2="5.64" y1="19.78" y2="18.36" />
-                            <line x1="18.36" x2="19.78" y1="5.64" y2="4.22" />
-                        </svg>
-                    </a>
-                    <!-- Moon Icon -->
-                    <a href="#" class="icon-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                            class="main-grid-item-icon" fill="none" stroke="#766161" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" onmouseover="this.style.stroke='#E9E0CE';"
-                            onmouseout="this.style.stroke='#766161';">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                        </svg>
-                    </a>
+
                 </div>
             </div>
         </div>

@@ -11,6 +11,34 @@ use Illuminate\Support\Facades\Auth;
 class BidderController extends Controller
 {
 
+    public function applicationForm()
+    {
+        return view('bidder.application');
+    }
+
+    public function submitApplication(Request $request)
+    {
+        $request->validate([
+            'experience_description' => 'required|string|max:5000',
+            'professional_qualifications' => 'required|file|mimes:pdf|max:2048', // 2MB Max
+        ]);
+
+        $user = Auth::user();
+        $user->experience_description = $request->input('experience_description');
+        $user->request_role_upgrade = true;
+
+        if ($request->hasFile('professional_qualifications') && $request->file('professional_qualifications')->isValid()) {
+            // Directly add the uploaded file to the user's media collection
+            $user->addMediaFromRequest('professional_qualifications')
+                ->toMediaCollection('qualifications');
+        }
+
+        $user->save();
+
+        return redirect()->route('profile.index')->with('success', 'Application submitted successfully. Awaiting approval.');
+    }
+
+
     public function index()
 {
     $user = auth()->user();

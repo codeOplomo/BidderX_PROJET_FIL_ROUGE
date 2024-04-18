@@ -35,8 +35,8 @@ public function profileEdit()
      */
     public function index(Request $request)
 {
-    $user = Auth::user();
-    return view('admin.DashBoard', compact('user'));
+    $applications = User::where('request_role_upgrade', true)->get();
+    return view('admin.DashBoard', compact('applications'));
 }
 
 

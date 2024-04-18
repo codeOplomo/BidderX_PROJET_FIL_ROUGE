@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,41 @@ public function unban(User $user)
     $user->update(['is_banned' => false]);
     return redirect()->back()->with('success', 'User has been unbanned successfully.');
 }
+
+    public function approveApplication(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        if (!$user->hasRole('owner')) {
+            $ownerRole = Role::where('name', 'owner')->firstOrFail();
+
+            $user->roles()->attach($ownerRole->id);
+
+            $user->request_role_upgrade = false;
+            $user->save();
+
+            $user->clearMediaCollection('qualifications');
+        }
+
+        return redirect()->back()->with('success', 'Application approved successfully!');
+    }
+
+    public function rejectApplication(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->request_role_upgrade = false;
+        $user->save();
+
+        $user->clearMediaCollection('qualifications');
+
+        // Optionally, you could implement a notification system to inform the user of the rejection
+        // $user->notify(new ApplicationRejectedNotification());
+
+        return redirect()->back()->with('error', 'Application rejected. Invalid qualifications.');
+    }
+
+
     /**
      * Display the authenticated user's profile.
      */
@@ -94,10 +130,6 @@ public function unban(User $user)
 
         return redirect()->route('admin.users')->with('success', 'User updated successfully');
     }
-    public function index(Request $request)
-{
-
-}
 
 
 public function edit(User $user)

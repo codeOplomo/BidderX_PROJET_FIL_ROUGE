@@ -11,7 +11,6 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-        // Add any other attributes you want to be mass assignable
     ];
 
     public function products()

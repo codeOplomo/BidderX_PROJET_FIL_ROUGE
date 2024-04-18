@@ -23,6 +23,8 @@ class User extends Authenticatable implements HasMedia, WalletOperations
         'bio',
         'password',
         'phone',
+        'experience_description',
+        'request_role_upgrade',
         'is_active',
         'google_id',
         'google_token',

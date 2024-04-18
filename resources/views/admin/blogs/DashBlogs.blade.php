@@ -20,7 +20,7 @@
 
                 <!-- table area Start -->
                 <div class="box-table table-responsive">
-                    <table class="table upcoming-projects">
+                    <table class="table upcoming-projects text-white">
                         <thead>
                         <tr>
                             <th>

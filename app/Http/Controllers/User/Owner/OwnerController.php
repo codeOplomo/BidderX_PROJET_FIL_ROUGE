@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class OwnerController extends Controller
 {
+
     public function searchCreators(Request $request)
     {
         $query = $request->input('query');

@@ -23,12 +23,11 @@
 
                         <!-- table area Start -->
                         <div class="box-table table-responsive">
-                            <table class="table upcoming-projects">
+                            <table class="table upcoming-projects text-white">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Description</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -37,7 +36,6 @@
                                     <tr class="{{ $loop->odd ? 'color-light' : '' }}">
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->name }}</td>
-                                        <td>{{ $category->description }}</td>
                                         <td>
                                             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $category->id }}">Edit</a>
                                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $category->id }}">Delete</button>
