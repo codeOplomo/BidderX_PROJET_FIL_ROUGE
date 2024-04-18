@@ -12401,7 +12401,7 @@ span.rn-badge-card::before {
   display: block;
 }
 .logo-thumbnail img {
-  max-height: 35px;
+  max-height: 45px;
   object-fit: cover;
 }
 
@@ -24006,6 +24006,7 @@ body.active-light-mode {
 .active-light-mode .product-style-one::before {
   background-image: linear-gradient(100deg, #fff, #0398ed);
 }
+
 .active-light-mode .logo-custom-css .logo-dark {
   display: block;
 }

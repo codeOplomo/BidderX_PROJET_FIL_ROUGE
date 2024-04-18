@@ -180,7 +180,7 @@
             <div class="col-lg-12">
                 <div class="subscribe-wrapper_1 text-center">
                     <h3 class="title mb--10">Join our newsletter</h3>
-                    <p class="subtitle">Weekly FREE UI resource stroight to your inbox</p>
+                    <p class="subtitle">Weekly FREE newsletter</p>
                     <div class="subscribe-input-wrapper">
                         <form action="{{ route('subscribe') }}" method="POST">
                             @csrf
