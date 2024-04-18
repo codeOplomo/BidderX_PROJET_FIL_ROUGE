@@ -12,6 +12,27 @@ use Illuminate\Support\Facades\DB;
 
 class OwnerController extends Controller
 {
+    public function searchCreators(Request $request)
+    {
+        $query = $request->input('query');
+
+        $creators = User::whereHas('roles', function ($roleQuery) {
+            $roleQuery->where('name', 'owner');
+        })
+            ->where(function ($nameQuery) use ($query) {
+                $nameQuery->where('firstname', 'like', '%' . $query . '%')
+                    ->orWhere('lastname', 'like', '%' . $query . '%');
+            })
+            ->with(['roles'])
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Creators fetched successfully.',
+            'creators' => $creators
+        ]);
+    }
+
 
     public function showCreators()
     {
@@ -148,9 +169,5 @@ class OwnerController extends Controller
             return redirect()->back()->withInput()->with('error', 'Image upload failed!');
         }
     }
-
-
-
-
 
 }

@@ -96,6 +96,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/timed-auctions', [AuctionController::class, 'timedAuctions'])->name('timedAuctions');
     Route::get('/instant-auctions', [AuctionController::class, 'instantAuctions'])->name('instantAuctions');
     Route::get('/search-auctions-sp', [AuctionController::class, 'searchForAuctions'])->name('search.auctions.sp');
+    Route::get('/search-creators', [OwnerController::class, 'searchCreators'])->name('search.creators');
     Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');
     Route::get('/fetch-chat-history/{userId}', [MessageController::class, 'fetchChatHistory'])->name('fetch.chat.history');
     Route::post('/send-messages', [MessageController::class, 'sendMessage'])->name('messages.send');

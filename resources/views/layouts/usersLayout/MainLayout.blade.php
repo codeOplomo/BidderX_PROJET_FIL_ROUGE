@@ -703,7 +703,6 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    // Update the UI based on the response
                     if (data.success) {
                         const reactCountElement = document.getElementById(`reactCount-${auctionId}`);
                         reactCountElement.textContent = data.newCount;
@@ -757,7 +756,16 @@
         $currentUrl = request()->url();
     @endphp
 
-    @if (strpos($currentUrl, 'blogs') !== false || strpos($currentUrl, 'blog') !== false || strpos($currentUrl, 'auctions-explore') !== false || strpos($currentUrl, 'auction') !== false)
+    @if (strpos($currentUrl, 'blogs') !== false || strpos($currentUrl, 'blog') !== false || strpos($currentUrl, 'auctions-explore') !== false || strpos($currentUrl, 'auction') !== false || strpos($currentUrl, 'creators') !== false)
+        <script>
+            var routes = {
+                searchBlogs: "{{ route('search.blogs.sp') }}",
+                searchAuctions: "{{ route('search.auctions.sp') }}",
+                searchCreators: "{{ route('search.creators') }}",
+                blogs: "{{ route('blogs') }}",
+                auctionsExplore: "{{ route('auctionsExplore') }}"
+            };
+        </script>
         <script src="{{ asset('js/search.js') }}"></script>
     @else
         <script>

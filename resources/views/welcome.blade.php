@@ -223,30 +223,26 @@
 <script>
     // Function to fetch top owners based on selected timeframe
     function fetchTopOwners(timeframe) {
-        // Get the URL to send the AJAX request
         const url = "{{ route('topOwners') }}?timeframe=" + encodeURIComponent(timeframe);
 
-        // Send AJAX request using fetch API
         fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token if using Laravel CSRF protection
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
         })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); // Parse response JSON
+                return response.json();
             })
             .then(data => {
-                console.log('Received response:', data); // Handle response data
-                // Update the content of topSellersContainer with the new data
+                console.log('Received response:', data);
                 const topSellersContainer = document.getElementById('topSellersContainer');
-                topSellersContainer.innerHTML = ''; // Clear existing content
+                topSellersContainer.innerHTML = '';
                 data.forEach(owner => {
-                    // Create HTML markup for each owner
                     const ownerHTML = `
                 <div class="col-5 col-lg-3 col-md-4 col-sm-6 top-seller-list" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" style="opacity: unset;">
                     <div class="top-seller-inner-one">

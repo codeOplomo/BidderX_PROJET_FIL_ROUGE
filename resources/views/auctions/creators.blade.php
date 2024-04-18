@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row g-5 mt--30 creator-list-wrapper">
+            <div class="row g-5 mt--30 creator-list-wrapper" id="creators-section">
                 @include('component.creator-list')
             </div>
             <div class="row">
