@@ -167,43 +167,77 @@
                 data: data,
 
                 success: function(response) {
-                    if (response.success) {
+                    if (response.success && response.auctions.length > 0) {
+                        console.log(response)
                         $('#auctions-section').empty();
+                        var auctionTypeText = '';
+                        response.auctions.forEach(function(auction) {
 
-                        $.each(response.auctions, function(index, auction) {
-                            // Assuming you have a route named 'product.details' that accepts an auction's ID
-                            // and you need to adjust the URL construction if your framework requires a different method
-                            // Also, assuming `auction.product_picture` and other properties are correctly populated in your response
+                            var auctionTypeText = '';
+                            if (auction.winner_id && auction.winner) {
+                                auctionTypeText = `Owned by ${auction.winner.firstname} ${auction.winner.lastname}`;
+                            } else if (auction.is_instant) {
+                                auctionTypeText = 'Instant Auction';
+                            } else {
+                                auctionTypeText = 'Normal Auction';
+                            }
+
+                            var bidsHtml = "";
+                            if (auction.bids && Array.isArray(auction.bids)) {
+                                bidsHtml = auction.bids.slice(0, 3).map(bid => `
+                    <a href="#" class="avatar" data-tooltip="${bid.user.firstname} ${bid.user.lastname}">
+                        <img src="${bid.user.profile_image || '/assets/images/client/client-1.png'}" alt="Nft_Profile">
+                    </a>
+                `).join('');
+                            }
+
+
                             var auctionCardHtml = `
-                <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" style="opacity: unset;">
-                    <div class="product-style-one no-overlay with-placeBid">
-                        <div class="card-thumbnail">
-                            <a href="/product/details/${auction.id}"><img src="${auction.product_picture}" alt="NFT_portfolio"></a>
-                        </div>
-                        <a href="/product/details/${auction.id}"><span class="product-name">${auction.title}</span></a>
-                        <span class="auction-type">${auction.winner_id ? 'Owned by ' + auction.winner_firstname + ' ' + auction.winner_lastname : auction.is_instant ? 'Instant Auction' : 'Normal Auction'}</span>
-                        <div class="bid-react-area">
-                            <div class="last-bid">${auction.current_bid_price} $</div>
-                            <div class="react-count-display">
-                                ${auction.total_reactions}
-                            </div>
+        <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-5 col-lg-4 col-md-6 col-sm-6 col-12" style="opacity: unset">
+            <div class="product-style-one no-overlay with-placeBid">
+                <div class="card-thumbnail">
+                    <a href="/product/details/${auction.id}">
+                        <img src="${auction.product.picture || '/assets/images/default-avatar.png'}" alt="${auction.product.title}">
+                    </a>
+                </div>
+                <div class="product-share-wrapper">
+                    <div class="profile-share">${bidsHtml}</div>
+                    <div class="share-btn share-btn-activation dropdown">
+                        <button class="icon" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="feather-more-vertical"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Share</a>
+                            <a class="dropdown-item" href="#">Report</a>
                         </div>
                     </div>
                 </div>
-            `;
+                <div class="product-details">
+                    <a href="/product/details/${auction.id}">
+                        <span class="product-name">${auction.product.title}</span>
+                    </a>
+                    <span class="auction-type">${auctionTypeText}</span>
+                    <div class="bid-react-area">
+                        <div class="last-bid">${auction.current_bid_price} $</div>
+                        <div class="react-count-display">
+                            <i class="feather-heart"></i>
+                            <span>${auction.total_reactions}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
                             $('#auctions-section').append(auctionCardHtml);
                         });
+
                     } else {
-                        $('#auctions-section').empty();
-                        var noAuctionsHtml = `<div class="col-12 text-center">
-            <p>${response.message}</p>
-        </div>`;
-                        $('#auctions-section').append(noAuctionsHtml);
-                        console.log(response.message);
+                        $('#auctions-section').html(`<div class="col-12 text-center"><p>No auctions found or ${response.message}</p></div>`);
                     }
                 },
-                error: function(error) {
-                    console.log(error);
+
+                error: function(xhr, status, error) {
+                    console.error('Error during AJAX request:', error);
+                    $('#auctions-section').html(`<div class="col-12 text-center"><p>Error fetching data</p></div>`);
                 }
 
             });

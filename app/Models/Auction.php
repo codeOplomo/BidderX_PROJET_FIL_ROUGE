@@ -45,6 +45,10 @@ class Auction extends Model
         return $this->belongsTo(User::class, 'winner_id');
     }
 
+    public function loadWinner() {
+        return $this->load(['winner:id,firstname,lastname']);
+    }
+
 
     public function bids()
     {

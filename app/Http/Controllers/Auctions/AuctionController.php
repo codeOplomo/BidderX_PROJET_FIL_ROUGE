@@ -117,23 +117,30 @@ class AuctionController extends Controller
     }
 
 
-
     public function searchForAuctions(Request $request)
     {
         $query = $request->input('query');
 
-        $auctions = Auction::whereHas('product', function (Builder $queryBuilder) use ($query) {
+        $auctions = Auction::with('product')->whereHas('product', function ($queryBuilder) use ($query) {
             $queryBuilder->where('title', 'like', '%' . $query . '%')
                 ->orWhere('description', 'like', '%' . $query . '%')
                 ->orWhere('manufacturer', 'like', '%' . $query . '%');
-        })->with('product:id,title,description,manufacturer')->get();
+        })->get();
+
+        // Ensure winner data is loaded separately
+        foreach ($auctions as $auction) {
+            if ($auction->winner_id) {
+                $auction->loadWinner();
+            }
+        }
 
         return response()->json([
             'success' => true,
             'message' => 'Search successful.',
-            'auctions' => $auctions,
+            'auctions' => $auctions
         ]);
     }
+
 
     public function getPriceRange()
     {
