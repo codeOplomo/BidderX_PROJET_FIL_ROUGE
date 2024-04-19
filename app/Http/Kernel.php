@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\HasAdminRole::class,
         'bidder' => \App\Http\Middleware\HasBidderRole::class,
         'owner' => \App\Http\Middleware\HasOwnerRole::class,
+        'role_or_admin' => \App\Http\Middleware\RoleOrAdminMiddleware::class,
     ];
 }

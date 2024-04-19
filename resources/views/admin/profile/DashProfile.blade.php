@@ -14,24 +14,28 @@
                     <div class="author-wrapper">
                         <div class="author-inner">
                             <div class="user-thumbnail">
-                                <img src="{{ asset('assets/images/slider/banner-06.png') }}" alt="">
+                                <img src="{{ $user->getFirstMediaUrl("profile_images") ?: asset('assets/images/slider/banner-06.png') }}" alt="">
                             </div>
                             <div class="rn-author-info-content">
-                                <h4 class="title">MRS SUNAYRA AHSAN</h4>
-                                <a href="#" class="social-follw">
-                                    <i data-feather="twitter"></i>
-                                    <span class="user-name">it0bsession</span>
-                                </a>
-                                <div class="follow-area">
-                                    <div class="follow followers">
-                                        <span>186k <a href="#" class="color-body">followers</a></span>
-                                    </div>
-                                    <div class="follow following">
-                                        <span>156 <a href="#" class="color-body">following</a></span>
-                                    </div>
+                                <h4 class="title">{{ $user->firstname }} {{ $user->lastname }}</h4>
+                                @if($user->google_id)
+                                    <a href="#" class="social-follow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                            <polyline points="22,6 12,13 2,6"></polyline>
+                                        </svg>
+                                        <span class="user-name">{{ $user->email }}</span>
+                                    </a>
+                                @endif
+
+                                <div class="author-info pt-4 pb-2">
+                                    <p>{{ $user->bio ?: 'No bio available.' }}</p>
                                 </div>
                                 <div class="author-button-area">
-                                    <span class="btn at-follw follow-button"><i data-feather="user-plus"></i> Follow</span>
+                                    @if(auth()->user()->id == $user->id && auth()->user()->hasRole('admin'))
+                                        <a href="{{ route('owner.auction.auctionCreate') }}" class="btn at-follw follow-button"><i data-feather="plus"></i> Create Auction</a>
+                                        <a href="{{ route('owner.collections.create') }}" class="btn at-follw follow-button"><i data-feather="plus"></i> Create Collection</a>
+                                    @endif
                                     <span class="btn at-follw share-button" data-bs-toggle="modal"
                                         data-bs-target="#shareModal"><i data-feather="share-2"></i></span>
                                     <div class="count at-follw">

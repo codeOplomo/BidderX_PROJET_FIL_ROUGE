@@ -284,8 +284,13 @@
                                     @endif
                                 </div>
                                 <button type="button" class="btn btn-primary-alta mt--30" id="placeBidButton" data-bs-toggle="modal"
-                                    data-bs-target="#placebidModal" data-auction-id="{{ $auction->id }}"
-                                    data-current-bid-price="{{ $auction->current_bid_price + 0.1 }}">Place a Bid</button>
+                                        data-bs-target="#placebidModal" data-auction-id="{{ $auction->id }}"
+                                        data-is-instant="{{ $auction->is_instant ? 'true' : 'false' }}"
+                                        data-current-bid-price="{{ $auction->current_bid_price }}"
+                                        data-starting-bid-price="{{ $auction->starting_bid_price }}">
+                                    Place a Bid
+                                </button>
+
                             </div>
                         </div>
 
@@ -314,7 +319,7 @@
                             <div class="bid-content">
                                 <div class="bid-content-top">
                                     <div class="bid-content-left">
-                                        <input id="value" type="number" name="amount" required min="0.1"
+                                        <input id="amountInput" type="number" name="amount" required min="0.1"
                                             step="0.01">
                                         <span>$</span>
                                     </div>
@@ -328,7 +333,7 @@
                                         <span>Total bid amount</span>
                                     </div>
                                     <div class="bid-content-right">
-                                        <span>9578 $</span>
+                                        <span>{{ auth()->user()->walletBalance }} $ </span>
                                         <span>10 $</span>
                                         <span id="totalBidAmount">9588 $</span>
                                     </div>
@@ -351,22 +356,27 @@
 
         placeBidButtons.forEach(function(button) {
             button.addEventListener('click', function() {
-                var auctionId = button.getAttribute('data-auction-id');
-                var currentBidPrice = button.getAttribute(
-                    'data-current-bid-price'); // Get the current bid price
-                var inputAuctionId = document.getElementById('auctionId');
-                var inputValue = document.getElementById('value'); // Get the input for the bid amount
+                const auctionId = button.getAttribute('data-auction-id');
+                const isInstant = button.getAttribute('data-is-instant') === 'true'; // Ensure this data attribute is set in the HTML button element
+                const currentBidPrice = parseFloat(button.getAttribute('data-current-bid-price'));
+                const startingBidPrice = parseFloat(button.getAttribute('data-starting-bid-price')); // Ensure this data attribute is also set
+
+                const inputAuctionId = document.getElementById('auctionId');
+                const amountInput = document.getElementById('amountInput'); // Get the input for the bid amount
 
                 if (inputAuctionId) {
                     inputAuctionId.value = auctionId;
                 }
 
-                if (inputValue) {
-                    inputValue.value = currentBidPrice; // Set the default value for the amount input
+                if (amountInput) {
+                    if (isInstant) {
+                        amountInput.value = currentBidPrice ? currentBidPrice + 1 : startingBidPrice + 1;
+                    } else {
+                        amountInput.value = currentBidPrice ? currentBidPrice + 0.1 : 0.1;
+                    }
                 }
             });
         });
-
 
         document.addEventListener('DOMContentLoaded', () => {
             const countdownElement = document.getElementById('auctionCountdown');
@@ -374,7 +384,24 @@
             const isInstant = {{ $auction->is_instant ? 'true' : 'false' }};
             const hasCurrentBidPrice = {{ is_null($auction->current_bid_price) ? 'false' : 'true' }};
 
-            // Disable the button for instant auctions where a bid has already been placed
+            const bidAmountInput = document.getElementById('amountInput');
+            const totalBidDisplay = document.getElementById('totalBidAmount');
+            const serviceFee = 10;
+
+            function updateTotalBid() {
+                const bidAmount = parseFloat(bidAmountInput.value);
+                if (!isNaN(bidAmount)) {
+                    const totalBidAmount = bidAmount + serviceFee;
+                    totalBidDisplay.textContent = `${totalBidAmount.toFixed(2)} $`; // Format to 2 decimal places
+                } else {
+                    totalBidDisplay.textContent = `0.00 $`; // Default display if input is not a number
+                }
+            }
+
+            bidAmountInput.addEventListener('input', updateTotalBid);
+
+            updateTotalBid();
+
             if (isInstant && hasCurrentBidPrice) {
                 placeBidButton.disabled = true;
                 placeBidButton.classList.add('disabled');

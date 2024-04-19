@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auctions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BidRequest;
 use App\Models\Auction;
 use App\Models\Bid;
 use App\Models\User;
@@ -30,62 +31,52 @@ class BidController extends Controller
      * Place a new bid on an auction.
      */
 
-    public function store(Request $request)
+    public function store(BidRequest $request)
     {
-        $request->validate([
-            'amount' => 'required|numeric|min:1',
-            'auction_id' => 'required|exists:auctions,id',
-        ]);
-
+        //dd($request->all());
         $auction = Auction::find($request->auction_id);
 
         $this->authorize('bid', User::class);
 
-        if ($auction->is_instant && !is_null($auction->current_bid_price)) {
+        if ($auction->is_instant && $auction->winner_id) {
             return redirect()->back()->with('error', 'This instant auction has already been sold.');
         }
 
-        $start_time = $auction->start_time ? new Carbon($auction->start_time) : null;
-        $end_time = $auction->end_time ? new Carbon($auction->end_time) : null;
-        $now = now();
-
-        $hasAuctionStarted = !$start_time || $now->greaterThanOrEqualTo($start_time);
-
-        $hasAuctionNotEnded = !$end_time || $now->lessThanOrEqualTo($end_time);
-
-// Combine checks to determine if the auction is ongoing
-        $isAuctionOngoing = $hasAuctionStarted && $hasAuctionNotEnded;
-
-        if (!$isAuctionOngoing) {
-            dd($now, $start_time);
+        if (!$auction->isActive()) {
             return redirect()->back()->with('error', 'This auction is not currently active.');
         }
 
 
-        $highestBid = $auction->current_bid_price ?? 0;
-        if ($request->amount <= $highestBid) {
-            return redirect()->back()->with('error', 'Your bid must be higher than the current highest bid.');
-        }
 
-        // Create a new bid
         $bid = Bid::create([
             'user_id' => Auth::id(),
             'auction_id' => $request->auction_id,
             'amount' => $request->amount,
         ]);
 
-        // Update the auction's current bid price and potentially mark it as sold if it's an instant auction
         if ($bid) {
             $auction->current_bid_price = $request->amount;
-            $auction->save();
-
             if ($auction->is_instant) {
                 $auction->winner_id = Auth::id();
-                $auction->save();
+            }
+            $auction->save();
+
+            // Assuming the service fee is defined somewhere or is static
+            $serviceFee = 10;
+            $totalBidAmount = $request->amount + $serviceFee;
+
+            // Update user's wallet balance
+            $user = Auth::user();
+            try {
+                $user->pay($totalBidAmount); // Deduct the total bid amount from the user's wallet
+                return redirect()->back()->with('success', 'Bid placed successfully!');
+            } catch (\Exception $e) {
+                // Handle exception if payment fails
+                return redirect()->back()->with('error', 'Failed to deduct the total bid amount from your wallet.');
             }
         }
 
-        return redirect()->back()->with('success', 'Bid placed successfully!');
+        return redirect()->back()->with('error', 'Failed to place the bid.');
     }
 
 

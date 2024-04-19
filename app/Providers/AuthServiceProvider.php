@@ -26,9 +26,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Define a gate for checking if the user is banned
         Gate::define('is-banned', function ($user) {
-            return $user->is_banned;  // Assuming 'is_banned' is a boolean attribute on the user model
+            return $user->is_banned;
         });
     }
 }

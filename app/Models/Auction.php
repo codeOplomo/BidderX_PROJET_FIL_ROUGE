@@ -40,6 +40,13 @@ class Auction extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function isActive(): bool
+    {
+        $now = now();
+        return (!$this->start_time || $now->greaterThanOrEqualTo($this->start_time)) &&
+            (!$this->end_time || $now->lessThanOrEqualTo($this->end_time));
+    }
+
     public function winner()
     {
         return $this->belongsTo(User::class, 'winner_id');

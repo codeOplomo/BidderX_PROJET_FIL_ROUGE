@@ -168,13 +168,13 @@ Route::middleware(['auth'])->group(function () {
 
 
 // Bidder routes
-    Route::middleware(['bidder'])->group(function () {
+    Route::middleware(['role_or_admin:owner'])->group(function () {
         Route::get('/bidder/application', [BidderController::class, 'applicationForm'])->name('bidder.application');
         Route::post('/bidder/submit-application', [BidderController::class, 'submitApplication'])->name('bidder.submitApplication');
     });
 
 // Owner routes
-    Route::middleware(['owner'])->group(function () {
+    Route::middleware(['role_or_admin:owner'])->group(function () {
         Route::get('/owner/auction/create', [AuctionController::class, 'create'])->name('owner.auction.auctionCreate');
         Route::post('/owner/auction/submit', [OwnerController::class, 'storeAuction'])->name('owner.auction.submit');
         Route::get('/collections/create', [CollectionController::class, 'create'])->name('owner.collections.create');

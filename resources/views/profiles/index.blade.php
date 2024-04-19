@@ -55,7 +55,7 @@
     <div class="rn-author-bg-area bg_image--9 bg_image ptb--150">
         <div class="container">
             <div class="row">
-                <!-- Placeholder for additional content if necessary -->
+
             </div>
         </div>
     </div>

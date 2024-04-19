@@ -84,7 +84,6 @@ class AuctionController extends Controller
             }
         });
 
-        // Apply saleType filter if provided
         $query->when($request->filled('saleType'), function ($q) use ($request) {
             $saleType = $request->saleType;
             if ($saleType == "1") {
@@ -165,13 +164,13 @@ class AuctionController extends Controller
 
     public function timedAuctions()
     {
-        $timedAuctions = Auction::where('is_instant', false)->get();
+        $timedAuctions = Auction::approved()->where('is_instant', false)->get();
         return view('auctions.timed_auctions', compact('timedAuctions'));
     }
 
     public function instantAuctions()
     {
-        $instantAuctions = Auction::where('is_instant', true)->get();
+        $instantAuctions = Auction::approved()->where('is_instant', true)->get();
         return view('auctions.instant_auctions', compact('instantAuctions'));
     }
 
@@ -218,14 +217,15 @@ class AuctionController extends Controller
 
     public function create()
     {
-        // First, authorize the user
         $this->authorize('createAuction', User::class);
 
-        // If the authorization is successful, fetch categories and collections
         $categories = Category::all();
         $collections = Auth::user()->collections;
 
-        // Then render the view with the necessary data
+        if (Auth::user()->hasRole('admin')) {
+            return redirect()->route('profile');
+        }
+
         return view('owner.auction.auctionCreate', compact('categories', 'collections'));
     }
 

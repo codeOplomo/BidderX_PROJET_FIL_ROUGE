@@ -11,10 +11,13 @@
                 @endif
             </a>
             @auth
-                @if((!$auction->is_instant && \Carbon\Carbon::now()->lessThan($auction->end_time)) || ($auction->is_instant && is_null($auction->current_bid_price)))
+                @if(
+                    ((!$auction->is_instant && \Carbon\Carbon::now()->lessThan($auction->end_time) && is_null($auction->winner_id)) ||
+                     ($auction->is_instant && is_null($auction->current_bid_price) && is_null($auction->winner_id))))
                     <a href="{{ route('product.details', $auction->id) }}" class="btn btn-primary">Place Bid</a>
                 @endif
             @endauth
+
         </div>
         <div class="product-share-wrapper">
             <div class="profile-share">

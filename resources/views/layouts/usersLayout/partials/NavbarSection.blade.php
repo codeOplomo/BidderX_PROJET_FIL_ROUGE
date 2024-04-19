@@ -84,7 +84,7 @@
                         @endif
                     </div>
 
-                    @if(!auth()->user()->hasRole('owner'))  <!-- Assuming 'owner' role is for creators -->
+                    @if(!auth()->user()->hasRole('owner'))
                     <div class="icon-box">
                         <a class="btn btn-primary-alta btn-small" href="{{ route('bidder.application') }}">Become a Creator</a>
                     </div>

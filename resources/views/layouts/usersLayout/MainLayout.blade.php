@@ -634,7 +634,7 @@
                     title: 'Success!',
                     text: '{{ session('success') }}',
                     showConfirmButton: true,
-                    background: 'red',
+                    background: 'green',
                     timer: 5000
                 });
             </script>
@@ -651,6 +651,18 @@
                     timer: 5000
                 });
             </script>
+        @endif
+
+        <!-- SweetAlert Error Message -->
+        @if($errors->any())
+        <script>
+            Swal.fire({
+                title: 'Oops!',
+                html: '@foreach($errors->all() as $error)<div>{{ $error }}</div>@endforeach',
+                icon: 'error',
+                confirmButtonText: 'Okay'
+            });
+        </script>
         @endif
     </div>
 
