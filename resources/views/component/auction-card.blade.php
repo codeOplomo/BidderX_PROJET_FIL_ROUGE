@@ -24,10 +24,13 @@
                 @php $count = 0; @endphp
                 @foreach ($auction->bids()->with('user')->get()->unique('user_id') as $bid)
                     @if ($count < 3)
-                        <a href="" class="avatar" data-tooltip="{{ $bid->user->firstname }} {{ $bid->user->lastname }}"><img src="{{ $bid->user->getFirstMediaUrl('profile_images') ?: asset('assets/images/client/client-1.png') }}" alt="Nft_Profile"></a>
+                        <a href="#" class="avatar" data-tooltip="{{ $bid->user->firstname }} {{ $bid->user->lastname }}">
+                            <img src="{{ $bid->user->getFirstMediaUrl('profile_images') ?: asset('assets/images/client/client-1.png') }}" alt="Nft_Profile">
+                        </a>
                         @php $count++; @endphp
                     @endif
                 @endforeach
+
                 <a class="more-author-text" href="#">
                     {{ $auction->uniqueBidderCount - 1 }}+ Place Bit.
                 </a>

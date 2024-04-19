@@ -44,7 +44,11 @@
                                 <div class="tab-pane fade show active" id="v-pills-bids" role="tabpanel"
                                     aria-labelledby="v-pills-bids-tab">
                                     <div class="rn-pd-thumbnail">
-                                        <img src="assets/images/portfolio/lg/portfolio-01.jpg" alt="Nft_Profile">
+                                        @if($auction->product && $auction->product->getFirstMediaUrl("product_picture"))
+                                            <img src="{{ $auction->product->getFirstMediaUrl("product_picture") }}" alt="NFT_portfolio">
+                                        @else
+                                            <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Default Image">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-details" role="tabpanel"
@@ -111,8 +115,7 @@
                                 <div class="top-seller-inner-one">
                                     <div class="top-seller-wrapper">
                                         <div class="thumbnail">
-                                            <a href="#"><img src="assets/images/client/client-1.png"
-                                                    alt="Nft_Profile"></a>
+                                            <a href="#"><img src="{{ $auction->owner->getFirstMediaUrl("profile_images") ?: asset('assets/images/slider/banner-06.png') }}" alt=""></a>
                                         </div>
                                         <div class="top-seller-content">
                                             <a href="#">
@@ -167,9 +170,7 @@
                                                 <div class="top-seller-inner-one">
                                                     <div class="top-seller-wrapper">
                                                         <div class="thumbnail">
-                                                            <a href="#"><img
-                                                                    src="{{ asset('assets/images/client/client-3.png') }}"
-                                                                    alt="Profile"></a>
+                                                            <a href="#"><img src="{{ $auction->owner->getFirstMediaUrl("profile_images") ?: asset('assets/images/slider/banner-06.png') }}" alt=""></a>
                                                         </div>
                                                         <div class="top-seller-content">
                                                             <span>{{ $bid->amount }}$ by <a
@@ -190,7 +191,6 @@
                                     <div class="tab-pane fade show active" id="nav-details" role="tabpanel"
                                         aria-labelledby="nav-details-tab">
                                         <!-- Content for the Details tab -->
-                                        <!-- You've already included the details content in your provided HTML -->
                                     </div>
                                     <div class="tab-pane fade" id="nav-history" role="tabpanel"
                                         aria-labelledby="nav-history-tab">
@@ -199,9 +199,7 @@
                                                 <div class="top-seller-inner-one">
                                                     <div class="top-seller-wrapper">
                                                         <div class="thumbnail">
-                                                            <a href="#"><img
-                                                                    src="{{ asset('assets/images/client/client-3.png') }}"
-                                                                    alt="Profile"></a>
+                                                            <a href="#"><img src="{{ $auction->owner->getFirstMediaUrl("profile_images") ?: asset('assets/images/slider/banner-06.png') }}" alt=""></a>
                                                         </div>
                                                         <div class="top-seller-content">
                                                             <span>{{ $bid->amount }}$ by <a
@@ -229,8 +227,7 @@
                                             <div class="top-seller-inner-one">
                                                 <div class="top-seller-wrapper">
                                                     <div class="thumbnail">
-                                                        <a href="#"><img src="assets/images/client/client-7.png"
-                                                                alt="Bidder Profile"></a>
+                                                        <a href="#"><img src="{{ $auction->owner->getFirstMediaUrl("profile_images") ?: asset('assets/images/slider/banner-06.png') }}" alt=""></a>
                                                     </div>
                                                     <div class="top-seller-content">
                                                         <span class="heighest-bid">Highest bid by <a

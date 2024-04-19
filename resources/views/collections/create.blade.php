@@ -11,7 +11,7 @@
                     <label class="title required">Logo image</label>
                     <div class="create-collection-input logo-image">
                         <div class="logo-c-image logo">
-                            <img id="rbtinput1" src="assets/images/profile/profile-01.jpg" alt="Profile-NFT">
+                            <img id="rbtinput1" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
                             <label for="logo_image" title="No File Choosen">
                                 <span class="text-center color-white"><i class="feather-edit"></i></span>
                             </label>
@@ -30,7 +30,7 @@
                     <label class="title">Cover Image</label>
                     <div class="create-collection-input feature-image">
                         <div class="logo-c-image feature">
-                            <img id="rbtinput2" src="assets/images/profile/cover-04.png" alt="Profile-NFT">
+                            <img id="rbtinput2" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
                             <label for="cover_image" title="No File Choosen">
                                 <span class="text-center color-white"><i class="feather-edit"></i></span>
                             </label>
@@ -49,8 +49,46 @@
                     <label class="title">Featured image</label>
                     <div class="create-collection-input feature-image">
                         <div class="logo-c-image feature">
-                            <img id="createfileImage" src="assets/images/profile/cover-03.jpg" alt="Profile-NFT">
+                            <img id="createfileImage" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
                             <label for="featured_image" title="No File Choosen">
+                                <span class="text-center color-white"><i class="feather-edit"></i></span>
+                            </label>
+                        </div>
+                        <div class="button-area">
+                            <div class="brows-file-wrapper">
+                                <!-- actual upload which is hidden -->
+                                <input name="featured_image" class="inputfile" id="featured_image" type="file" accept="image/*">
+                                <!-- our custom upload button -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collection-single-wized banner">
+                    <label class="title">Featured image</label>
+                    <div class="create-collection-input feature-image">
+                        <div class="logo-c-image feature">
+                            <img id="createfileImage" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
+                            <label for="featured_image1" title="No File Choosen">
+                                <span class="text-center color-white"><i class="feather-edit"></i></span>
+                            </label>
+                        </div>
+                        <div class="button-area">
+                            <div class="brows-file-wrapper">
+                                <!-- actual upload which is hidden -->
+                                <input name="featured_image" class="inputfile" id="featured_image" type="file" accept="image/*">
+                                <!-- our custom upload button -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collection-single-wized banner">
+                    <label class="title">Featured image</label>
+                    <div class="create-collection-input feature-image">
+                        <div class="logo-c-image feature">
+                            <img id="createfileImage" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
+                            <label for="featured_image2" title="No File Choosen">
                                 <span class="text-center color-white"><i class="feather-edit"></i></span>
                             </label>
                         </div>
@@ -137,14 +175,12 @@
         var fileInput = document.getElementById(inputName).cloneNode(true);
         // Set the attributes of the cloned file input
         fileInput.setAttribute('name', inputName); // Ensure it has the same name as in the form
-        fileInput.setAttribute('style', 'display: none'); // Hide the cloned file input
-        // Append the cloned file input to the form
+        fileInput.setAttribute('style', 'display: none');
         document.getElementById('collectionForm').appendChild(fileInput);
     }
 
     // Add event listener to form submission
     document.getElementById('collectionForm').addEventListener('submit', function(event) {
-        // Call the function to append file input to form for each image input
         appendFileInput('logo_image');
         appendFileInput('cover_image');
         appendFileInput('featured_image');

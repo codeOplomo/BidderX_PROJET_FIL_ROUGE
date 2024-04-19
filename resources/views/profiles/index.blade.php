@@ -167,12 +167,17 @@
                     <div class="tab-pane row g-5 d-flex fade {{ $loop->first ? 'show active' : '' }}" id="nav-{{ Str::slug($tabName) }}" role="tabpanel" aria-labelledby="nav-{{ Str::slug($tabName) }}-tab">
                         @if (array_key_exists($tabName, $data))
                             @foreach($data[$tabName] as $item)
-                                @include('component.auction-card', ['auction' => $item])
+                                @if ($tabName == 'collection')
+                                    @include('component.collection-card', ['collection' => $item])
+                                @else
+                                    @include('component.auction-card', ['auction' => $item])
+                                @endif
                             @endforeach
                         @endif
                     </div>
                 @endforeach
             </div>
+
 
 
             <!-- Modal -->

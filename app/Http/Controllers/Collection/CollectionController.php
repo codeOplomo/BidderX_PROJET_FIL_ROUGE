@@ -58,7 +58,7 @@ class CollectionController extends Controller
             $collection->addMediaFromRequest('featured_image')->toMediaCollection('blog_featured_image');
         }
 
-        return redirect()->route('profile.index')->with('success', 'Collection created successfully!');
+        return redirect()->back()->with('success', 'Collection created successfully!');
     }
 
 }
