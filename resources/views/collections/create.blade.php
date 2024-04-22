@@ -64,43 +64,6 @@
                     </div>
                 </div>
 
-                <div class="collection-single-wized banner">
-                    <label class="title">Featured image</label>
-                    <div class="create-collection-input feature-image">
-                        <div class="logo-c-image feature">
-                            <img id="createfileImage" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
-                            <label for="featured_image1" title="No File Choosen">
-                                <span class="text-center color-white"><i class="feather-edit"></i></span>
-                            </label>
-                        </div>
-                        <div class="button-area">
-                            <div class="brows-file-wrapper">
-                                <!-- actual upload which is hidden -->
-                                <input name="featured_image" class="inputfile" id="featured_image" type="file" accept="image/*">
-                                <!-- our custom upload button -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="collection-single-wized banner">
-                    <label class="title">Featured image</label>
-                    <div class="create-collection-input feature-image">
-                        <div class="logo-c-image feature">
-                            <img id="createfileImage" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
-                            <label for="featured_image2" title="No File Choosen">
-                                <span class="text-center color-white"><i class="feather-edit"></i></span>
-                            </label>
-                        </div>
-                        <div class="button-area">
-                            <div class="brows-file-wrapper">
-                                <!-- actual upload which is hidden -->
-                                <input name="featured_image" class="inputfile" id="featured_image" type="file" accept="image/*">
-                                <!-- our custom upload button -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="col-lg-7">
@@ -163,27 +126,68 @@
                         </div>
                     </div>
                 </form>
+
+
+                <div class="collection d-flex offset-1 ml_md--0 ml_sm--0 mt-5 g-3">
+                    <div class="collection-single-wized banner col-lg-6">
+                        <label class="title">Featured image</label>
+                        <div class="create-collection-input feature-image">
+                            <div class="logo-c-image feature">
+                                <img id="createfileImage" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
+                                <label for="featured_image1" title="No File Choosen">
+                                    <span class="text-center color-white"><i class="feather-edit"></i></span>
+                                </label>
+                            </div>
+                            <div class="button-area">
+                                <div class="brows-file-wrapper">
+                                    <!-- actual upload which is hidden -->
+                                    <input name="featured_image1" class="inputfile" id="featured_image1" type="file" accept="image/*">
+                                    <!-- our custom upload button -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collection-single-wized banner col-lg-6">
+                        <label class="title">Featured image</label>
+                        <div class="create-collection-input feature-image"  >
+                            <div class="logo-c-image feature">
+                                <img id="createfileImage" src="{{asset('assets/images/profile/profile-01.jpg')}}" alt="Profile-NFT">
+                                <label for="featured_image2" title="No File Choosen">
+                                    <span class="text-center color-white"><i class="feather-edit"></i></span>
+                                </label>
+                            </div>
+                            <div class="button-area">
+                                <div class="brows-file-wrapper">
+                                    <!-- actual upload which is hidden -->
+                                    <input name="featured_image2" class="inputfile" id="featured_image2" type="file" accept="image/*">
+                                    <!-- our custom upload button -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Function to append file input dynamically
+
     function appendFileInput(inputName) {
-        // Clone the file input from the hidden input
         var fileInput = document.getElementById(inputName).cloneNode(true);
-        // Set the attributes of the cloned file input
-        fileInput.setAttribute('name', inputName); // Ensure it has the same name as in the form
+        fileInput.setAttribute('name', inputName);
         fileInput.setAttribute('style', 'display: none');
         document.getElementById('collectionForm').appendChild(fileInput);
     }
 
-    // Add event listener to form submission
     document.getElementById('collectionForm').addEventListener('submit', function(event) {
         appendFileInput('logo_image');
         appendFileInput('cover_image');
         appendFileInput('featured_image');
+        appendFileInput('featured_image1');
+        appendFileInput('featured_image2');
     });
 </script>
 

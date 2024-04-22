@@ -61,18 +61,23 @@
 
 
 <div data-sal="slide-up" data-sal-delay="150" data-sal-duration="800" class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-    <a href="product-details.html" class="rn-collection-inner-one">
+    <a href="{{ route('collection.show', $collection->id) }}" class="rn-collection-inner-one">
         <div class="collection-wrapper">
             <div class="collection-big-thumbnail">
-                <img src="{{$collection->getFirstMediaUrl("blog_cover_image")}}" alt="Nft_Profile">
+                <img src="{{$collection->getFirstMediaUrl("blog_cover_image") ?: asset('assets/images/collection/collection-lg-02.jpg')}}" alt="Nft_Profile">
             </div>
             <div class="collenction-small-thumbnail">
-                <img src="{{$collection->getFirstMediaUrl("blog_featured_image")}}" alt="Nft_Profile">
-                <img src="{{$collection->getFirstMediaUrl("blog_featured_image")}}" alt="Nft_Profile">
-                <img src="{{$collection->getFirstMediaUrl("blog_featured_image")}}" alt="Nft_Profile">
+                @foreach ($collection->getMedia('blog_featured_image') as $image)
+                    @if ($image->exists())
+                        <img src="{{ $image->getUrl() }}" alt="Nft_Profile">
+                    @else
+                        <img src="{{ asset('assets/images/collection/collection-lg-02.jpg') }}" alt="Default Image">
+                    @endif
+                @endforeach
             </div>
+
             <div class="collection-profile">
-                <img src="{{$collection->getFirstMediaUrl("blog_logo_image")}}" alt="Nft_Profile">
+                <img src="{{$collection->getFirstMediaUrl("blog_logo_image") ?: asset('assets/images/collection/collection-lg-02.jpg')}}" alt="Nft_Profile">
             </div>
             <div class="collection-deg">
                 <h6 class="title">{{ $collection->name }}</h6>

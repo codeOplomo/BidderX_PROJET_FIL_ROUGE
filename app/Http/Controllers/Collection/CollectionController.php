@@ -32,8 +32,10 @@ class CollectionController extends Controller
             'category' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'logo_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'featured_image1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'featured_image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         //dd($request->all());
@@ -56,6 +58,14 @@ class CollectionController extends Controller
 
         if ($request->hasFile('featured_image')) {
             $collection->addMediaFromRequest('featured_image')->toMediaCollection('blog_featured_image');
+        }
+
+        if ($request->hasFile('featured_image1')) {
+            $collection->addMediaFromRequest('featured_image1')->toMediaCollection('blog_featured_image');
+        }
+
+        if ($request->hasFile('featured_image2')) {
+            $collection->addMediaFromRequest('featured_image2')->toMediaCollection('blog_featured_image');
         }
 
         return redirect()->back()->with('success', 'Collection created successfully!');
