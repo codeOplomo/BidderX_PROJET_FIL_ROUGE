@@ -670,6 +670,38 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
+        document.addEventListener('DOMContentLoaded', () => {
+            function updateCountdown(countdownElement) {
+                const endTime = new Date(countdownElement.getAttribute('data-end-time')).getTime();
+                const countdownTimer = setInterval(() => {
+                    const now = new Date().getTime();
+                    const timeLeft = endTime - now;
+
+                    if (timeLeft >= 0) {
+                        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                        countdownElement.querySelector('.count-day-value').innerText = days;
+                        countdownElement.querySelector('.count-hour-value').innerText = hours;
+                        countdownElement.querySelector('.count-minutes-value').innerText = minutes;
+                        countdownElement.querySelector('.count-seconds-value').innerText = seconds;
+                    } else {
+                        clearInterval(countdownTimer);
+                        countdownElement.innerHTML = "<p>Auction has ended.</p>";
+                    }
+                }, 1000);
+            }
+
+            // Find all countdown elements and initialize them
+            document.querySelectorAll('.countdown').forEach(countdownElement => {
+                if (countdownElement.getAttribute('data-auction-type') === 'normal') {
+                    updateCountdown(countdownElement);
+                }
+            });
+        });
+
 
 
         function formatTimeDiff(time) {

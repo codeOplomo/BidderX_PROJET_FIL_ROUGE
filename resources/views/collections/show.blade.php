@@ -2,20 +2,47 @@
 
 
 @section('content')
+    <style>
+        .about-fluidimg {
+            position: relative;
+            border: 30px solid #231A00;
+        }
 
-    <div class="rn-collection-area rn-section-gapTop">
+        .logo-image-wrapper {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            width: 250px;
+        }
+
+        .logo-image-wrapper img {
+            border-radius: 50% !important;
+            border: 10px solid #231A00;
+            width: 100%;
+            height: auto;
+        }
+    </style>
+
+
+    <div class="rn-collection-area">
         <div class="container">
-            <div class="row mb-5 align-items-center">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                    <h3 class="title mb-0" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800" style="opacity: unset">Explore {{ $collection->name }} Collection</h3>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="rn-about-banner-area">
+                <div class="container mb--30">
                     <div class="row">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <img src="{{ $collection->getFirstMediaUrl('blog_cover_image') ?: asset('assets/images/default-cover-image.jpg') }}" class="img-fluid rounded" alt="Cover Image">
+                        <div class="col-12">
+                            <h2 class="title about-title-m" data-sal="slide-up" data-sal-duration="800" data-sal-delay="150" style="opacity: unset">Explore <span style="color: #e17009"> {{ $collection->name }} </span>Collection</h2>
                         </div>
-                        <div class="col-md-6">
-                            <img src="{{ $collection->getFirstMediaUrl('blog_logo_image') ?: asset('assets/images/default-logo-image.jpg') }}" class="img-fluid rounded" alt="Logo Image">
+                    </div>
+                </div>
+                <div class="about-fluidimg" style="background-image: url('{{ $collection->getFirstMediaUrl('blog_cover_image') ?: asset('assets/images/default-cover-image.jpg') }}'); height: 500px; background-size: cover; background-repeat: no-repeat; background-position: center;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 offset-md-6 collection-big-thumbnail">
+                                <!-- Wrapper for the logo image for positioning -->
+                                <div class="logo-image-wrapper">
+                                    <img src="{{ $collection->getFirstMediaUrl('blog_logo_image') ?: asset('assets/images/default-logo-image.jpg') }}" class="img-fluid rounded" alt="Logo Image">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

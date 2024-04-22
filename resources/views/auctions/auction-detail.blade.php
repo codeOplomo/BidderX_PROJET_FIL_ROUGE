@@ -354,12 +354,12 @@
         placeBidButtons.forEach(function(button) {
             button.addEventListener('click', function() {
                 const auctionId = button.getAttribute('data-auction-id');
-                const isInstant = button.getAttribute('data-is-instant') === 'true'; // Ensure this data attribute is set in the HTML button element
+                const isInstant = button.getAttribute('data-is-instant') === 'true';
                 const currentBidPrice = parseFloat(button.getAttribute('data-current-bid-price'));
-                const startingBidPrice = parseFloat(button.getAttribute('data-starting-bid-price')); // Ensure this data attribute is also set
+                const startingBidPrice = parseFloat(button.getAttribute('data-starting-bid-price'));
 
                 const inputAuctionId = document.getElementById('auctionId');
-                const amountInput = document.getElementById('amountInput'); // Get the input for the bid amount
+                const amountInput = document.getElementById('amountInput');
 
                 if (inputAuctionId) {
                     inputAuctionId.value = auctionId;

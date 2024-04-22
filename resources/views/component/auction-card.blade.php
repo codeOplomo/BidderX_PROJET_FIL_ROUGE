@@ -14,6 +14,25 @@
                 @if(
                     ((!$auction->is_instant && \Carbon\Carbon::now()->lessThan($auction->end_time) && is_null($auction->winner_id)) ||
                      ($auction->is_instant && is_null($auction->current_bid_price) && is_null($auction->winner_id))))
+                    <div class="countdown" data-auction-type="{{ $auction->is_instant ? 'instant' : 'normal' }}" data-end-time="{{ $auction->end_time }}">
+                        <div class="countdown-container days">
+                            <span class="countdown-value count-day-value">87</span>
+                            <span class="countdown-heading">D's</span>
+                        </div>
+                        <div class="countdown-container hours">
+                            <span class="countdown-value count-hour-value">23</span>
+                            <span class="countdown-heading">H's</span>
+                        </div>
+                        <div class="countdown-container minutes">
+                            <span class="countdown-value count-minutes-value">38</span>
+                            <span class="countdown-heading">Min's</span>
+                        </div>
+                        <div class="countdown-container seconds">
+                            <span class="countdown-value count-seconds-value">27</span>
+                            <span class="countdown-heading">Sec</span>
+                        </div>
+                    </div>
+
                     <a href="{{ route('product.details', $auction->id) }}" class="btn btn-primary">Place Bid</a>
                 @endif
             @endauth

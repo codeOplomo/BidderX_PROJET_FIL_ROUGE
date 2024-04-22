@@ -1,3 +1,19 @@
+<style>
+    .balance-display {
+        background-color: #f0f0f0;
+        color: #333;
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-weight: bold;
+        margin-right: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-box:hover .balance-display {
+        background-color: #e0e0e0;
+    }
+</style>
+
 <header class="rn-header haeder-default header--sticky">
     <div class="container">
         <div class="header-inner">
@@ -134,7 +150,7 @@
 </header>
 
 
-<div class="popup-mobile-menu">
+<div class="popup-mobile-menu template-color-1">
     <div class="inner">
         <div class="header-top">
             <div class="logo logo-custom-css">

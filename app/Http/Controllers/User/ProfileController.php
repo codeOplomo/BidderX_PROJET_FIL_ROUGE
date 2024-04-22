@@ -134,6 +134,6 @@ public function storeImages(Request $request)
         // Store the cover image using MediaLibrary
         $user->addMedia($request->file('cover_image'))->toMediaCollection('cover_images');
 
-        return redirect()->route('ownerProfile')->with('success', 'Images uploaded successfully!');
+        return redirect()->route('profile.index')->with('success', 'Images uploaded successfully!');
     }
 }
