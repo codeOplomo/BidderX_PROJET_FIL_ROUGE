@@ -100,8 +100,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search-auctions-sp', [AuctionController::class, 'searchForAuctions'])->name('search.auctions.sp');
     Route::get('/search-creators', [OwnerController::class, 'searchCreators'])->name('search.creators');
     Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');
-    Route::get('/fetch-chat-history/{userId}', [MessageController::class, 'fetchChatHistory'])->name('fetch.chat.history');
     Route::get('/chat/{userId}', [MessageController::class, 'startChat'])->name('chat.start');
+    Route::get('/fetch-chat-history/{userId}', [MessageController::class, 'fetchChatHistory'])->name('fetch.chat.history');
     Route::get('/get-user-details/{userId}', [UserController::class, 'getUserDetails'])->name('user.details');
     Route::post('/send-messages', [MessageController::class, 'sendMessage'])->name('messages.send');
     Route::get('/wallet-connect', [WalletController::class, 'connectWallet'])->name('wallet.connect');

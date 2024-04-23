@@ -16,16 +16,22 @@ class MessageController extends Controller
 {
     public function startChat($userId)
     {
-        $user = User::findOrFail($userId);
-        return redirect()->route('chat.page', ['user' => $user]);
+        return redirect()->route('chat.page', ['userId' => $userId]);
     }
 
-    public function chatPage()
+    public function chatPage(Request $request)
     {
-        $activeUsers = User::where('is_active', true)->get(['id', 'firstname', 'lastname']); // Add more fields as needed
-
-        return view('messaging.chat', compact('activeUsers'));
+        $userId = $request->query('userId');
+        $activeUsers = User::where('is_active', true)
+            ->where('id', '!=', auth()->id())
+            ->get();
+        $user = null;
+        if ($userId) {
+            $user = User::find($userId);
+        }
+        return view('messaging.chat', compact('activeUsers', 'user'));
     }
+
 
 
     public function fetchChatHistory($userId)

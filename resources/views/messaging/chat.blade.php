@@ -10,14 +10,14 @@
         }
 
         .sender {
-            background-color: #DCF8C6; /* Light green for sender */
+            background-color: #DCF8C6;
             text-align: right;
             float: right;
             clear: both;
         }
 
         .receiver {
-            background-color: #ECECEC; /* Light grey for receiver */
+            background-color: #ECECEC;
             text-align: left;
             float: left;
             clear: both;
@@ -26,23 +26,41 @@
         .chat {
             display: flex;
             flex-direction: column;
-            height: 100%; /* Adjust based on your layout requirements */
+            height: 100%;
         }
 
         .chat-history {
-            overflow-y: auto;
-            flex-grow: 1; /* Makes the chat history take up all available space */
+            overflow-y: auto; /* Allows scrolling */
+            max-height: 70vh; /* Limits height to 70% of the viewport height */
             padding: 10px;
-            margin-bottom: 10px; /* Space between history and message input */
+        }
+
+        /* Style adjustments for the message list */
+        #message-list {
+            list-style-type: none; /* Removes bullets */
+            padding: 0; /* Removes default padding */
+            margin: 0; /* Adjust margin as needed */
+        }
+
+        .message-item {
+            padding: 5px 10px;
+            margin: 5px 0; /* Provides spacing between messages */
+            border-radius: 10px; /* Rounded corners for message bubbles */
+            width: fit-content; /* Fit the content width */
+            max-width: 80%; /* Maximum width for each message */
         }
 
         .chat-message {
-            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
         }
 
         .input-group {
-            width: 100%;
+            width: auto;
         }
+
     </style>
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -60,12 +78,12 @@
                             <input type="text" class="form-control" placeholder="Search...">
                         </div>
                         <ul class="list-unstyled chat-list mt-2 mb-0" id="online-users-list">
-                            @foreach ($activeUsers as $user)
-                                <li data-user-id="{{ $user->id }}" onclick="fetchChatHistory({{ $user->id }})">
+                            @foreach ($activeUsers as $activeUser)
+                                <li data-user-id="{{ $activeUser->id }}" onclick="fetchChatHistory({{ $activeUser->id }})">
                                     <a href="javascript:void(0);" class="col-lg-12 user-item d-flex align-items-center" style="text-decoration: none; color: inherit;">
                                         <img src="{{ asset('assets/images/client/client-1.png') }}" class="chat-thumbnail" alt="avatar">
                                         <div class="chat-about">
-                                            <h6 class="m-b-0">{{ $user->firstname }} {{ $user->lastname }}</h6>
+                                            <h6 class="m-b-0">{{ $activeUser->firstname }} {{ $activeUser->lastname }}</h6>
                                         </div>
                                     </a>
                                 </li>
@@ -80,13 +98,12 @@
                     <div class="chat">
                         <div class="chat-header clearfix">
                             <div class="row">
-                                <div class="col-lg-12 d-flex">
+                                <div class="col-lg-12 d-flex align-items-center justify-content-center gap-4">
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
                                         <img src="" id="chat-user-image" class="chat-thumbnail" alt="avatar">
                                     </a>
                                     <div class="chat-about">
-                                        {{--<h6 class="m-b-0" id="chat-user-name">Select a user to start chatting</h6>--}}
-                                        <h6 class="m-b-0" id="chat-user-name">{{ $user->firstname }} {{ $user->lastname }}</h6>
+                                        <h6 class="m-b-0" id="chat-user-name">{{ $user ? $user->firstname . ' ' . $user->lastname : 'Select a user to start chatting' }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -98,11 +115,11 @@
                             </ul>
                         </div>
                         <div class="chat-message clearfix">
-                            <div class="input-group mb-0 col-lg-12">
+                            <div class="input-group mb-0">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-send"></i></span>
                                 </div>
-                                <input id="message-input" name="content" type="text" class="form-control col-lg-12" placeholder="Enter text here...">
+                                <input id="message-input" name="content" type="text" class="form-control" placeholder="Enter text here...">
                                 <button id="send-button" class="btn btn-primary">Send</button>
                             </div>
                         </div>
@@ -115,6 +132,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
+        var selectedUserId = {{ request('userId') ? request('userId') : 'null' }};
         var loggedInUserId = {{ auth()->id() }};
     </script>
 
@@ -135,8 +153,8 @@
             });
         }
 
-        function updateUserDetails(fullName, imageUrl = 'path/to/default/image.jpg') {
-            console.log("Updating user details:", fullName, imageUrl);  // Log to confirm update attempt
+        function updateUserDetails(fullName, imageUrl) {
+            console.log("Updating user details:", fullName, imageUrl);
             $('#chat-user-name').text(fullName);
             $('#chat-user-image').attr('src', imageUrl);
         }
@@ -166,9 +184,6 @@ console.log(fetchUserDetails);
             });
         }
 
-
-
-
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
@@ -176,17 +191,20 @@ console.log(fetchUserDetails);
                 }
             });
 
-            $('#online-users-list').on('click', 'li', function() {
-                $('#online-users-list li').removeClass('active'); // Remove active class from all users
-                $(this).addClass('active'); // Add active class to the clicked user
-                var selectedUserId = $(this).data('user-id');
-                loadChatHistory(selectedUserId, true); // Also fetch user details
-            });
+            if (selectedUserId) {
+                loadChatHistory(selectedUserId, true);
+            }
 
+            $('#online-users-list').on('click', 'li', function() {
+                var userId = $(this).data('user-id');
+                loadChatHistory(userId, true); // Always fetch chat history when a user is clicked
+                $('#online-users-list li').removeClass('active'); // Remove active class from all
+                $(this).addClass('active'); // Add active class to clicked user
+            });
 
             $('#send-button').click(function() {
                 var messageContent = $('#message-input').val();
-                var userId = $('#online-users-list li.active').data('user-id') || '{{ $user->id }}'; // Get active user or default
+                var userId = $('#online-users-list li.active').data('user-id') || selectedUserId; // Get the active or the initially selected user ID
 
                 if (messageContent.trim() !== '') {
                     $.ajax({
@@ -197,13 +215,12 @@ console.log(fetchUserDetails);
                             content: messageContent
                         },
                         success: function(response) {
-                            console.log('Message sent:', response.data.content);
                             var messageElement = `<li class='message-item sender'>${response.data.content}</li>`;
                             $('#message-list').append(messageElement);
-                            $('#message-input').val(''); // Clear the input field after sending
+                            $('#message-input').val('');
                         },
                         error: function(xhr, status, error) {
-                            console.error('Error sending message:', xhr.responseJSON.error);
+                            console.error('Error sending message:', error);
                         }
                     });
                 }

@@ -21,11 +21,12 @@ class UserController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
 
+        $imageUrl = $user->getFirstMediaUrl('profile_images', 'thumb') ?: asset('assets/images/slider/banner-06.png');
         // Customize the data as needed
         return response()->json([
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
-            //'imageUrl' => $user->profile_image // Assume there's a profile_image field that stores the image URL
+            'imageUrl' => $imageUrl,
         ]);
     }
 
