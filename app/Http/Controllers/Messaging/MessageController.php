@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
+    public function startChat($userId)
+    {
+        $user = User::findOrFail($userId);
+        return redirect()->route('chat.page', ['user' => $user]);
+    }
+
     public function chatPage()
     {
         $activeUsers = User::where('is_active', true)->get(['id', 'firstname', 'lastname']); // Add more fields as needed
@@ -24,16 +30,16 @@ class MessageController extends Controller
 
     public function fetchChatHistory($userId)
     {
-        $user = User::find($userId);
         $messages = Message::where(function ($query) use ($userId) {
-            $query->where('sender_id', Auth::id())->where('receiver_id', $userId);
-        })
-            ->orWhere(function ($query) use ($userId) {
-                $query->where('sender_id', $userId)->where('receiver_id', Auth::id());
-            })
+            $query->where('sender_id', auth()->id())
+                ->where('receiver_id', $userId);
+        })->orWhere(function ($query) use ($userId) {
+            $query->where('sender_id', $userId)
+                ->where('receiver_id', auth()->id());
+        })->orderBy('created_at', 'asc')
             ->get();
 
-        return response()->json(['user' => $user, 'messages' => $messages]);
+        return response()->json($messages);
     }
 
 
@@ -46,7 +52,6 @@ class MessageController extends Controller
                 'content' => 'required|string',
             ]);
 
-
             $message = Message::create([
                 'sender_id' => Auth::id(),
                 'receiver_id' => $request->input('receiver_id'),
@@ -54,12 +59,11 @@ class MessageController extends Controller
                 'is_read' => false,
             ]);
 
-            // Dispatch an event for real-time broadcasting
-            broadcast(new MessageSent($message))->toOthers();
-            //event(new MessageSent($message));
+            //broadcast(new MessageSent($message))->toOthers();
 
             return response()->json(['message' => 'Message sent successfully!', 'data' => $message], 201);
         } catch (\Exception $e) {
+            Log::error("Message sending failed: " . $e->getMessage());  // Log error message
             return response()->json(['error' => 'Message sending failed'], 500);
         }
     }

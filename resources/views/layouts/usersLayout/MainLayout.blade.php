@@ -797,16 +797,27 @@
     <script src="{{ asset('js/app.js') }}"></script>
     @php
         $currentUrl = request()->url();
+        $keywords = ['blogs', 'blog', 'auctions-explore', 'auction', 'creators', 'collections-explore', 'collection'];
+        $found = false;
+
+        foreach ($keywords as $keyword) {
+            if (strpos($currentUrl, $keyword) !== false) {
+                $found = true;
+                break;
+            }
+        }
     @endphp
 
-    @if (strpos($currentUrl, 'blogs') !== false || strpos($currentUrl, 'blog') !== false || strpos($currentUrl, 'auctions-explore') !== false || strpos($currentUrl, 'auction') !== false || strpos($currentUrl, 'creators') !== false)
+    @if ($found)
         <script>
             var routes = {
                 searchBlogs: "{{ route('search.blogs.sp') }}",
                 searchAuctions: "{{ route('search.auctions.sp') }}",
                 searchCreators: "{{ route('search.creators') }}",
                 blogs: "{{ route('blogs') }}",
-                auctionsExplore: "{{ route('auctionsExplore') }}"
+                auctionsExplore: "{{ route('auctionsExplore') }}",
+                collectionsExplore: "{{ route('collectionsExplore') }}",
+                collectionsSp: "{{ route('search.collections.sp') }}",
             };
         </script>
         <script src="{{ asset('js/search.js') }}"></script>
@@ -817,7 +828,6 @@
             });
         </script>
     @endif
-
 
 
 

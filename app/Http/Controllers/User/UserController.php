@@ -8,10 +8,26 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    public function getUserDetails($userId)
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Customize the data as needed
+        return response()->json([
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            //'imageUrl' => $user->profile_image // Assume there's a profile_image field that stores the image URL
+        ]);
+    }
 
     public function index()
     {

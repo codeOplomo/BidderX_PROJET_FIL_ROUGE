@@ -89,6 +89,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/info/update', [ProfileController::class, 'updateInfo'])->name('user.info.update');
     Route::get('/price-range', [AuctionController::class, 'getPriceRange'])->name('price.range');
     Route::get('/auctions-explore', [AuctionController::class, 'showAuctionsExplore'])->name('auctionsExplore');
+    Route::get('/collections-explore', [CollectionController::class, 'collectionExplore'])->name('collectionsExplore');
+    Route::get('/search-collection-sp', [CollectionController::class, 'searchForCollection'])->name('search.collections.sp');
     Route::get('/auctions-filter', [AuctionController::class, 'filterAuctions'])->name('auctions.filter');
     Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('product.details');
     Route::post('/auctions/{auction}/react', [AuctionReactionController::class, 'toggle'])->name('auctions.react');
@@ -99,6 +101,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search-creators', [OwnerController::class, 'searchCreators'])->name('search.creators');
     Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');
     Route::get('/fetch-chat-history/{userId}', [MessageController::class, 'fetchChatHistory'])->name('fetch.chat.history');
+    Route::get('/chat/{userId}', [MessageController::class, 'startChat'])->name('chat.start');
+    Route::get('/get-user-details/{userId}', [UserController::class, 'getUserDetails'])->name('user.details');
     Route::post('/send-messages', [MessageController::class, 'sendMessage'])->name('messages.send');
     Route::get('/wallet-connect', [WalletController::class, 'connectWallet'])->name('wallet.connect');
     Route::get('/payment-page', [WalletController::class, 'paymentPage'])->name('payment.page');
@@ -184,4 +188,4 @@ Route::middleware(['auth'])->group(function () {
 
 
 });
-Route::get('/collections/{collection}', [CollectionController::class, 'show'])->name('collection.show');
+Route::get('/collection/{collection}', [CollectionController::class, 'show'])->name('collection.show');

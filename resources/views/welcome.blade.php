@@ -106,7 +106,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-12 mt_mobile--15">
                 <div class="view-more-btn text-start text-sm-end" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800">
-                    <a class="btn-transparent" href="#">VIEW ALL<i data-feather="arrow-right"></i></a>
+                    <a class="btn-transparent" href="{{ route('collectionsExplore') }}">VIEW ALL<i data-feather="arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-12 mt_mobile--15">
                 <div class="view-more-btn text-start text-sm-end" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800">
-                    <a class="btn-transparent" href="#">VIEW ALL<i data-feather="arrow-right"></i></a>
+                    <a class="btn-transparent" href="{{ route('auctionsExplore') }}">VIEW ALL<i data-feather="arrow-right"></i></a>
                 </div>
             </div>
         </div>

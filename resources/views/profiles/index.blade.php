@@ -126,7 +126,7 @@
                                         <a href="{{ route('user.profile.edit') }}"
                                            class="btn at-follw follow-button edit-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></a>
                                         @else
-                                            <a href="#" class="btn at-follw follow-button message-btn d-flex justify-content-center align-items-center p-2" style="width: 40px; height: 40px;">
+                                            <a href="{{ route('chat.start', ['userId' => $user->id]) }}" class="btn at-follw follow-button message-btn d-flex justify-content-center align-items-center p-2" style="width: 40px; height: 40px;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square">
                                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"></path>
                                                 </svg>
@@ -238,6 +238,22 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
+
+                var chatLinks = document.querySelectorAll('.chat-link');
+
+                // Add click event listener to each chat link
+                chatLinks.forEach(function(link) {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent default link behavior
+
+                        // Extract the user ID from the data attribute
+                        var userId = link.dataset.userId;
+
+                        // Redirect the user to the chat page with the selected user's ID
+                        window.location.href = '/chat/' + userId; // Adjust the URL structure as needed
+                    });
+                });
+
                 var createdTab = document.getElementById("nav-created-tab");
                 var createdPane = document.getElementById("nav-created");
 

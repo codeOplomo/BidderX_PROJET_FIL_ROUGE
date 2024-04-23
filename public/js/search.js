@@ -214,6 +214,8 @@ $(document).ready(function() {
                 }
             });
         });
+    } else if(currentUrl.includes("/collections/")) {
+        form.attr('action', routes.collectionsExplore);
     } else {
         $('.search-form-wrapper').hide();
     }

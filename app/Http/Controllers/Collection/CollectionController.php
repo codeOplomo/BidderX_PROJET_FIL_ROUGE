@@ -3,18 +3,26 @@
 namespace App\Http\Controllers\Collection;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Collection;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class CollectionController extends Controller
 {
 
+    public function searchForCollection()
+    {
+        $query = $request->input('query');
+
+    }
     public function show(Collection $collection)
     {
         return view('collections.show', compact('collection'));
     }
+
     public function create()
     {
         $this->authorize('createCollection', User::class);
@@ -71,4 +79,26 @@ class CollectionController extends Controller
         return redirect()->back()->with('success', 'Collection created successfully!');
     }
 
+    public function collectionExplore(Request $request)
+    {
+        $query = $request->input('query');
+//dd($query);
+        if (!empty($query)) {
+            $collections = Collection::where('name', 'like', '%' . $query . '%')
+                ->orWhere('description', 'like', '%' . $query . '%')
+                ->withCount('products')
+                ->orderByDesc('products_count')
+                ->get();
+//dd($collections);
+            } else {
+                $collections = Collection::withCount('products')
+                    ->orderByDesc('products_count')
+                    ->get();
+            }
+
+            //$categories = Category::all();
+//dd($collections);
+            return view('collections.collections-explore', compact('collections'));
+
+    }
 }
