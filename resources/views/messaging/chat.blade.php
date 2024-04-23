@@ -195,16 +195,60 @@ console.log(fetchUserDetails);
                 loadChatHistory(selectedUserId, true);
             }
 
+            var refreshInterval;
+            var chatUpdateRate = 2000;
+
+            function fetchChatHistory(userId, fetchUserDetails = false) {
+                if (!userId) return;
+                $.ajax({
+                    url: '/fetch-chat-history/' + userId,
+                    type: 'GET',
+                    success: function(messages) {
+                        const messageList = $('#message-list');
+                        messageList.empty();
+                        messages.forEach(function(message) {
+                            var messageClass = message.sender_id == loggedInUserId ? 'sender' : 'receiver';
+                            var messageElement = `<li class='message-item ${messageClass}'>${message.content}</li>`;
+                            messageList.append(messageElement);
+                        });
+                        $('.chat-history').css('display', 'block');
+                        if (fetchUserDetails) {
+                            fetchUserDetailsFromServer(userId);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to fetch chat history:', error);
+                    }
+                });
+            }
+
+            function startRefreshChat(userId) {
+                if (refreshInterval) clearInterval(refreshInterval);
+                refreshInterval = setInterval(function() {
+                    fetchChatHistory(userId);
+                }, chatUpdateRate);
+            }
+
+            $('#message-input').on('keyup', function() {
+                if (refreshInterval) clearInterval(refreshInterval);
+            });
+
+            $('#message-input').on('blur', function() {
+                var userId = $('#online-users-list li.active').data('user-id');
+                startRefreshChat(userId);
+            });
+
             $('#online-users-list').on('click', 'li', function() {
                 var userId = $(this).data('user-id');
-                loadChatHistory(userId, true); // Always fetch chat history when a user is clicked
-                $('#online-users-list li').removeClass('active'); // Remove active class from all
-                $(this).addClass('active'); // Add active class to clicked user
+                loadChatHistory(userId, true);
+                $('#online-users-list li').removeClass('active');
+                $(this).addClass('active');
+                startRefreshChat(userId, true);
             });
 
             $('#send-button').click(function() {
                 var messageContent = $('#message-input').val();
-                var userId = $('#online-users-list li.active').data('user-id') || selectedUserId; // Get the active or the initially selected user ID
+                var userId = $('#online-users-list li.active').data('user-id') || selectedUserId;
 
                 if (messageContent.trim() !== '') {
                     $.ajax({
