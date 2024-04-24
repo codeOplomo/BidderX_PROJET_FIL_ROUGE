@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auctions;
 
+use App\Enums\WalletEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BidRequest;
 use App\Models\Auction;
@@ -46,6 +47,13 @@ class BidController extends Controller
             return redirect()->back()->with('error', 'This auction is not currently active.');
         }
 
+        $previousBid = $auction->bids()->highest()->first();
+        if ($previousBid) {
+            $previousBidder = $previousBid->user;
+            if ($previousBidder) {
+                $previousBidder->deposit(WalletEnums::DEPOSIT->value, $auction->current_bid_price);
+            }
+        }
 
 
         $bid = Bid::create([
@@ -61,14 +69,13 @@ class BidController extends Controller
             }
             $auction->save();
 
-            // Assuming the service fee is defined somewhere or is static
             $serviceFee = 10;
             $totalBidAmount = $request->amount + $serviceFee;
 
             // Update user's wallet balance
             $user = Auth::user();
             try {
-                $user->pay($totalBidAmount); // Deduct the total bid amount from the user's wallet
+                $user->pay($totalBidAmount);
                 return redirect()->back()->with('success', 'Bid placed successfully!');
             } catch (\Exception $e) {
                 // Handle exception if payment fails
