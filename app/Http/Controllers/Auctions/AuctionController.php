@@ -17,10 +17,37 @@ class AuctionController extends Controller
     /**
      * Display a listing of auctions.
      */
-    public function index()
+    public function determineWinner()
     {
-
+        // Example logic to determine winner
+        // This should be replaced with actual logic based on your application's requirements
+        $highestBid = $this->bids()->orderBy('amount', 'desc')->first();
+        return $highestBid ? $highestBid->user_id : null;
     }
+
+
+    public function finalize(Request $request, Auction $auction)
+    {
+        if (!$auction->isActive()) {
+            return response()->json(['message' => 'This auction is not active or has already been finalized.'], 400);
+        }
+
+        $winnerId = $auction->determineWinner();
+        if (!$winnerId) {
+            return response()->json(['message' => 'No winner could be determined.'], 422);
+        }
+
+        $auction->winner_id = $winnerId;
+        $auction->is_active = false; // Ensure you are correctly setting the status
+        $auction->save();
+
+        return response()->json([
+            'message' => 'Auction finalized successfully.',
+            'winner_id' => $winnerId
+        ]);
+    }
+
+
 
     public function topOwners(Request $request)
     {

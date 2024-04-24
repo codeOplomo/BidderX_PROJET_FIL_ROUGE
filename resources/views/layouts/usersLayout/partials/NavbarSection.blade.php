@@ -115,7 +115,7 @@
                                 colors="primary:#f4c89c"
                                 style="width:30px;height:30px">
                             </lord-icon>
-                            <span class="badge" id="unread-messages-count" style="background-color: red; color: white; border-radius: 50%;">0</span>
+                            <span class="badge bg-color-primary" id="unread-messages-count" style="color: white; border-radius: 50%;">0</span>
                         </a>
                     </div>
 

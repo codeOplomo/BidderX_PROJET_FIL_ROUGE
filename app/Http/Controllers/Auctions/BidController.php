@@ -78,7 +78,6 @@ class BidController extends Controller
                 $user->pay($totalBidAmount);
                 return redirect()->back()->with('success', 'Bid placed successfully!');
             } catch (\Exception $e) {
-                // Handle exception if payment fails
                 return redirect()->back()->with('error', 'Failed to deduct the total bid amount from your wallet.');
             }
         }

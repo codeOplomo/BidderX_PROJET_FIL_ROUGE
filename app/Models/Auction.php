@@ -67,6 +67,11 @@ class Auction extends Model
         return $this->hasMany(AuctionReaction::class);
     }
 
+    public function determineWinner()
+    {
+        $highestBid = $this->bids()->orderByDesc('amount')->first();
+        return $highestBid ? $highestBid->user_id : null;
+    }
 
     public function scopeMostLiked($query)
     {

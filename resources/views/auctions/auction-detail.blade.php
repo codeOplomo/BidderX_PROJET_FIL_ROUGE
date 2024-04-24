@@ -380,6 +380,9 @@
             const placeBidButton = document.getElementById('placeBidButton');
             const isInstant = {{ $auction->is_instant ? 'true' : 'false' }};
             const hasCurrentBidPrice = {{ is_null($auction->current_bid_price) ? 'false' : 'true' }};
+            const auctionId = countdownElement ? countdownElement.dataset.auctionId : null;
+
+
 
             const bidAmountInput = document.getElementById('amountInput');
             const totalBidDisplay = document.getElementById('totalBidAmount');
@@ -396,7 +399,6 @@
             }
 
             bidAmountInput.addEventListener('input', updateTotalBid);
-
             updateTotalBid();
 
             if (isInstant && hasCurrentBidPrice) {
@@ -406,13 +408,12 @@
 
             if (!countdownElement) return;
 
-            const endTime = new Date(countdownElement.getAttribute('data-end-time')).getTime();
-
             function updateCountdown() {
                 const now = new Date().getTime();
+                const endTime = new Date(countdownElement.getAttribute('data-end-time')).getTime();
                 const timeLeft = endTime - now;
 
-                if (timeLeft >= 0) {
+                if (timeLeft > 0) {
                     const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
@@ -427,14 +428,39 @@
                     countdownElement.innerHTML = "<p>Auction has ended.</p>";
                     placeBidButton.disabled = true;
                     placeBidButton.classList.add('disabled');
+
+                    if (!isInstant && auctionId) {
+                        finalizeAuction(auctionId);
+                    }
                 }
             }
 
-            // Update the countdown every 1 second
             const countdownTimer = setInterval(updateCountdown, 1000);
-
-            // Initialize immediately
             updateCountdown();
+
+            function finalizeAuction(auctionId) {
+                const url = `/auctions/${auctionId}/finalize`; // Make sure the URL is correct
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok.');
+                    }
+                    return response.json();
+                }).then(data => {
+                    console.log('Auction finalized:', data);
+                    alert('Auction finalized successfully!'); // You can replace this with a more subtle notification
+                }).catch(error => {
+                    console.error('Error finalizing the auction:', error);
+                    alert('Failed to finalize auction.'); // You can replace this with a more subtle notification
+                });
+            }
+
         });
     </script>
 @endsection

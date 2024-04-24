@@ -97,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/place-bid', [BidController::class, 'store'])->name('bid.place');
     Route::get('/timed-auctions', [AuctionController::class, 'timedAuctions'])->name('timedAuctions');
     Route::get('/instant-auctions', [AuctionController::class, 'instantAuctions'])->name('instantAuctions');
+    Route::post('/auctions/{auction}/finalize', [AuctionController::class, 'finalize'])->name('auctions.finalize');
     Route::get('/search-auctions-sp', [AuctionController::class, 'searchForAuctions'])->name('search.auctions.sp');
     Route::get('/search-creators', [OwnerController::class, 'searchCreators'])->name('search.creators');
     Route::get('/chat', [MessageController::class, 'chatPage'])->name('chat.page');

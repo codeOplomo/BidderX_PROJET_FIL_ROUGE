@@ -85,15 +85,20 @@
                                 <li data-user-id="{{ $activeUser->id }}" onclick="fetchChatHistory({{ $activeUser->id }})">
                                     <a href="javascript:void(0);" class="col-lg-12 user-item d-flex align-items-center" style="text-decoration: none; color: inherit;">
                                         <img src="{{ asset('assets/images/client/client-1.png') }}" class="chat-thumbnail" alt="avatar">
-                                        <div class="chat-about d-flex align-items-center justify-content-between">
-                                            <h6 class="mb-0 mr-3">{{ $activeUser->firstname }} {{ $activeUser->lastname }}</h6>
-                                            @if ($activeUser->unreadMessagesBySender->sum() > 0)
-                                                <span class="badge bg-danger ml-2">{{ $activeUser->unreadMessagesBySender->sum() }}</span>
-                                            @endif
+                                        <div class="chat-about d-flex justify-content-between align-items-center w-100">
+                                            <div class="me-3">
+                                                <h6 class="mb-0">{{ $activeUser->firstname }} {{ $activeUser->lastname }}</h6>
+                                            </div>
+                                            <div>
+                                                @if ($activeUser->unreadMessagesBySender->sum() > 0)
+                                                    <span class="badge bg-color-primary">{{ $activeUser->unreadMessagesBySender->sum() }}</span>
+                                                @endif
+                                            </div>
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
+
 
                         </ul>
                     </div>

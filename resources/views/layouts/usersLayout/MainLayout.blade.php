@@ -634,7 +634,7 @@
                     title: 'Success!',
                     text: '{{ session('success') }}',
                     showConfirmButton: true,
-                    background: 'green',
+                    background: '#002d2d',
                     timer: 5000
                 });
             </script>
