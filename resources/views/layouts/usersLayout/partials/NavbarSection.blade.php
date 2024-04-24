@@ -92,9 +92,7 @@
                             <div class="icon-box">
                                 <span class="balance-display">Balance: {{ auth()->user()->walletBalance }} $ </span>
                             </div>
-                            {{-- Hide Wallet Connect if the user has made a deposit --}}
                         @else
-                            {{-- Show Wallet Connect if no deposits made --}}
                             <div class="icon-box">
                                 <a id="connectbtn" class="btn btn-primary-alta btn-small" href="{{ route('wallet.connect') }}">Wallet connect</a>
                             </div>
@@ -106,6 +104,21 @@
                         <a class="btn btn-primary-alta btn-small" href="{{ route('bidder.application') }}">Become a Creator</a>
                     </div>
                     @endif
+
+                    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+                    <!-- Inbox Icon Redirect to Chat Page -->
+                    <div id="inbox-icon">
+                        <a href="{{ route('chat.page') }}" style="color: inherit;">
+                            <lord-icon
+                                src="https://cdn.lordicon.com/xtnsvhie.json"
+                                trigger="hover"
+                                colors="primary:#f4c89c"
+                                style="width:30px;height:30px">
+                            </lord-icon>
+                            <span class="badge" id="unread-messages-count" style="background-color: red; color: white; border-radius: 50%;">0</span>
+                        </a>
+                    </div>
+
 
                     <div class="ms-3">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST">

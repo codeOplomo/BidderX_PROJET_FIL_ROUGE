@@ -14,13 +14,15 @@
             text-align: right;
             float: right;
             clear: both;
+            color: #231A00;
         }
 
         .receiver {
-            background-color: #ECECEC;
+            background-color: #f4c89c;
             text-align: left;
             float: left;
             clear: both;
+            color: #231A00;
         }
 
         .chat {
@@ -30,24 +32,24 @@
         }
 
         .chat-history {
-            overflow-y: auto; /* Allows scrolling */
-            max-height: 70vh; /* Limits height to 70% of the viewport height */
+            overflow-y: auto;
+            max-height: 70vh;
             padding: 10px;
         }
 
-        /* Style adjustments for the message list */
+
         #message-list {
-            list-style-type: none; /* Removes bullets */
-            padding: 0; /* Removes default padding */
-            margin: 0; /* Adjust margin as needed */
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
         }
 
         .message-item {
             padding: 5px 10px;
-            margin: 5px 0; /* Provides spacing between messages */
-            border-radius: 10px; /* Rounded corners for message bubbles */
-            width: fit-content; /* Fit the content width */
-            max-width: 80%; /* Maximum width for each message */
+            margin: 5px 0;
+            border-radius: 10px;
+            width: fit-content;
+            max-width: 80%;
         }
 
         .chat-message {
@@ -78,16 +80,21 @@
                             <input type="text" class="form-control" placeholder="Search...">
                         </div>
                         <ul class="list-unstyled chat-list mt-2 mb-0" id="online-users-list">
+
                             @foreach ($activeUsers as $activeUser)
                                 <li data-user-id="{{ $activeUser->id }}" onclick="fetchChatHistory({{ $activeUser->id }})">
                                     <a href="javascript:void(0);" class="col-lg-12 user-item d-flex align-items-center" style="text-decoration: none; color: inherit;">
                                         <img src="{{ asset('assets/images/client/client-1.png') }}" class="chat-thumbnail" alt="avatar">
-                                        <div class="chat-about">
-                                            <h6 class="m-b-0">{{ $activeUser->firstname }} {{ $activeUser->lastname }}</h6>
+                                        <div class="chat-about d-flex align-items-center justify-content-between">
+                                            <h6 class="mb-0 mr-3">{{ $activeUser->firstname }} {{ $activeUser->lastname }}</h6>
+                                            @if ($activeUser->unreadMessagesBySender->sum() > 0)
+                                                <span class="badge bg-danger ml-2">{{ $activeUser->unreadMessagesBySender->sum() }}</span>
+                                            @endif
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
+
                         </ul>
                     </div>
 
@@ -129,22 +136,19 @@
         </div>
     </div>
 
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
         var selectedUserId = {{ request('userId') ? request('userId') : 'null' }};
         var loggedInUserId = {{ auth()->id() }};
-    </script>
 
-    <script>
         function fetchUserDetailsFromServer(userId) {
             $.ajax({
                 url: '/get-user-details/' + userId,
                 type: 'GET',
                 success: function(user) {
                     console.log("Fetched user details:", user);
-                    var fullName = user.firstname + ' ' + user.lastname; // Concatenate firstname and lastname
-                    var imageUrl = user.imageUrl || 'path/to/default/image.jpg'; // Provide a default or check for imageUrl
+                    var fullName = user.firstname + ' ' + user.lastname;
+                    var imageUrl = user.imageUrl || 'path/to/default/image.jpg';
                     updateUserDetails(fullName, imageUrl);
                 },
                 error: function(xhr, status, error) {
@@ -159,7 +163,6 @@
             $('#chat-user-image').attr('src', imageUrl);
         }
 
-
         function loadChatHistory(userId, fetchUserDetails = true) {
             $.ajax({
                 url: '/fetch-chat-history/' + userId,
@@ -173,13 +176,27 @@
                         messageList.append(messageElement);
                     });
                     $('.chat-history').css('display', 'block');
-console.log(fetchUserDetails);
                     if (fetchUserDetails) {
                         fetchUserDetailsFromServer(userId);
                     }
+                    markMessagesAsRead(userId);
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to fetch chat history:', error);
+                }
+            });
+        }
+
+        function markMessagesAsRead(userId) {
+            $.ajax({
+                url: '/mark-messages-as-read/' + userId,
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(response) {
+                    console.log('Messages marked as read');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to mark messages as read:', error);
                 }
             });
         }
@@ -196,54 +213,32 @@ console.log(fetchUserDetails);
             }
 
             var refreshInterval;
-            var chatUpdateRate = 2000;
-
-            function fetchChatHistory(userId, fetchUserDetails = false) {
-                if (!userId) return;
-                $.ajax({
-                    url: '/fetch-chat-history/' + userId,
-                    type: 'GET',
-                    success: function(messages) {
-                        const messageList = $('#message-list');
-                        messageList.empty();
-                        messages.forEach(function(message) {
-                            var messageClass = message.sender_id == loggedInUserId ? 'sender' : 'receiver';
-                            var messageElement = `<li class='message-item ${messageClass}'>${message.content}</li>`;
-                            messageList.append(messageElement);
-                        });
-                        $('.chat-history').css('display', 'block');
-                        if (fetchUserDetails) {
-                            fetchUserDetailsFromServer(userId);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Failed to fetch chat history:', error);
-                    }
-                });
-            }
+            var chatUpdateRate = 3000; // Refresh rate in milliseconds
 
             function startRefreshChat(userId) {
                 if (refreshInterval) clearInterval(refreshInterval);
                 refreshInterval = setInterval(function() {
-                    fetchChatHistory(userId);
+                    loadChatHistory(userId);
                 }, chatUpdateRate);
             }
 
-            $('#message-input').on('keyup', function() {
-                if (refreshInterval) clearInterval(refreshInterval);
+            $('#message-input').on('focus', function() {
+                clearInterval(refreshInterval);
             });
 
             $('#message-input').on('blur', function() {
-                var userId = $('#online-users-list li.active').data('user-id');
-                startRefreshChat(userId);
+                var userId = $('#online-users-list li.active').data('user-id') || selectedUserId;
+                if (userId) {
+                    startRefreshChat(userId);
+                }
             });
 
             $('#online-users-list').on('click', 'li', function() {
                 var userId = $(this).data('user-id');
-                loadChatHistory(userId, true);
-                $('#online-users-list li').removeClass('active');
-                $(this).addClass('active');
-                startRefreshChat(userId, true);
+                loadChatHistory(userId, true); // Fetch chat history and user details
+                $('#online-users-list li').removeClass('active'); // Remove active class from all
+                $(this).addClass('active'); // Add active class to clicked user
+                startRefreshChat(userId);
             });
 
             $('#send-button').click(function() {
@@ -262,6 +257,7 @@ console.log(fetchUserDetails);
                             var messageElement = `<li class='message-item sender'>${response.data.content}</li>`;
                             $('#message-list').append(messageElement);
                             $('#message-input').val('');
+                            loadChatHistory(userId); // Refresh chat history immediately after sending a message
                         },
                         error: function(xhr, status, error) {
                             console.error('Error sending message:', error);
@@ -270,8 +266,8 @@ console.log(fetchUserDetails);
                 }
             });
         });
-
     </script>
+
 
 
 

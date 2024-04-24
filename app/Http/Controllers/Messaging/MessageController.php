@@ -14,6 +14,29 @@ use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
+    public function markMessagesAsRead($userId)
+    {
+        $currentUser = auth()->id();
+        Message::where('receiver_id', $currentUser)
+            ->where('sender_id', $userId)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        return response()->json(['message' => 'Messages marked as read']);
+    }
+
+    public function unreadMessagesCount()
+    {
+        $userId = auth()->id();
+        // Count unique conversations with unread messages
+        $count = Message::where('receiver_id', $userId)
+            ->where('is_read', false)
+            ->distinct('sender_id')
+            ->count('sender_id');
+        return response()->json(['count' => $count]);
+    }
+
+
     public function startChat($userId)
     {
         return redirect()->route('chat.page', ['userId' => $userId]);
@@ -22,9 +45,27 @@ class MessageController extends Controller
     public function chatPage(Request $request)
     {
         $userId = $request->query('userId');
+        $currentUserId = auth()->id();
+
         $activeUsers = User::where('is_active', true)
-            ->where('id', '!=', auth()->id())
+            ->where('id', '!=', $currentUserId)
+            ->withCount(['receivedMessages as unread_count' => function ($query) use ($currentUserId) {
+                $query->where('receiver_id', $currentUserId)
+                    ->where('is_read', false);
+            }])
             ->get();
+
+        // Map through each user to add custom data about unread messages by sender
+        $activeUsers->map(function ($user) use ($currentUserId) {
+            $user->unreadMessagesBySender = Message::selectRaw('sender_id, count(*) as unread_count')
+                ->where('receiver_id', $currentUserId)
+                ->where('sender_id', $user->id)
+                ->where('is_read', false)
+                ->groupBy('sender_id')
+                ->get()
+                ->pluck('unread_count', 'sender_id');
+        });
+
         $user = null;
         if ($userId) {
             $user = User::find($userId);

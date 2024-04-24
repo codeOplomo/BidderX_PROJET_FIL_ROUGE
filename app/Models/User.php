@@ -45,6 +45,15 @@ class User extends Authenticatable implements HasMedia, WalletOperations
     ];
 
 
+    public function unreadMessagesBySender($currentUserId)
+    {
+        return $this->hasMany(Message::class, 'receiver_id')
+            ->selectRaw('sender_id, count(*) as unread_count')
+            ->where('receiver_id', $currentUserId)
+            ->where('is_read', false)
+            ->groupBy('sender_id');
+    }
+
 
     public function address()
     {
@@ -127,6 +136,11 @@ class User extends Authenticatable implements HasMedia, WalletOperations
     }
 
 
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
     public function scopeTopSellers($query, $timeframe = 1)
     {
         return $query->select('users.*', \DB::raw('COALESCE(SUM(auctions.current_bid_price), 0) AS total_revenue'))
@@ -161,7 +175,6 @@ class User extends Authenticatable implements HasMedia, WalletOperations
         return $query->where('email', 'like', '%' . $domain);
     }
 
-    // Scope for active users (you can define "active" based on your application logic, e.g., users who have logged in recently)
     public function scopeActive($query, $days = 30)
     {
         return $query->where('last_login_at', '>=', now()->subDays($days));

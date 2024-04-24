@@ -669,6 +669,35 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        $(document).ready(function() {
+            function fetchUnreadMessagesCount() {
+                $.ajax({
+                    url: '/unread-messages-count',
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.count > 0) {
+                            $('#unread-messages-count').text(data.count).show();
+                        } else {
+                            $('#unread-messages-count').hide();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching unread messages count:', error);
+                    }
+                });
+            }
+
+            // Periodically check for unread messages
+            setInterval(fetchUnreadMessagesCount, 30000); // every 30 seconds
+
+            // Also check when the user navigates to the chat page
+            $('#inbox-icon a').on('click', function() {
+                fetchUnreadMessagesCount(); // refresh count after visiting the chat
+            });
+        });
+
+    </script>
+    <script>
 
         document.addEventListener('DOMContentLoaded', () => {
             function updateCountdown(countdownElement) {

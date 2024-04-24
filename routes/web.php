@@ -104,6 +104,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/fetch-chat-history/{userId}', [MessageController::class, 'fetchChatHistory'])->name('fetch.chat.history');
     Route::get('/get-user-details/{userId}', [UserController::class, 'getUserDetails'])->name('user.details');
     Route::post('/send-messages', [MessageController::class, 'sendMessage'])->name('messages.send');
+    Route::get('/unread-messages-count', [MessageController::class, 'unreadMessagesCount'])->name('messages.unread-count');
+    Route::post('/mark-messages-as-read/{userId}', [MessageController::class, 'markMessagesAsRead'])->name('messages.markAsRead');
     Route::get('/wallet-connect', [WalletController::class, 'connectWallet'])->name('wallet.connect');
     Route::get('/payment-page', [WalletController::class, 'paymentPage'])->name('payment.page');
     Route::post('/payment-deposit', [WalletController::class, 'depositPayment'])->name('payment.deposit');
